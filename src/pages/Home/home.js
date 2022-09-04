@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 function Home() {
     return (
         <div className={cx('flex')}>
-            <div className="min-w-[250px] h-screen bg-slate-300 ">
+            <div className="w-[270px] h-screen  ">
                 <SideBar />
             </div>
             <div>Home</div>

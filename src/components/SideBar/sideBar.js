@@ -1,13 +1,35 @@
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 
 import styles from './SideBar.module.scss';
+import SideBarChat from './SideBarChat';
+import SideBarFriend from './SideBarFriend';
+import Search from '../Search';
 
 const cx = classNames.bind(styles);
-function SideBar({ children }) {
-    return <div className={cx('bg-slate-400')}>{children}</div>;
+function SideBar({ children, type }) {
+    const Comp = SideBarChat;
+
+    if (type === 'friend') {
+        Comp = SideBarFriend;
+    }
+
+    return (
+        <div className={cx('w-full h-full overflow-hidden border-l border-r border-lcn-blue-3')}>
+            <div className="w-full h-20 ">
+                <Search />
+            </div>
+            <div className={cx('h-full overflow-hidden ')}>
+                <Comp>{children}</Comp>
+            </div>
+        </div>
+    );
 }
 
-SideBar.propTypes = {};
+SideBar.propTypes = {
+    type: PropTypes.string,
+    children: PropTypes.node,
+};
 
 export default SideBar;
