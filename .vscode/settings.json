@@ -3,5 +3,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "[xml]": {
         "editor.defaultFormatter": "DotJoshJohnson.xml"
-    }
+    },
+    "html-css-class-completion.includeGlobPattern": "*/.{css,html,js}"
 }
