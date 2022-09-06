@@ -1,4 +1,4 @@
-import {LoginLayout} from '~/layout'
+import { LoginLayout } from '~/layout';
 
 import Home from '~/pages/Home';
 import Friends from '~/pages/Friend';
@@ -6,6 +6,7 @@ import News from '~/pages/News';
 import SignUp from '~/pages/SignUp';
 
 import routeConfig from '~/configRoutes';
+import SignIn from '~/pages/SignIn';
 
 //public
 const publicRoutes = [
@@ -24,8 +25,13 @@ const publicRoutes = [
     {
         path: routeConfig.routeConfig.signUp,
         component: SignUp,
-        layout: LoginLayout
-    }
+        layout: LoginLayout,
+    },
+    {
+        path: routeConfig.routeConfig.signIn,
+        component: SignIn,
+        layout: LoginLayout,
+    },
 ];
 const privateRoutes = [];
 

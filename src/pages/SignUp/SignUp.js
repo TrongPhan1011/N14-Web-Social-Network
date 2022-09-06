@@ -9,11 +9,10 @@ import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function SignUp() {
-    const [buttonRegister, setbuttonRegister] = useState(false);
     return (
         <div className={cx('bg-white h-5/6 w-2/6 rounded-2xl drop-shadow-lcn-login')}>
             <div className={cx('h-1/6 p-5 border-b border-lcn-blue-4 border-opacity-20')}>
-                <div className={cx('flex w-full', 'text-3xl font-semibold')}>Đăng ký</div>
+                <div className={cx('flex w-full', 'text-lcn-blue-5 text-3xl font-semibold')}>Đăng ký</div>
                 <div className={cx('flex w-full', 'text-sm text-opacity-60 text-black')}>Nhanh chóng và thuận tiện</div>
             </div>
             <div className={cx('h-5/6 flex flex-row justify-center')}>

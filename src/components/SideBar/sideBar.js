@@ -9,7 +9,7 @@ import Search from '../Search';
 
 const cx = classNames.bind(styles);
 function SideBar({ children, type }) {
-    const Comp = SideBarChat;
+    var Comp = SideBarChat;
 
     if (type === 'friend') {
         Comp = SideBarFriend;

@@ -17,7 +17,8 @@ function ContentChat() {
     var [widthValue, setWidthValue] = useState('');
 
     const showMiniProfile = () => {
-        if (widthValue === 'ease-right-to-left') return <MiniProfile profileIn={true} />;
+        if (widthValue === '') return <></>;
+        else if (widthValue === 'ease-right-to-left') return <MiniProfile profileIn={true} />;
         else return <MiniProfile profileIn={false} />;
     };
 

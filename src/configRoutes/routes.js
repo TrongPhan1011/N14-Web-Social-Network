@@ -5,6 +5,7 @@ const news = '/news';
 const notification = '/notification';
 const setting = '/setting';
 const signUp = '/dangky';
+const signIn = '/dangnhap';
 
 /* 
     level 2
@@ -22,7 +23,8 @@ const routes = {
     news: news,
     notification: notification,
     setting: setting,
-    signUp : signUp,
+    signUp: signUp,
+    signIn: signIn,
     // level 2
 };
 export default routes;
