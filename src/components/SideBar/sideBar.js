@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 
 import styles from './SideBar.module.scss';
 import SideBarChat from './SideBarChat';
@@ -31,4 +32,4 @@ SideBar.propTypes = {
     children: PropTypes.node,
 };
 
-export default SideBar;
+export default memo(SideBar);

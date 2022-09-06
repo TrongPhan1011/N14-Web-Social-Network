@@ -22,13 +22,13 @@ function Header() {
                 </Button>
             </div>
             <div className={cx('h-3/6 w-full ')}>
-                <ItemMenu to={config.routeConfig.home} Icon1={AiOutlineMessage} Icon2={AiFillMessage} tip="Tin nhắn" />
-                <ItemMenu to={config.routeConfig.friends} Icon1={RiUserLine} Icon2={RiUserFill} tip="Bạn bè" />
-                <ItemMenu to={config.routeConfig.news} Icon1={HiOutlineNewspaper} Icon2={HiNewspaper} tip="Bản tin" />
-                <ItemMenu to={config.routeConfig.notification} Icon1={FaRegBell} Icon2={FaBell} tip="Thông báo" />
+                <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
+                <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
+                <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
+                <ItemMenu to={config.routeConfig.notification} icon1={FaRegBell} icon2={FaBell} tip="Thông báo" />
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
-                <ItemMenu to={config.routeConfig.friends} Icon1={AiOutlineSetting} Icon2={AiFillSetting} />
+                <ItemMenu to={config.routeConfig.friends} icon1={AiOutlineSetting} icon2={AiFillSetting} />
                 <div
                     className={cx(
                         ' rounded-full bg-white border border-lcn-blue-4 h-14 w-14 flex justify-center items-center mb-7 mt-3',

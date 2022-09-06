@@ -33,3 +33,35 @@
 .tippy-tooltip.tomato-theme[data-placement^='right'] .tippy-arrow {
     border-right-color: tomato;
 }
+
+// animation
+
+.ease-right-to-left {
+    animation-name: rightToLeft;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+}
+@keyframes rightToLeft {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 300px;
+    }
+}
+
+.ease-left-to-right {
+    animation-name: LeftToRight;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+}
+@keyframes LeftToRight {
+    from {
+        width: 300px;
+    }
+
+    to {
+        width: 0;
+    }
+}

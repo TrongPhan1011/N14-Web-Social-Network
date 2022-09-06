@@ -7,7 +7,15 @@ const cx = classNames.bind(styles);
 
 function SideBarChat() {
     return (
-        <div className={cx('p-2 overflow-y-scroll')}>
+        <div className={cx('p-2 h-screen overflow-y-scroll')}>
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
+            <ItemChat />
             <ItemChat />
             <ItemChat />
             <ItemChat />

@@ -9,8 +9,11 @@ import styles from './ItemMenu.module.scss';
 import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
-function ItemMenu({ Icon1, Icon2, tip = null, to }) {
+function ItemMenu({ icon1, icon2, tip = null, to }) {
     const [iconMenu, setIconMenu] = useState(false);
+
+    const Icon1 = icon1,
+        Icon2 = icon2;
 
     return (
         <Tippy content={tip} placement="right" arrow={false} theme="blue" className="-ml-2">
