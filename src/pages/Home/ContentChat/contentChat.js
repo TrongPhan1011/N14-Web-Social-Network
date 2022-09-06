@@ -66,7 +66,7 @@ function ContentChat() {
                 <ContentMessage />
                 <InputSend />
             </div>
-            <div className={cx('bg-white h-full', widthValue)}>{showMiniProfile()}</div>
+            <div className={cx('bg-white h-full ', widthValue)}>{showMiniProfile()}</div>
         </div>
     );
 }
