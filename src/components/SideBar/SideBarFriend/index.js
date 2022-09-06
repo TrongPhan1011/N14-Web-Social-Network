@@ -1,1 +1,1 @@
-export { default } from './sideBarFriend';
+export { default } from './SideBarFriend';
