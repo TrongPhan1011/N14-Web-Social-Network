@@ -21,7 +21,7 @@ function InputSend() {
             <input
                 type="text"
                 className={cx(
-                    'w-4/5 h-11 p-3 border border-lcn-blue-4 text-md rounded-3xl m-2 break-words outline-none caret-lcn-blue-4',
+                    'w-4/5 h-11 p-3 border border-lcn-blue-4  rounded-3xl m-2 break-words outline-none caret-lcn-blue-4',
                 )}
                 placeholder="Nhập tin nhắn"
             />

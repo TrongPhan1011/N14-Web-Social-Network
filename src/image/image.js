@@ -3,6 +3,8 @@ import sloganLogo from '~/assets/imgBase/sloganLogo.svg';
 import avatarDefault from '~/assets/imgBase/avatarDefault.png';
 import fullLogo from '~/assets/imgBase/fullLogo.svg';
 import coverPhoto from '~/assets/imgBase/coverPhoto.jpg';
+import friendConnect from '~/assets/imgBase/friendConnect.svg';
+import connectCircle from '~/assets/imgBase/connectCircle.svg';
 
 export const lcnImage = {
     logo1: logo1,
@@ -10,4 +12,6 @@ export const lcnImage = {
     fullLogo: fullLogo,
     avatarDefault: avatarDefault,
     coverPhoto: coverPhoto,
+    friendConnect: friendConnect,
+    connectCircle: connectCircle,
 };
