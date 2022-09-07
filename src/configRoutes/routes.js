@@ -7,15 +7,11 @@ const setting = '/setting';
 const signUp = '/dangky';
 const signIn = '/dangnhap';
 
-/* 
-    level 2
-    QR Code
-*/
-
 /*
     Level 2
 
 */
+const profile = friends + '/profile';
 
 const routes = {
     home: home,
@@ -26,5 +22,6 @@ const routes = {
     signUp: signUp,
     signIn: signIn,
     // level 2
+    profile: profile,
 };
 export default routes;

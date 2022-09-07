@@ -32,6 +32,10 @@ const publicRoutes = [
         component: SignIn,
         layout: LoginLayout,
     },
+    {
+        path: routeConfig.routeConfig.profile,
+        component: Friends,
+    },
 ];
 const privateRoutes = [];
 

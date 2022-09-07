@@ -3,11 +3,13 @@ import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 import styles from './ItemBanBe.module.scss';
+import routeConfig from '~/configRoutes';
 
 const cx = classNames.bind(styles);
 function ItemBanBe() {
+    const _route = routeConfig.routeConfig;
     return (
-        <Button className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
+        <Button to={_route.profile} className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
             <div className={cx('relative w-full h-full flex items-center')}>
                 <div
                     className={cx(
