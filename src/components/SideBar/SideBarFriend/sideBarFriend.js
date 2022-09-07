@@ -1,10 +1,9 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 
-import ItemBanBe from '~/components/ItemBanBe';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import styles from './SideBarFriend.module.scss';
-
+import ListItem from '~/components/ListItem';
 import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
@@ -66,24 +65,7 @@ function SideBarFriend() {
                     )}
                 </Button>
             </div>
-            <div className={cx('w-full h-full overflow-y-scroll')}>
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-                <ItemBanBe />
-            </div>
+            {tabChange ? <ListItem type="banBe" /> : <ListItem type="choXacNhan" />}
         </div>
     );
 }
