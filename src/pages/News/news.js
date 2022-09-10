@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './News.module.scss';
 import SideBar from '~/components/SideBar';
 import ContentNews from './ContentNews';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function News() {
     return (

@@ -1,7 +1,6 @@
-import classNames from 'classnames/bind';
-import styles from './HeaderProfile.module.scss';
+import classNames from 'classnames';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function HeaderProfile({ avatar, coverPhoto, userName }) {
     return (

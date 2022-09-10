@@ -1,17 +1,16 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useState, useEffect } from 'react';
 import { memo } from 'react';
 
 import { FaPhone, FaVideo, FaInfoCircle } from 'react-icons/fa';
 
-import styles from './ContentChat.module.scss';
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 import ContentMessage from '~/components/ContentMessage';
 import InputSend from '~/components/InputSend';
 import MiniProfile from '~/components/MiniProfile';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function ContentChat() {
     var [widthValue, setWidthValue] = useState('');

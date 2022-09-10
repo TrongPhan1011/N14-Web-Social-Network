@@ -1,12 +1,11 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useState } from 'react';
 
-import styles from './SignUp.module.scss';
 import { FaPhoneAlt, FaLock } from 'react-icons/fa';
 import { RiUserFill } from 'react-icons/ri';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function SignUp() {
     return (

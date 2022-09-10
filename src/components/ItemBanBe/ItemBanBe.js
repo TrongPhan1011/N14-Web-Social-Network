@@ -1,11 +1,11 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
-import styles from './ItemBanBe.module.scss';
+
 import routeConfig from '~/configRoutes';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function ItemBanBe() {
     const _route = routeConfig.routeConfig;
     return (

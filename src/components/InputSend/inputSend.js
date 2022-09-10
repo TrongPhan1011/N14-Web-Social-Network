@@ -1,13 +1,11 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 import { AiFillPlusCircle, AiFillFileImage } from 'react-icons/ai';
 import { RiSendPlaneFill } from 'react-icons/ri';
 
 import Button from '~/components/Button';
 
-import styles from './InputSend.module.scss';
-
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function InputSend() {
     return (

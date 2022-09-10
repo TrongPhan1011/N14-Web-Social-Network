@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './HeaderNews.module.scss';
 import { BiEdit, BiSearch } from 'react-icons/bi';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function HeaderNews() {
     return (
         <div className={cx(' w-full h-16  bg-lcn-blue-2 flex p-2')}>

@@ -1,4 +1,4 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useState } from 'react';
 
 import { AiOutlineMessage, AiFillMessage, AiFillSetting, AiOutlineSetting } from 'react-icons/ai';
@@ -6,13 +6,12 @@ import { FaBell, FaRegBell } from 'react-icons/fa';
 import { RiUserLine, RiUserFill } from 'react-icons/ri';
 import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
 
-import styles from './Header.module.scss';
 import config from '~/configRoutes';
 import { lcnImage } from '~/image';
 import Button from '~/components/Button';
 import ItemMenu from '~/components/ItemMenu';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function Header() {
     return (
         <div className="  bg-lcn-blue-2 w-full  ">
@@ -28,7 +27,7 @@ function Header() {
                 <ItemMenu to={config.routeConfig.notification} icon1={FaRegBell} icon2={FaBell} tip="Thông báo" />
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
-                <ItemMenu to={config.routeConfig.friends} icon1={AiOutlineSetting} icon2={AiFillSetting} />
+                <ItemMenu to={config.routeConfig.setting} icon1={AiOutlineSetting} icon2={AiFillSetting} />
                 <div
                     className={cx(
                         ' rounded-full bg-white border border-lcn-blue-4 h-14 w-14 flex justify-center items-center mb-7 mt-3',

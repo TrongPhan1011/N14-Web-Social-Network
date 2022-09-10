@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './ListItem.module.scss';
 import ItemBanBe from '~/components/ItemBanBe';
 import ItemChoXacNhan from '~/components/ItemChoXacNhan';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function ListItem({ type }) {
     var Comp = ItemBanBe;

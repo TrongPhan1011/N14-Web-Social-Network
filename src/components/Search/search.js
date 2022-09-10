@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './Search.module.scss';
 import { BiEdit, BiSearch } from 'react-icons/bi';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function Search() {
     return (

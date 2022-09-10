@@ -1,9 +1,8 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './SideBarChat.module.scss';
 import ItemChat from '~/components/ItemChat';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function SideBarChat() {
     return (

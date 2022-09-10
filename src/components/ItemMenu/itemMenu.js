@@ -1,14 +1,13 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 
-import styles from './ItemMenu.module.scss';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function ItemMenu({ icon1, icon2, tip = null, to }) {
     const [iconMenu, setIconMenu] = useState(false);
 

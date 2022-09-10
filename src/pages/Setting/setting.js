@@ -1,8 +1,6 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './Setting.module.scss';
-
-const cx = classNames.bind(styles);
+const cx = classNames;
 function Setting() {
     return <div> setting</div>;
 }

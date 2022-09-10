@@ -1,12 +1,11 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './Friends.module.scss';
 import SideBar from '~/components/SideBar';
 import ContentFriend from './ContentFriend';
 import routeConfig from '~/configRoutes';
 import ContentProfile from './ContentProfile';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function Friends() {
     var urlRoute = window.location.pathname;

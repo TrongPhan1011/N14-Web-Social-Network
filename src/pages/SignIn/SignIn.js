@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './SignIn.module.scss';
 import { FaPhoneAlt, FaLock } from 'react-icons/fa';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function SignIn() {
     return (

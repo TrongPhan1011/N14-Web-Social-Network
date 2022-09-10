@@ -1,14 +1,13 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { memo } from 'react';
 
-import styles from './SideBar.module.scss';
 import SideBarChat from './SideBarChat';
 import SideBarFriend from './SideBarFriend';
 import Search from '../Search';
 import SideBarNews from './SideBarNews';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function SideBar({ children, type }) {
     var Comp = SideBarChat;
 

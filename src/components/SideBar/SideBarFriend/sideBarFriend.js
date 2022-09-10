@@ -1,12 +1,12 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useState } from 'react';
 
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
-import styles from './SideBarFriend.module.scss';
+
 import ListItem from '~/components/ListItem';
 import Button from '~/components/Button';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function SideBarFriend() {
     const [tabChange, setTabChange] = useState(true);

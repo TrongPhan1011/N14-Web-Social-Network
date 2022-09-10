@@ -1,10 +1,8 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 
-import styles from './Button.module.scss';
-
-const cx = classNames.bind(styles);
+const cx = classNames;
 function Button({ children, className, type, to, href, onClick, navLink, ...passProps }) {
     let Comp = 'button';
     const _props = {

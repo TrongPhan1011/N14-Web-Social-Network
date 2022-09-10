@@ -1,6 +1,5 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './MiniProfile.module.scss';
 import HeaderProfile from '~/components/HeaderProfile';
 import { lcnImage } from '~/image';
 import GioiThieu from '~/components/GioiThieu';
@@ -9,7 +8,7 @@ import Button from '~/components/Button';
 import { BiEdit, BiPaint, BiBell, BiBlock } from 'react-icons/bi';
 import { AiOutlineWarning } from 'react-icons/ai';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function MiniProfile({ profileIn }) {
     var animationIn = 'ease-left-to-right ';

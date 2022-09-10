@@ -1,9 +1,8 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './SideBarNews.module.scss';
 import ListItem from '~/components/ListItem';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function SideBarNews() {
     return (
         <div className={cx('p-2 h-screen ')}>

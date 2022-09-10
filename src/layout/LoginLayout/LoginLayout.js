@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './LoginLayout.module.scss';
 import { lcnImage } from '~/image';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function LoginLayout({ children }) {
     return (
         <div className={cx('bg-lcn-blue-2 w-full h-screen')}>

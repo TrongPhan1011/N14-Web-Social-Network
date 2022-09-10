@@ -1,11 +1,10 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './ContentNews.module.scss';
 import HeaderNews from '~/components/HeaderNews';
 import CreatePost from '~/components/CreatePost';
 import Post from '~/components/Post';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 function ContentNews() {
     return (
         <div className={cx(' w-full  overflow-hidden ')}>

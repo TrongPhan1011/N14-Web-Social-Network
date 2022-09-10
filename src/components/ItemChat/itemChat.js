@@ -1,10 +1,9 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
-import styles from './ItemChat.module.scss';
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function ItemChat() {
     return (

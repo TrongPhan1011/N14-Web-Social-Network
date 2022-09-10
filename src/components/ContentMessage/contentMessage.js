@@ -1,9 +1,9 @@
-import classNames from 'classnames/bind';
-import styles from './ContentMessage.module.scss';
+import classNames from 'classnames';
+
 import { lcnImage } from '~/image';
 import ItemMessage from '~/components/ItemMessage';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 function ContentMessage() {
     return (
