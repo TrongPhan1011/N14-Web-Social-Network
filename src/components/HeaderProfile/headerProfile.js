@@ -24,7 +24,7 @@ function HeaderProfile({ avatar, coverPhoto, userName }) {
             </div>
             <div
                 className={cx(
-                    'bg-white w-full h-14 text-lg flex justify-center items-center font-semibold text-lcn-blue-5',
+                    'bg-white w-full h-14 text-2xl flex justify-center items-center font-semibold text-lcn-blue-5',
                 )}
             >
                 {userName}

@@ -6,6 +6,7 @@ import styles from './SideBar.module.scss';
 import SideBarChat from './SideBarChat';
 import SideBarFriend from './SideBarFriend';
 import Search from '../Search';
+import SideBarNews from './SideBarNews';
 
 const cx = classNames.bind(styles);
 function SideBar({ children, type }) {
@@ -13,8 +14,9 @@ function SideBar({ children, type }) {
 
     if (type === 'friend') {
         Comp = SideBarFriend;
+    } else if (type === 'profile') {
+        Comp = SideBarNews;
     }
-
     return (
         <div className={cx('w-full h-full overflow-hidden border-l border-r border-lcn-blue-3')}>
             <div className="w-full h-20 ">

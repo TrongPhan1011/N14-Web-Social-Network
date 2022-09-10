@@ -16,7 +16,7 @@ const cx = classNames.bind(styles);
 function Header() {
     return (
         <div className="  bg-lcn-blue-2 w-full  ">
-            <div className={cx('h-1/6 w-full flex  ')}>
+            <div className={cx('h-1/6 w-full flex pt-4')}>
                 <Button className="h-10 w-full ">
                     <img src={lcnImage.logo1} alt="logo" className="bg-none h-16 w-full " />
                 </Button>

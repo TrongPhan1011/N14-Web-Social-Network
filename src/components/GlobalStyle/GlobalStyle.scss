@@ -12,6 +12,13 @@
     --cn-green-1: #66da53;
 }
 
+input {
+    color: black;
+}
+select {
+    color: black;
+}
+
 // nav active
 .active .nav-active {
     border-color: var(--lcn-blue-4);
@@ -52,7 +59,6 @@
         opacity: 1;
     }
 }
-
 .ease-left-to-right {
     animation-name: LeftToRight;
     animation-duration: 0.5s;

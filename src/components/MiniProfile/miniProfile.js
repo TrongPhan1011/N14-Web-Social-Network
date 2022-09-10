@@ -23,7 +23,11 @@ function MiniProfile({ profileIn }) {
             <GioiThieu />
             <div className={cx('w-full h-0  border-t border-lcn-blue-3 ', '')}>
                 <div className={cx(' bg-lcn-blue-1 flex flex-col items-center p-5 pt-3  text-lcn-blue-4', '')}>
-                    <Button className={cx('bg-lcn-blue-4 bg-opacity-20 text-lcn-blue-5 p-2 pr-4 pl-4 w-full mb-3')}>
+                    <Button
+                        className={cx(
+                            'bg-lcn-blue-4 bg-opacity-20 text-lcn-blue-5 p-2 pr-4 pl-4 w-full mb-3 justify-center',
+                        )}
+                    >
                         Chi tiết trang cá nhân
                     </Button>
                     <Button className={cx('flex   w-full  p-2 hover:bg-lcn-blue-3')}>

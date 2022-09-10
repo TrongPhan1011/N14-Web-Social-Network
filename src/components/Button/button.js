@@ -22,13 +22,20 @@ function Button({ children, className, type, to, href, onClick, navLink, ...pass
         Comp = 'a';
     }
 
-    var _className = cx('p-1 flex rounded-3xl m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100', className);
+    var _className = cx(
+        'p-1 flex items-center  rounded-3xl m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100',
+        className,
+    );
     if (navLink) {
         Comp = NavLink;
         _className = (nav) =>
-            cx('p-1 rounded-3xl flex m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100', className, {
-                active: nav.isActive,
-            });
+            cx(
+                'p-1 rounded-3xl flex items-center m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100',
+                className,
+                {
+                    active: nav.isActive,
+                },
+            );
     }
 
     return (

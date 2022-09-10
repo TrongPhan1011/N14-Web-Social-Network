@@ -1,0 +1,59 @@
+.bg-create-post {
+    background-image: radial-gradient(
+        circle farthest-corner at 10% 20%,
+        rgba(166, 239, 253, 1) 0%,
+        rgba(97, 186, 255, 1) 100%
+    );
+}
+
+.txt-post-out {
+    animation-name: fadeDown;
+    animation-duration: 0.5s;
+    // animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+@keyframes fadeDown {
+    from {
+        border-radius: 24px;
+    }
+
+    to {
+        height: 10rem;
+        border-radius: 8px;
+    }
+}
+
+.txt-post-in {
+    animation-name: fadeUp;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
+@keyframes fadeUp {
+    from {
+        height: 10rem;
+        border-radius: 8px;
+    }
+
+    to {
+        height: 2.5rem;
+        border-radius: 24px;
+    }
+}
+
+.fade-show {
+    animation-name: fadeShow;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+@keyframes fadeShow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
