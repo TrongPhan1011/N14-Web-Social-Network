@@ -25,7 +25,7 @@ function ItemMenu({ icon1, icon2, tip = null, to }) {
                     onMouseLeave={() => setIconMenu(false)}
                     onClick={() => setIconMenu(true)}
                 >
-                    <div className={cx('text-4xl leading-none border-l-4 mr-1 -ml-2 ', 'nav-active')}></div>
+                    <div className={cx('text-4xl leading-none border-l-4 mr-1 -ml-2 h-full', 'nav-active')}></div>
                     <div
                         className={cx(
                             ' w-full h-full flex justify-center  items-center rounded-xl',
@@ -47,8 +47,8 @@ function ItemMenu({ icon1, icon2, tip = null, to }) {
 }
 
 ItemMenu.propTypes = {
-    Icon1: PropTypes.node.isRequired,
-    Icon2: PropTypes.node.isRequired,
+    Icon1: PropTypes.node,
+    Icon2: PropTypes.node,
     tip: PropTypes.string,
     to: PropTypes.string,
 };

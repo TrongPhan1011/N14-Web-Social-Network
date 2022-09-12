@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import { BiEdit, BiSearch } from 'react-icons/bi';
+import { FaBell } from 'react-icons/fa';
 import Button from '~/components/Button';
 
 const cx = classNames;
@@ -24,6 +25,11 @@ function HeaderNews() {
                         </Button>
                     </div>
                 </div>
+            </div>
+            <div className={cx('w-1/6 flex justify-center ')}>
+                <Button className={cx('bg-lcn-blue-1 border border-lcn-blue-4 w-10 h-10 justify-center')}>
+                    <FaBell className={cx('w-5 h-5 text-lcn-blue-4')} />
+                </Button>
             </div>
         </div>
     );

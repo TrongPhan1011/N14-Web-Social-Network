@@ -24,7 +24,6 @@ function Header() {
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
                 <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
                 <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
-                <ItemMenu to={config.routeConfig.notification} icon1={FaRegBell} icon2={FaBell} tip="Thông báo" />
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
                 <ItemMenu to={config.routeConfig.setting} icon1={AiOutlineSetting} icon2={AiFillSetting} tip="Cài đặt" />

@@ -7,9 +7,13 @@ import Button from '~/components/Button';
 
 const cx = classNames;
 
-function InputSend() {
+function InputSend({ type }) {
+    var positon = 'absolute bottom-0';
+    if (type === 'comment') {
+        positon = '';
+    }
     return (
-        <div className={cx('h-16  absolute  bottom-0 bg-white p-2 w-full mr-20 flex items-center')}>
+        <div className={cx('h-16   bg-white p-2 w-full mr-20 flex items-center', positon)}>
             <Button className={cx('m-0 ml-1')}>
                 <AiFillPlusCircle className={cx('text-lcn-blue-4 text-3xl')} />
             </Button>
