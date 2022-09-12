@@ -1,8 +1,13 @@
 import classNames from 'classnames';
-import { AiFillHeart } from 'react-icons/ai';
+import { memo } from 'react';
+
+import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
 
 import HeaderPost from '~/components/HeaderPost';
 import { lcnImage } from '~/image';
+import Button from '~/components/Button';
+import Comment from '~/components/Comment';
+import InputSend from '~/components/InputSend';
 
 const cx = classNames;
 
@@ -20,11 +25,25 @@ function Post() {
                     <img src={lcnImage.coverPhoto} alt="content" />
                 </div>
             </div>
-            <div className={cx(' w-full p-2 pr-4 pl-4 flex items-center')}>
-                <AiFillHeart className={cx('text-3xl')} />
+            <div className={cx(' w-full pr-1 pl-1 flex items-center border-t border-b border-lcn-blue-1 mt-2')}>
+                <Button className={cx('text-sm font-semibold text-slate-500 ')}>
+                    <AiOutlineHeart className={cx('text-3xl text-red-500 mr-1')} />
+                    <span>3k</span>
+                </Button>
+
+                <Button className={cx('text-sm font-semibold text-slate-500 ml-5')}>
+                    <AiOutlineComment className={cx('text-3xl text-lcn-blue-4 mr-1')} />
+                    <span>Bình luận</span>
+                </Button>
+            </div>
+            <div className={cx('pr-2 pl-2')}>
+                <Comment>
+                    <Comment />
+                </Comment>
+                <InputSend type="comment" />
             </div>
         </div>
     );
 }
 
-export default Post;
+export default memo(Post);
