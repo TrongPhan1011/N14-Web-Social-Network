@@ -40,6 +40,18 @@ const publicRoutes = [
         path: routeConfig.routeConfig.setting,
         component: Setting,
     },
+    {
+        path: routeConfig.routeConfig.thongTinChung,
+        component: Setting,
+    },
+    {
+        path: routeConfig.routeConfig.doiMatKhau,
+        component: Setting,
+    },
+    {
+        path: routeConfig.routeConfig.chan,
+        component: Setting,
+    },
 ];
 const privateRoutes = [];
 

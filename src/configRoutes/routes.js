@@ -12,6 +12,9 @@ const signIn = '/dangnhap';
 
 */
 const profile = friends + '/profile';
+const thongTinChung = setting + '/thongTinChung';
+const doiMatKhau = setting + '/doiMatKhau';
+const chan = setting + '/chan';
 
 const routes = {
     home: home,
@@ -23,5 +26,8 @@ const routes = {
     signIn: signIn,
     // level 2
     profile: profile,
+    thongTinChung: thongTinChung,
+    doiMatKhau: doiMatKhau,
+    chan: chan,
 };
 export default routes;

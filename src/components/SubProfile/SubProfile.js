@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import GioiThieu from '~/components/GioiThieu';
 import CardFriend from '~/components/CardFriend';
 import CardImg from '~/components/CardImg';
+import Button from '~/components/Button';
 
 const cx = classNames;
 
@@ -30,7 +31,14 @@ function SubProfile({ type, soLuongBan, soLuongAnh }) {
             <div className={cx('h-[228px] w-full')}>
                 <Comp />
             </div>
-            <div className={cx('w-full h-[48px] flex justify-center text-[#0662BA] font-semibold pb-5')}>Xem thêm </div>
+            <Button
+                className={cx(
+                    'w-full h-[48px] flex justify-center text-[#0662BA] font-semibold hover:bg-lcn-blue-2',
+                    'items-center',
+                )}
+            >
+                Xem thêm
+            </Button>
         </div>
     );
 }

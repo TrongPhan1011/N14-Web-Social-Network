@@ -27,7 +27,7 @@ function Header() {
                 <ItemMenu to={config.routeConfig.notification} icon1={FaRegBell} icon2={FaBell} tip="Thông báo" />
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
-                <ItemMenu to={config.routeConfig.setting} icon1={AiOutlineSetting} icon2={AiFillSetting} />
+                <ItemMenu to={config.routeConfig.setting} icon1={AiOutlineSetting} icon2={AiFillSetting} tip="Cài đặt" />
                 <div
                     className={cx(
                         ' rounded-full bg-white border border-lcn-blue-4 h-14 w-14 flex justify-center items-center mb-7 mt-3',
