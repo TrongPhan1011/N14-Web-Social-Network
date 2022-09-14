@@ -8,6 +8,13 @@ import Button from '~/components/Button';
 const cx = classNames;
 
 function SignUp() {
+    const [selectedRadioBtn, setSelectedRadioBtn] = useState('');
+    const isRadioSelected = (value) => selectedRadioBtn === value;
+    const handleRadioClick = (e) => {
+        setSelectedRadioBtn(e.currentTarget.value);
+        console.log(e.currentTarget.value);
+    };
+
     return (
         <div className={cx('bg-white h-5/6 w-2/6 rounded-2xl drop-shadow-lcn-login')}>
             <div className={cx('h-1/6 p-5 border-b border-lcn-blue-4 border-opacity-20')}>
@@ -107,17 +114,35 @@ function SignUp() {
                     </div>
                     <div className={cx('w-full  flex flex-row justify-between')}>
                         <label>
-                            <input className={cx('mr-2')} type="radio" value="Name" />
+                            <input
+                                className={cx('mr-2')}
+                                type="radio"
+                                value="nam"
+                                checked={isRadioSelected('nam')}
+                                onChange={handleRadioClick}
+                            />
                             Nam
                         </label>
 
                         <label>
-                            <input className={cx('mr-2')} type="radio" value="Nu" />
+                            <input
+                                className={cx('mr-2')}
+                                type="radio"
+                                value="nu"
+                                checked={isRadioSelected('nu')}
+                                onChange={handleRadioClick}
+                            />
                             Nữ
                         </label>
 
                         <label>
-                            <input className={cx('mr-2')} type="radio" value="Khac" />
+                            <input
+                                className={cx('mr-2')}
+                                type="radio"
+                                value="khac"
+                                checked={isRadioSelected('khac')}
+                                onChange={handleRadioClick}
+                            />
                             Khác
                         </label>
                     </div>
@@ -127,7 +152,7 @@ function SignUp() {
                             className={cx(
                                 'w-2/4 h-full p-0',
                                 'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
-                                'bg-lcn-blue-3',
+                                'bg-lcn-blue-3 justify-center',
                             )}
                         >
                             Đăng ký

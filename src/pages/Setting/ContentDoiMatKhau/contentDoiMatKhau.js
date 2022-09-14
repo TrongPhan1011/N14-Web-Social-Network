@@ -6,8 +6,12 @@ const cx = classNames;
 
 function ContentDoiMatKhau() {
     return (
-        <div className={cx('w-[1094px] bg-lcn-blue-1 h-screen flex justify-center items-center')}>
-            <div className={cx('h-[300px] w-[500px] bg-white flex flex-col justify-center ')}>
+        <div className={cx('w-[1094px]  bg-lcn-blue-1 h-screen flex justify-center items-center')}>
+            <div
+                className={cx(
+                    'h-[300px] w-[500px] rounded-2xl drop-shadow-lcn-login bg-white flex flex-col justify-center ',
+                )}
+            >
                 <div className={cx('w-full h-10 flex justify-center mt-5')}>
                     <span className={cx('text-2xl font-semibold text-lcn-blue-5')}>Mật khẩu</span>
                 </div>

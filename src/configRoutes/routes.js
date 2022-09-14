@@ -12,8 +12,8 @@ const signIn = '/dangnhap';
 
 */
 const profile = friends + '/profile';
-const thongTinChung = setting + '/thongTinChung';
-const doiMatKhau = setting + '/doiMatKhau';
+const thongTinChung = setting + '/thongtinchung';
+const doiMatKhau = setting + '/doimatkhau';
 const chan = setting + '/chan';
 
 const routes = {

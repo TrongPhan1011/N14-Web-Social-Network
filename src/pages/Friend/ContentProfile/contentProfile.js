@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 function ContentProfile() {
     return (
         <div className={cx(' w-full h-full relative flex overflow-hidden justify-center items-center')}>
-            <div className={cx(' w-full h-screen flex flex-col items-center  overflow-y-scroll')}>
+            <div className={cx(' w-full h-screen bg-white flex flex-col items-center   overflow-y-scroll')}>
                 <HeaderProfile avatar={lcnImage.avatarDefault} coverPhoto={lcnImage.coverPhoto} userName="Trọng Phan" />
                 <div className={cx('mb-3 w-full h-14 flex justify-center')}>
                     <div className={cx('w-1/4 h-full flex flex-row justify-between ')}>
@@ -42,7 +42,7 @@ function ContentProfile() {
                         <SubProfile type="img" soLuongAnh="11" />
                     </div>
                 </div>
-                <div className={cx('w-full h-full bg-lcn-blue-1 m-2 flex flex-col items-center')}>
+                <div className={cx('w-full bg-lcn-blue-1 m-2 flex flex-col items-center')}>
                     <Post />
                     <Post />
                     <Post />
