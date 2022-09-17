@@ -58,7 +58,7 @@ function SignIn() {
                                 className={cx(
                                     'w-full h-full p-0',
                                     'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
-                                    'bg-lcn-blue-3',
+                                    'bg-lcn-blue-3 justify-center',
                                 )}
                             >
                                 Đăng nhập
