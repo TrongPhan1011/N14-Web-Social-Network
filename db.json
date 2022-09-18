@@ -1,9 +1,197 @@
 {
-  "users": [
-    {
-      "hello": "123",
-      "idon": "123",
-      "id": "JQLyl6K"
-    }
-  ]
+    "user": [
+        {
+            "_id": "JQLyl6K",
+            "fullName": "Trọng Phan",
+            "nickName": "TP",
+            "phoneNumber": "0363435019",
+            "birthday": "2001-11-10T00:00:30.000Z",
+            "gender": "Nam",
+            "statusOnline": true,
+            "friendCount": 200,
+            "photoCount": 3,
+            "postCount": 1,
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "updateAt": "2022-09-10T09:00:30.000Z",
+            "status": 1,
+            "profile": {
+                "urlAvartar": "https://images.unsplash.com/photo-1522098635833-216c03d81fbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZnJpZW5kfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
+                "urlCoverPhoto": "",
+                "education": "Đại học Công nghiệp TP. Hồ Chí Minh",
+                "qrUrl": "http://localhost:3000/banbe/profile?id=JQLyl6K",
+                "updateAt": "2022-09-11T09:00:30.000Z",
+                "status": 1
+            },
+            "friend": [
+                {
+                    "_id": "JQLyl7F",
+                    "status": 1
+                },
+                {
+                    "_id": "JQLyl8F",
+                    "status": 0
+                },
+                {
+                    "_id": "JQLyl9F",
+                    "status": -1
+                }
+            ],
+            "listGroup": ["1", "2"]
+        },
+        {
+            "_id": "JQLyl7F",
+            "fullName": "Nguyễn Thanh Toàn",
+            "nickName": "Chiếu mới",
+            "phoneNumber": "0363123213",
+            "birthday": "2001-12-10T00:00:30.000Z",
+            "gender": "Nam",
+            "statusOnline": false,
+            "friendCount": 300,
+            "photoCount": 10,
+            "postCount": 1,
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "updateAt": "2022-09-10T09:00:30.000Z",
+            "status": 1,
+            "profile": {
+                "education": "Đại học Công nghiệp TP. Hồ Chí Minh",
+                "qrUrl": "/banbe/profile?id=JQLyl7F",
+                "updateAt": "2022-09-11T09:00:30.000Z",
+                "status": 1
+            },
+            "friend": [
+                {
+                    "_id": "JQLyl6K",
+                    "status": 1
+                }
+            ]
+        }
+    ],
+    "notification": [
+        {
+            "_id": "1",
+            "userID": "JQLyl7F",
+            "title": "abc đã like",
+            "type": "user",
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "status": 1
+        },
+        {
+            "_id": "2",
+            "userID": "JQLyl7F",
+            "title": "bạn đã đăng nhập",
+            "type": "system",
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "status": 1
+        }
+    ],
+    "post": [
+        {
+            "_id": "1",
+            "userID": "JQLyl7F",
+            "caption": "bai viet dau tien cua toi",
+            "likeCount": 50,
+            "type": "Công khai",
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "updateAt": "2022-09-10T09:00:30.000Z",
+            "status": 1,
+            "like": [
+                {
+                    "userID": "JQLyl7F",
+                    "status": 1
+                },
+                {
+                    "userID": "JQLyl9F",
+                    "status": 0
+                }
+            ],
+            "comment": [
+                {
+                    "_id": "1",
+                    "userID": "JQLyl7F",
+                    "level": 1,
+                    "title": "xin chào, đây là comment",
+                    "createAt": "2022-08-10T09:00:30.000Z",
+                    "updateAt": "2022-09-10T09:00:30.000Z",
+                    "like": [
+                        {
+                            "userID": "JQLyl7F",
+                            "status": 1
+                        },
+                        {
+                            "userID": "JQLyl9F",
+                            "status": 0
+                        }
+                    ],
+                    "file": {
+                        "_id": "1",
+                        "path": "/abc",
+                        "title": "ảnh nền",
+
+                        "createAt": "2022-08-10T09:00:30.000Z",
+                        "status": 1,
+                        "fileType": {
+                            "_id": "1",
+                            "name": "IMG",
+                            "status": 1
+                        }
+                    },
+                    "sendTo": "",
+                    "status": 1
+                },
+                {
+                    "_id": "2",
+                    "userID": "JQLyl7F",
+                    "level": 2,
+                    "title": "xin chào, đây là comment",
+                    "createAt": "2022-08-10T09:00:30.000Z",
+                    "updateAt": "2022-09-10T09:00:30.000Z",
+                    "sendTo": "1",
+                    "status": 1
+                },
+                {
+                    "_id": "3",
+                    "userID": "JQLyl7F",
+                    "level": 1,
+                    "title": "xin chào, đây là comment",
+                    "createAt": "2022-08-10T09:00:30.000Z",
+                    "updateAt": "2022-09-10T09:00:30.000Z",
+                    "sendTo": "",
+                    "status": 1
+                }
+            ]
+        }
+    ],
+    "groupchat": [
+        {
+            "_id": "1",
+            "name": "N14 cong nghe moi",
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "updateAt": "2022-09-10T09:00:30.000Z",
+            "status": 1,
+            "member": ["JQLyl7F", "JQLyl9F"],
+            "message": [
+                {
+                    "_id": "1",
+                    "authorID": "JQLyl7F",
+                    "title": "alo xin chao",
+                    "name": "N15 cong nghe moi",
+                    "createAt": "2022-08-10T09:00:30.000Z",
+                    "status": 1,
+                    "file": {
+                        "_id": "1",
+                        "path": "/abc",
+                        "title": "ảnh nền",
+
+                        "createAt": "2022-08-10T09:00:30.000Z",
+                        "status": 1,
+                        "fileType": {
+                            "_id": "1",
+                            "name": "IMG",
+                            "status": 1
+                        }
+                    }
+                }
+            ]
+        }
+    ]
 }

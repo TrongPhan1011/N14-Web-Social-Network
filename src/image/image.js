@@ -5,6 +5,7 @@ import fullLogo from '~/assets/imgBase/fullLogo.svg';
 import coverPhoto from '~/assets/imgBase/coverPhoto.jpg';
 import friendConnect from '~/assets/imgBase/friendConnect.svg';
 import connectCircle from '~/assets/imgBase/connectCircle.svg';
+import qrCode from '~/assets/imgBase/qrCode.png';
 
 export const lcnImage = {
     logo1: logo1,
@@ -14,4 +15,5 @@ export const lcnImage = {
     coverPhoto: coverPhoto,
     friendConnect: friendConnect,
     connectCircle: connectCircle,
+    qrCode: qrCode,
 };

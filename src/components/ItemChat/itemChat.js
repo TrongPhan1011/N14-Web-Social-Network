@@ -16,7 +16,7 @@ function ItemChat() {
                 >
                     <img src={lcnImage.avatarDefault} alt="avartar" className={cx('w-full h-full border ')} />
                 </div>
-                <div className={cx('bg-lcn-green-1 w-3 h-3 absolute z-10 rounded-full bottom-[2px] left-7')}></div>
+                <div className={cx('bg-lcn-green-1 w-3 h-3 absolute  rounded-full bottom-[2px] left-7')}></div>
                 <div className={cx('w-40  h-full ml-2 overflow-hidden')}>
                     <div className={cx('text-left text-lcn-blue-5 font-semibold h-8 w-96 ')}>Trọng Phan</div>
                     <div className={cx('text-gray-500 text-xs text-left h-8')}>
@@ -24,7 +24,7 @@ function ItemChat() {
                     </div>
                 </div>
                 <div className={cx('h-full w-8 relative')}>
-                    <div className={cx('h-3 w-3 bg-lcn-blue-4 rounded-full z-10 absolute top-4 right-0')}></div>
+                    <div className={cx('h-3 w-3 bg-lcn-blue-4 rounded-full  absolute top-4 right-0')}></div>
                     <div className={cx('text-gray-500 text-xs text-left h-full flex items-end')}>10:00</div>
                 </div>
             </div>
