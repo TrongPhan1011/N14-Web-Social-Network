@@ -11,10 +11,10 @@ function Setting() {
     var urlRoute = window.location.pathname;
 
     const showContent = () => {
-        if (urlRoute === routeConfig.routeConfig.thongTinChung) return <ContentThongTinChung />;
+        if (urlRoute === routeConfig.routeConfig.setting) return <ContentThongTinChung />;
         else if (urlRoute === routeConfig.routeConfig.doiMatKhau) return <ContentDoiMatKhau />;
         else if (urlRoute === routeConfig.routeConfig.chan) return <ContentChan />;
-        else return <></>;
+        else return <ContentThongTinChung />;
     };
     return (
         <div className={cx('flex overflow-hidden')}>

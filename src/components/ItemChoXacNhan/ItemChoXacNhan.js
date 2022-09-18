@@ -14,7 +14,7 @@ function ItemChoXacNhan() {
                 <div className={cx('text-white text-xs flex flex-row justify-between text-left h-10')}>
                     <Button
                         className={cx(
-                            'w-40  m-0 rounded-2xl border border-lcn-blue-4 h-5 bg-lcn-blue-4 flex items-center  justify-center bg-opacity-100 hover:bg-opacity-100',
+                            'w-40 text-gray-500 border-gray-500 m-0 rounded-2xl border  h-5 bg-white flex items-center  justify-center bg-opacity-100 hover:bg-opacity-100',
                             'cursor-not-allowed',
                         )}
                         disabled
@@ -25,16 +25,10 @@ function ItemChoXacNhan() {
             );
         else
             return (
-                <div
-                    className={cx(
-                        'text-gray-200',
-                        'hover:border-white hover:text-white',
-                        'text-white text-xs flex flex-row justify-between text-left h-10',
-                    )}
-                >
+                <div className={cx('text-white text-xs flex flex-row justify-between text-left h-10')}>
                     <Button
                         className={cx(
-                            'w-40  m-0 rounded-2xl border  h-5 bg-transparent flex items-center  justify-center bg-opacity-100 hover:bg-transparent',
+                            'w-40 text-gray-500 border-gray-500 m-0 rounded-2xl border  h-5 bg-white flex items-center  justify-center bg-opacity-100 hover:bg-opacity-100',
                             'cursor-not-allowed',
                         )}
                         disabled
