@@ -16,7 +16,7 @@ function ContentThongTinChung() {
     };
 
     return (
-        <div className={cx(' w-[1094px] h-screen bg-lcn-blue-1 flex justify-center items-center')}>
+        <div className={cx(' w-full h-screen bg-lcn-blue-1 flex justify-center items-center')}>
             <div
                 className={cx(
                     'h-[500px] w-[500px] rounded-2xl drop-shadow-lcn-login bg-white flex flex-col justify-center ',
