@@ -12,6 +12,10 @@
     --cn-green-1: #66da53;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 input {
     color: black;
 }
@@ -27,7 +31,9 @@ select {
 .active .setting-active {
     border-bottom: 1px solid var(--lcn-blue-4);
 }
-
+.hover-white:hover .hover-text-white {
+    color: white;
+}
 .tippy-box[data-theme~='blue'] {
     background-color: var(--lcn-blue-4);
     color: white;
@@ -77,5 +83,20 @@ select {
     to {
         width: 0;
         opacity: 0;
+    }
+}
+
+.ani-show {
+    animation-name: show;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }

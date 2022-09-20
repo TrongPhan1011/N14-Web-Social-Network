@@ -1,11 +1,47 @@
 import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 
 import { FaPhoneAlt, FaLock } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import Button from '~/components/Button';
+import { loginUser } from '~/services/authService';
+
+import { userLogin } from './signInSlice';
+
+import { getUserByUserName } from '~/services/userService';
 
 const cx = classNames;
 
 function SignIn() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [userData, setUserData] = useState();
+    const [userNameLogin, setUserNameLogin] = useState();
+
+    useEffect(() => {
+        const fetchGetUserLogin = async (userName) => {
+            const user = await getUserByUserName(userName); //promise
+
+            setUserData(user);
+        };
+        fetchGetUserLogin(userNameLogin);
+    }, [userNameLogin]);
+
+    const handleLogin = () => {
+        const user = {
+            userName: '0363435019',
+            password: 'admin',
+        };
+
+        loginUser(user, dispatch, navigate);
+        setUserNameLogin(user.userName);
+
+        dispatch(userLogin(userData));
+        navigate('/');
+    };
     return (
         <div className={cx('h-5/6 w-2/6 flex flex-col ')}>
             <div className={cx('bg-white h-4/6 w-full rounded-2xl drop-shadow-lcn-login')}>
@@ -60,6 +96,7 @@ function SignIn() {
                                     'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
                                     'bg-lcn-blue-3 justify-center',
                                 )}
+                                onClick={handleLogin}
                             >
                                 Đăng nhập
                             </Button>

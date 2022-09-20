@@ -23,7 +23,7 @@ function SubProfile({ type, soLuongBan, soLuongAnh }) {
     }
 
     return (
-        <div className={cx('w-[300px] h-[324px] bg-white mt-2 rounded-2xl flex flex-col justify-center items-center ')}>
+        <div className={cx('w-[300px] h-[324px] bg-white m-3 rounded-2xl flex flex-col justify-center items-center ')}>
             <div className={cx('text-lg font-semibold w-full text-lcn-blue-5 pt-5 flex justify-center h-12')}>
                 {title}
                 <span>{soLuong}</span>
