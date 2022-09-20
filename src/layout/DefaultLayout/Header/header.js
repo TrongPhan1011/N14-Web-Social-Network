@@ -69,7 +69,7 @@ function Header() {
     };
 
     const renderData = () => {
-        const linkTrangCaNhan = config.routeConfig.profile + `?id=${userLoginData._id}`;
+        const linkTrangCaNhan = config.routeConfig.profile + `?id=${userLoginData.id}`;
         return (
             <>
                 <ItemDropdown

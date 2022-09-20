@@ -1,5 +1,5 @@
-import { click } from '@testing-library/user-event/dist/click';
 import Tippy from '@tippyjs/react';
+import { memo } from 'react';
 
 function Dropdown({ children, width, position = 'bottom', visible, render, hidden }) {
     return (
@@ -18,4 +18,4 @@ function Dropdown({ children, width, position = 'bottom', visible, render, hidde
     );
 }
 
-export default Dropdown;
+export default memo(Dropdown);
