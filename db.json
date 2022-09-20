@@ -1,7 +1,7 @@
 {
     "user": [
         {
-            "_id": "JQLyl6K",
+            "id": "JQLyl6K",
             "fullName": "Trọng Phan",
             "nickName": "TP",
             "phoneNumber": "0363435019",
@@ -24,22 +24,22 @@
             },
             "friend": [
                 {
-                    "_id": "JQLyl7F",
+                    "id": "JQLyl7F",
                     "status": 1
                 },
                 {
-                    "_id": "JQLyl8F",
+                    "id": "JQLyl8F",
                     "status": 0
                 },
                 {
-                    "_id": "JQLyl9F",
+                    "id": "JQLyl9F",
                     "status": -1
                 }
             ],
             "listGroup": ["1", "2"]
         },
         {
-            "_id": "JQLyl7F",
+            "id": "JQLyl7F",
             "fullName": "Nguyễn Thanh Toàn",
             "nickName": "Chiếu mới",
             "phoneNumber": "0363123213",
@@ -60,7 +60,7 @@
             },
             "friend": [
                 {
-                    "_id": "JQLyl6K",
+                    "id": "JQLyl6K",
                     "status": 1
                 }
             ]
@@ -68,7 +68,7 @@
     ],
     "notification": [
         {
-            "_id": "1",
+            "id": "1",
             "userID": "JQLyl7F",
             "title": "abc đã like",
             "type": "user",
@@ -76,7 +76,7 @@
             "status": 1
         },
         {
-            "_id": "2",
+            "id": "2",
             "userID": "JQLyl7F",
             "title": "bạn đã đăng nhập",
             "type": "system",
@@ -86,7 +86,7 @@
     ],
     "post": [
         {
-            "_id": "1",
+            "id": "1",
             "userID": "JQLyl7F",
             "caption": "bai viet dau tien cua toi",
             "likeCount": 50,
@@ -106,7 +106,7 @@
             ],
             "comment": [
                 {
-                    "_id": "1",
+                    "id": "1",
                     "userID": "JQLyl7F",
                     "level": 1,
                     "title": "xin chào, đây là comment",
@@ -123,14 +123,14 @@
                         }
                     ],
                     "file": {
-                        "_id": "1",
+                        "id": "1",
                         "path": "/abc",
                         "title": "ảnh nền",
 
                         "createAt": "2022-08-10T09:00:30.000Z",
                         "status": 1,
                         "fileType": {
-                            "_id": "1",
+                            "id": "1",
                             "name": "IMG",
                             "status": 1
                         }
@@ -139,7 +139,7 @@
                     "status": 1
                 },
                 {
-                    "_id": "2",
+                    "id": "2",
                     "userID": "JQLyl7F",
                     "level": 2,
                     "title": "xin chào, đây là comment",
@@ -149,7 +149,7 @@
                     "status": 1
                 },
                 {
-                    "_id": "3",
+                    "id": "3",
                     "userID": "JQLyl7F",
                     "level": 1,
                     "title": "xin chào, đây là comment",
@@ -163,7 +163,7 @@
     ],
     "groupchat": [
         {
-            "_id": "1",
+            "id": "1",
             "name": "N14 cong nghe moi",
             "createAt": "2022-08-10T09:00:30.000Z",
             "updateAt": "2022-09-10T09:00:30.000Z",
@@ -171,21 +171,21 @@
             "member": ["JQLyl7F", "JQLyl9F"],
             "message": [
                 {
-                    "_id": "1",
+                    "id": "1",
                     "authorID": "JQLyl7F",
                     "title": "alo xin chao",
                     "name": "N15 cong nghe moi",
                     "createAt": "2022-08-10T09:00:30.000Z",
                     "status": 1,
                     "file": {
-                        "_id": "1",
+                        "id": "1",
                         "path": "/abc",
                         "title": "ảnh nền",
 
                         "createAt": "2022-08-10T09:00:30.000Z",
                         "status": 1,
                         "fileType": {
-                            "_id": "1",
+                            "id": "1",
                             "name": "IMG",
                             "status": 1
                         }
