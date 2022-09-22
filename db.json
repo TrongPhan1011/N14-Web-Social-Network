@@ -18,7 +18,7 @@
                 "urlAvartar": "https://images.unsplash.com/photo-1522098635833-216c03d81fbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZnJpZW5kfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
                 "urlCoverPhoto": "",
                 "education": "Đại học Công nghiệp TP. Hồ Chí Minh",
-                "qrUrl": "http://localhost:3000/banbe/profile?id=JQLyl6K",
+                "qrUrl": "http://localhost:3000/friends/profile?id=JQLyl6K",
                 "updateAt": "2022-09-11T09:00:30.000Z",
                 "status": 1
             },
@@ -26,6 +26,14 @@
                 {
                     "id": "JQLyl7F",
                     "status": 1
+                },
+                {
+                    "id": "JQLyl8F",
+                    "status": 0
+                },
+                {
+                    "id": "JQLyl9F",
+                    "status": -1
                 }
             ],
             "listGroup": ["1", "2"]
@@ -45,8 +53,10 @@
             "updateAt": "2022-09-10T09:00:30.000Z",
             "status": 1,
             "profile": {
+                "urlAvartar": "https://cdn.tgdd.vn/Files/2020/07/03/1267470/5-loai-chieu-nam-mat-lim-lung-cho-mua-he-duoc-ua--3.jpg",
+                "urlCoverPhoto": "",
                 "education": "Đại học Công nghiệp TP. Hồ Chí Minh",
-                "qrUrl": "/banbe/profile?id=JQLyl7F",
+                "qrUrl": "/friend/profile?id=JQLyl7F",
                 "updateAt": "2022-09-11T09:00:30.000Z",
                 "status": 1
             },
@@ -118,7 +128,6 @@
                         "id": "1",
                         "path": "/abc",
                         "title": "ảnh nền",
-
                         "createAt": "2022-08-10T09:00:30.000Z",
                         "status": 1,
                         "fileType": {
@@ -157,10 +166,63 @@
         {
             "id": "1",
             "name": "N14 cong nghe moi",
+            "avatar": "https://www.artmajeur.com/medias/standard/e/l/elizabeth-chafla/artwork/8583769_amor-del-hamster-del-dibujo-animado-escultura-fotografica-raa32ec17f2a840c59a58c07f7d29927f-x7sai-8byvr-512-jpg-bg-0xffffff.jpg",
             "createAt": "2022-08-10T09:00:30.000Z",
             "updateAt": "2022-09-10T09:00:30.000Z",
             "status": 1,
-            "member": ["JQLyl7F", "JQLyl9F"],
+            "member": ["JQLyl7F", "JQLyl9F", "JQLyl6K"],
+            "message": [
+                {
+                    "id": "1",
+                    "authorID": "JQLyl6K",
+                    "title": "alo xin chao",
+                    "createAt": "2022-08-10T09:00:30.000Z",
+                    "seen": [
+                        {
+                            "id": "JQLyl6K",
+                            "seenAt": "2022-09-10T09:00:30.000Z"
+                        }
+                    ],
+                    "status": 1,
+                    "type": "text",
+                    "file": null
+                },
+                {
+                    "id": "2",
+                    "authorID": "JQLyl6K",
+                    "title": "last",
+                    "createAt": "2022-08-10T09:01:30.000Z",
+                    "status": 1,
+                    "seen": [
+                        {
+                            "id": "JQLyl6K",
+                            "seenAt": "2022-09-10T09:00:30.000Z"
+                        }
+                    ],
+                    "type": "file",
+                    "file": {
+                        "id": "1",
+                        "path": "/abc",
+                        "title": "ảnh nền",
+                        "createAt": "2022-08-10T09:00:30.000Z",
+                        "status": 1,
+                        "fileType": {
+                            "id": "1",
+                            "name": "IMG",
+                            "status": 1
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "name": "Nguyễn Thanh Toàn",
+            "avatar": "https://cdn.tgdd.vn/Files/2020/07/03/1267470/5-loai-chieu-nam-mat-lim-lung-cho-mua-he-duoc-ua--3.jpg",
+            "createAt": "2022-08-10T09:00:30.000Z",
+            "updateAt": "2022-09-10T09:00:30.000Z",
+            "status": 1,
+            "member": ["JQLyl6K"],
             "message": [
                 {
                     "id": "1",
@@ -169,11 +231,16 @@
                     "name": "N15 cong nghe moi",
                     "createAt": "2022-08-10T09:00:30.000Z",
                     "status": 1,
+                    "seen": [
+                        {
+                            "id": "JQLyl6K",
+                            "seenAt": "2022-09-22T14:37:42.451Z"
+                        }
+                    ],
                     "file": {
                         "id": "1",
                         "path": "/abc",
                         "title": "ảnh nền",
-
                         "createAt": "2022-08-10T09:00:30.000Z",
                         "status": 1,
                         "fileType": {

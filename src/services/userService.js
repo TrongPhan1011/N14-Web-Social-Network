@@ -13,12 +13,25 @@ export const getUserByUserName = async (userName) => {
         console.log('Người dùng không tồn tại!');
     }
 };
-
-export const getUserById = async (id) => {
+export const getUserByTextSearch = async (searchValue, limit) => {
     try {
         const res = await httpRequest.get('user/', {
             params: {
-                id: id,
+                q: searchValue,
+                _limit: limit,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        console.log('Người dùng không tồn tại!');
+    }
+};
+export const getUserById = async (idUser) => {
+    try {
+        const res = await httpRequest.get('user/', {
+            params: {
+                id: idUser,
             },
         });
 

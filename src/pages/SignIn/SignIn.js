@@ -36,9 +36,14 @@ function SignIn() {
             password: 'admin',
         };
 
+        // đăng nhập thành công -->
         loginUser(user, dispatch, navigate);
+
+        // lưu lại user name đang đăng nhập
         setUserNameLogin(user.userName);
 
+        //redux: lưu dữ liệu của state ra toàn cục --> để tất cả component có thể sử dụng mà ko cần truyền từ comp này
+        // sang comp khác
         dispatch(userLogin(userData));
         navigate('/');
     };
