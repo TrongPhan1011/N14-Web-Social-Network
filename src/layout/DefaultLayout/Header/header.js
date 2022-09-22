@@ -24,7 +24,7 @@ import Avartar from '~/components/Avartar';
 
 const cx = classNames;
 
-function Header() {
+function Header({ userLoginData }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
@@ -32,8 +32,6 @@ function Header() {
     const [hiddenMenu, setHiddenMenu] = useState('hidden');
     const [linkQR, setLinkQR] = useState('');
     const [copied, setCopied] = useState('opacity-0');
-
-    const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
 
     useEffect(() => {
         const generateQRCode = async (value) => {
@@ -184,18 +182,11 @@ function Header() {
                 />
                 <Dropdown render={handleLoadMenu} visible={showMenu} hidden={handleHiddenMenu}>
                     <div>
-                        <Button
-                            className={cx(
-                                ' rounded-[50%] bg-lcn-blue-4 border border-lcn-blue-4 h-14 w-14 flex justify-center items-center p-0 mb-7 mt-3 ',
-                                'overflow-hidden',
-                            )}
-                            onClick={handleShowMenu}
-                        >
-                            {!!userLoginData.profile.urlAvartar ? (
-                                <img src={userLoginData.profile.urlAvartar} className={cx('w-full')} alt="avatar" />
-                            ) : (
-                                <Avartar />
-                            )}
+                        <Button className={cx(' mb-7 mt-3 ')} onClick={handleShowMenu}>
+                            <Avartar
+                                src={userLoginData.profile.urlAvartar}
+                                className={cx('h-14 w-14 bg-lcn-blue-4 border border-lcn-blue-4 ')}
+                            />
                         </Button>
                     </div>
                 </Dropdown>

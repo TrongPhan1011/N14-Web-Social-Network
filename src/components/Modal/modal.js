@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 const cx = classNames;
 
-function Modal({ children, isShow, isHidden }) {
+function Modal({ children, isShow, isHidden, className }) {
     var classShow = 'hidden';
     const showModal = () => {
         if (isShow === true) {
@@ -20,7 +20,7 @@ function Modal({ children, isShow, isHidden }) {
             onClick={isHidden}
         >
             <div
-                className={'w-1/2 h-2/3 bg-white rounded-lg z-30 border border-lcn-blue-4'}
+                className={cx('w-1/2 h-2/3 bg-white rounded-lg z-30 border border-lcn-blue-4', className)}
                 onClick={(e) => {
                     e.stopPropagation();
                 }}

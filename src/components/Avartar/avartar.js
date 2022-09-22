@@ -4,15 +4,14 @@ import { lcnImage } from '~/image';
 
 const cx = classNames;
 
-function Avartar({ className }) {
+function Avartar({ className, src }) {
+    var _src = lcnImage.avatarDefault;
+    if (!!src) {
+        _src = src;
+    }
     return (
-        <div
-            className={cx(
-                ' bg-lcn-blue-4 rounded-full overflow-hidden flex justify-center items-center p-1 ',
-                className,
-            )}
-        >
-            <img src={lcnImage.avatarDefault} alt="avartar" className={cx('w-full h-full border ')} />
+        <div className={cx(' rounded-[50%]   flex justify-center items-center p-0 ', 'overflow-hidden', className)}>
+            <img src={_src} alt="avartar" className={cx('w-full h-full')} />
         </div>
     );
 }

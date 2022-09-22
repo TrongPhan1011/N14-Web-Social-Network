@@ -15,5 +15,11 @@ export const post = async (path, data) => {
 
     return resp.data;
 };
+export const put = async (path, data) => {
+    const resp = await request.put(path, data);
 
+    return resp.data;
+};
+// put
+// delete
 export default request;
