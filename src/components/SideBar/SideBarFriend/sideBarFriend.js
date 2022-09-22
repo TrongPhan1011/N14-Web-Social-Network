@@ -5,11 +5,12 @@ import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 
 import ListItem from '~/components/ListItem';
 import Button from '~/components/Button';
-
+import { userLogin } from '~/pages/SignIn/signInSlice';
 const cx = classNames;
 
 function SideBarFriend() {
     const [tabChange, setTabChange] = useState(true);
+
     return (
         <div className={cx('p-2 h-screen flex flex-col')}>
             <div
