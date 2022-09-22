@@ -35,6 +35,7 @@ function ListItem({ type }) {
     const renderBanBe = () => {
         console.log(listFriend);
         listFriend.map((item) => console.log(item));
+        // <Comp key={item.id} data={item} />);
     };
     return <div className={cx('w-full h-full overflow-y-scroll')}>{renderBanBe()}</div>;
 }
