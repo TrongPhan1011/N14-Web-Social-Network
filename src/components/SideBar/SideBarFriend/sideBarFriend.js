@@ -5,7 +5,7 @@ import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 
 import ListItem from '~/components/ListItem';
 import Button from '~/components/Button';
-import { userLogin } from '~/pages/SignIn/signInSlice';
+
 const cx = classNames;
 
 function SideBarFriend() {

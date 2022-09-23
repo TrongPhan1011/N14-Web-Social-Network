@@ -1,12 +1,15 @@
 import classNames from 'classnames';
 import { useEffect, useState, memo } from 'react';
+import { useSelector } from 'react-redux';
 
 import ItemChat from '~/components/ItemChat';
 import { getChatByIdMember } from '~/services/chatService';
 
 const cx = classNames;
 
-function SideBarChat({ userLoginData }) {
+function SideBarChat() {
+    const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
+
     const [chatResult, setChatResult] = useState([]);
 
     useEffect(() => {

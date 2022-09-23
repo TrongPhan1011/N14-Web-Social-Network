@@ -9,7 +9,7 @@ import SideBarNews from './SideBarNews';
 import SideBarSetting from './SideBarSetting';
 
 const cx = classNames;
-function SideBar({ children, type, userLoginData }) {
+function SideBar({ children, type }) {
     var Comp = SideBarChat;
     var HeaderSideBar = true;
 
@@ -26,7 +26,7 @@ function SideBar({ children, type, userLoginData }) {
         <div className={cx('w-full h-full border-l border-r border-lcn-blue-3')}>
             <div className="w-full h-20 ">{HeaderSideBar ? <Search /> : <></>}</div>
             <div className={cx('h-full ')}>
-                <Comp userLoginData={userLoginData}>{children}</Comp>
+                <Comp>{children}</Comp>
             </div>
         </div>
     );

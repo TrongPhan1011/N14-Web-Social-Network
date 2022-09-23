@@ -8,6 +8,8 @@ export const getChatByIdMember = async (idMember) => {
             },
         });
 
+        // id --> getuserbyid --> getlistgroup--> getgroupbyid--> push arr--> return member_like
+
         return res;
     } catch (error) {
         console.log('Tin nhắn không tồn tại!');

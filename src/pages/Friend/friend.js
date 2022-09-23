@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import SideBar from '~/components/SideBar';
@@ -8,6 +9,8 @@ import ContentProfile from './ContentProfile';
 const cx = classNames;
 
 function Friends() {
+    const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
+
     var urlRoute = window.location.pathname;
     console.log(routeConfig.routeConfig.profile);
 
@@ -19,7 +22,7 @@ function Friends() {
     return (
         <div className={cx('flex overflow-hidden')}>
             <div className={cx('w-[270px] h-screen')}>
-                <SideBar type="friend" />
+                <SideBar type="friend" userLoginData={userLoginData} />
             </div>
             {showContent()}
         </div>
