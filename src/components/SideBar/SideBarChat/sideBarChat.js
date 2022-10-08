@@ -15,13 +15,16 @@ function SideBarChat() {
     useEffect(() => {
         const fetchChat = async () => {
             const arrChat = await getChatByIdMember(userLoginData.id);
+
             setChatResult(arrChat);
         };
         fetchChat();
     }, []);
 
     const handleRenderChat = () => {
-        return chatResult.map((item) => <ItemChat key={item.id} data={item} userLoginData={userLoginData} />);
+        if (chatResult.length > 0)
+            return chatResult.map((item) => <ItemChat key={item.id} groupChat={item} userLoginData={userLoginData} />);
+        else return <></>;
     };
 
     return <div className={cx('p-2 h-screen overflow-y-auto')}>{handleRenderChat()}</div>;

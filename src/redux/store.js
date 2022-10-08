@@ -3,7 +3,8 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from 'redux-persist/lib/storage';
 
 import authSlice from './Slice/authSlice';
-import signInSlice from '~/pages/SignIn/signInSlice';
+import signInSlice from './Slice/signInSlice';
+import sidebarChatSlice from './Slice/sidebarChatSlice';
 
 const persistConfig = {
     key: 'root',
@@ -21,6 +22,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
     reducer: {
         persistedReducer,
+        sidebarChatSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

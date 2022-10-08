@@ -1,12 +1,11 @@
 import classNames from 'classnames';
 import { useState, useCallback, useEffect, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode';
 
 import { AiOutlineMessage, AiFillMessage, AiFillSetting, AiOutlineSetting } from 'react-icons/ai';
 import { RiUserLine, RiUserFill, RiQrCodeLine } from 'react-icons/ri';
-import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
 import { FaTimes } from 'react-icons/fa';
 import { BiCopyAlt, BiLogInCircle, BiUserCircle } from 'react-icons/bi';
 
@@ -19,7 +18,7 @@ import Modal from '~/components/Modal';
 import Dropdown from '~/components/Dropdown';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import { logOutSuccess } from '~/redux/Slice/authSlice';
-import { userLogin } from '~/pages/SignIn/signInSlice';
+import { userLogin } from '~/redux/Slice/signInSlice';
 import Avartar from '~/components/Avartar';
 
 const cx = classNames;
@@ -33,6 +32,8 @@ function Header({ userLoginData }) {
     const [linkQR, setLinkQR] = useState('');
     const [copied, setCopied] = useState('opacity-0');
 
+    var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData.id;
+
     useEffect(() => {
         const generateQRCode = async (value) => {
             try {
@@ -42,7 +43,8 @@ function Header({ userLoginData }) {
                 console.log(error);
             }
         };
-        generateQRCode(userLoginData.profile.qrUrl);
+
+        generateQRCode(qrURL);
     });
 
     const handleShowModal = () => {
@@ -103,9 +105,10 @@ function Header({ userLoginData }) {
     };
 
     const handleCoppy = () => {
-        navigator.clipboard.writeText(userLoginData.profile.qrUrl);
+        navigator.clipboard.writeText(qrURL);
         setCopied('ani-show');
     };
+
     return (
         <div className="  bg-lcn-blue-2 w-full  ">
             <div className={cx('h-1/6 w-full flex pt-4')}>
@@ -116,7 +119,7 @@ function Header({ userLoginData }) {
             <div className={cx('h-3/6 w-full ')}>
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
                 <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
-                <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
+                {/* <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" /> */}
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
                 <div className={cx('pr-1 pl-1 w-full')}>
@@ -157,7 +160,7 @@ function Header({ userLoginData }) {
                                 )}
                                 placeholder="link profile"
                                 readOnly
-                                value={userLoginData.profile.qrUrl}
+                                value={userLoginData.id}
                             />
                         </div>
                         <div className={cx('flex justify-center')}>
@@ -167,10 +170,10 @@ function Header({ userLoginData }) {
                                 )}
                                 onClick={handleCoppy}
                             >
-                                <BiCopyAlt /> <span className={cx('text-base ml-2')}>Sao chép</span>
+                                <BiCopyAlt /> <span className={cx('text-base ml-2')}>Sao chép link</span>
                             </Button>
                         </div>
-                        <div className={cx('flex justify-center text-lcn-green-1', copied)}>Đã sao chép</div>
+                        <div className={cx('flex justify-center text-lcn-green-1', copied)}>Đã sao chép thành công</div>
                     </Modal>
                 </div>
 

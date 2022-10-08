@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 
 const cx = classNames;
-function Button({ children, className, type, to, href, onClick, navLink, ...passProps }) {
+function Button({ children, className, type = 'button', to, href, onClick, navLink, ...passProps }) {
     let Comp = 'button';
     const _props = {
         onClick,

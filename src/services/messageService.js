@@ -1,12 +1,8 @@
 import * as httpRequest from '~/utils/httpRequest';
 
-export const getChatByIdMember = async (idMember) => {
+export const getMessageById = async (idMessage) => {
     try {
-        const res = await httpRequest.get('/chat/user_id', {
-            params: {
-                id: idMember,
-            },
-        });
+        const res = await httpRequest.get('/message/id/' + idMessage);
 
         return res;
     } catch (error) {

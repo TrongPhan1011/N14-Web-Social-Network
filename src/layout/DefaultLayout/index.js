@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import Header from './Header';
 
 function DefaultLayout({ children }) {
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
+
     const navigateRoute = () => {
         if (userLoginData === null) {
             return <Navigate replace to="/dangnhap" />;
