@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useState, useCallback, useEffect, memo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'qrcode';
 
@@ -20,6 +20,9 @@ import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import { logOutSuccess } from '~/redux/Slice/authSlice';
 import { userLogin } from '~/redux/Slice/signInSlice';
 import Avartar from '~/components/Avartar';
+import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
+import { logout } from '~/services/authService';
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
 const cx = classNames;
 
@@ -33,6 +36,10 @@ function Header({ userLoginData }) {
     const [copied, setCopied] = useState('opacity-0');
 
     var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData.id;
+
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
+    var axiosJWT = getAxiosJWT(dispatch, currAccount);
 
     useEffect(() => {
         const generateQRCode = async (value) => {
@@ -98,7 +105,8 @@ function Header({ userLoginData }) {
         );
     };
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
+        await logout(dispatch, navigate, currAccount.accessToken, axiosJWT);
         dispatch(logOutSuccess());
         dispatch(userLogin(null));
         navigate(config.routeConfig.signIn);
@@ -119,7 +127,7 @@ function Header({ userLoginData }) {
             <div className={cx('h-3/6 w-full ')}>
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
                 <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
-                {/* <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" /> */}
+                <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
             </div>
             <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
                 <div className={cx('pr-1 pl-1 w-full')}>
@@ -185,7 +193,7 @@ function Header({ userLoginData }) {
                 />
                 <Dropdown render={handleLoadMenu} visible={showMenu} hidden={handleHiddenMenu}>
                     <div>
-                        <Button className={cx(' mb-7 mt-3 ')} onClick={handleShowMenu}>
+                        <Button type="button" className={cx(' mb-7 mt-3 ')} onClick={handleShowMenu}>
                             <Avartar
                                 src={userLoginData.profile.urlAvartar}
                                 className={cx('h-14 w-14 bg-lcn-blue-4 border border-lcn-blue-4 ')}
