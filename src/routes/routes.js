@@ -7,6 +7,7 @@ import SignUp from '~/pages/SignUp';
 import Setting from '~/pages/Setting';
 import routeConfig from '~/configRoutes';
 import SignIn from '~/pages/SignIn';
+import Otp from '~/pages/Otp';
 
 //public
 const publicRoutes = [
@@ -30,6 +31,11 @@ const publicRoutes = [
     {
         path: routeConfig.routeConfig.signIn,
         component: SignIn,
+        layout: LoginLayout,
+    },
+    {
+        path: routeConfig.routeConfig.otp,
+        component: Otp,
         layout: LoginLayout,
     },
     {

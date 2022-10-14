@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FaLock } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
+import { MdMail } from 'react-icons/md';
 
 import Button from '~/components/Button';
 import { loginUser } from '~/services/authService';
@@ -38,7 +39,7 @@ function SignIn() {
             var user = { userName: valueEmail, password: valuePassword };
             // đăng nhập thành công -->
             var login = await loginUser(user, dispatch, navigate);
-            if (!!login) {
+            if (login === false) {
                 setFailLogin('');
             }
         } else return false;
@@ -86,7 +87,7 @@ function SignIn() {
                                             'flex absolute text-lcn-blue-4 top-3 left-0 items-center pl-3 pointer-events-none ',
                                         )}
                                     >
-                                        <FiMail />
+                                        <MdMail />
                                     </div>
                                     <input
                                         type="text"
@@ -140,7 +141,7 @@ function SignIn() {
                             </div>
                             <div className={cx('flex justify-center w-full text-[#004078]')}>
                                 Bạn chưa có tài khoản?
-                                <a href="##" className={cx('ml-1 text-[#0289FF] font-semibold')}>
+                                <a href="/dangky" className={cx('ml-1 text-[#0289FF] font-semibold')}>
                                     Đăng ký ngay
                                 </a>
                             </div>

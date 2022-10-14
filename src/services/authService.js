@@ -1,5 +1,6 @@
 import { loginSuccess, loginErorr } from '~/redux/Slice/authSlice';
 import { userLogin } from '~/redux/Slice/signInSlice';
+import { userSignUp } from '~/redux/Slice/signUpSlice';
 import { logOutSuccess } from '~/redux/Slice/authSlice';
 import * as httpRequest from '~/utils/httpRequest';
 import config from '~/configRoutes';
@@ -44,6 +45,29 @@ export const logout = async (dispatch, navigate, accessToken, axiosJWT) => {
         dispatch(userLogin(null)); // xoa signIn
         dispatch(logOutSuccess()); // xoa Account
         navigate(config.routeConfig.signIn);
+    } catch (error) {
+        return null;
+    }
+};
+
+export const sendOTP = async (user, dispatch, navigate) => {
+    try {
+        const res = await httpRequest.post('otp/', user);
+        dispatch(userSignUp(user));
+        navigate(config.routeConfig.otp);
+        return res;
+    } catch (error) {
+        return null;
+    }
+};
+
+export const register = async (user, navigate, dispatch) => {
+    try {
+        const res = await httpRequest.post('auth/register/', user);
+        dispatch(userSignUp(null)); // xoa signIn
+
+        navigate(config.routeConfig.signIn);
+        return res;
     } catch (error) {
         return null;
     }
