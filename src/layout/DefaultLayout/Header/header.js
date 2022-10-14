@@ -123,6 +123,7 @@ function Header({ userLoginData }) {
                 <Button to={config.routeConfig.home} className="h-10 w-full ">
                     <img src={lcnImage.logo1} alt="logo" className="bg-none h-16 w-full " />
                 </Button>
+                <div className=""></div>
             </div>
             <div className={cx('h-3/6 w-full ')}>
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
