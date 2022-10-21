@@ -1,18 +1,148 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import { FaPhoneAlt, FaLock } from 'react-icons/fa';
+import { FaLock } from 'react-icons/fa';
+import { MdMail } from 'react-icons/md';
 import { RiUserFill } from 'react-icons/ri';
+import { sendOTP } from '~/services/authService';
+import config from '~/configRoutes';
 import Button from '~/components/Button';
+import { userSignUp } from '~';
 
 const cx = classNames;
 
 function SignUp() {
     const [selectedRadioBtn, setSelectedRadioBtn] = useState('');
+    const [validUserName, setvalidUserName] = useState('opacity-0');
+    const [validEmail, setValidEmail] = useState('opacity-0');
+    const [validPassword, setValidPassword] = useState('opacity-0');
+    const [validConfirmPassword, setvalidConfirmPassword] = useState('opacity-0');
+    const [validDate, setValidDate] = useState('opacity-0');
+    const [date, setDate] = useState(null);
+    const [failLogin, setFailLogin] = useState('hidden');
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const isRadioSelected = (value) => selectedRadioBtn === value;
     const handleRadioClick = (e) => {
         setSelectedRadioBtn(e.currentTarget.value);
-        console.log(e.currentTarget.value);
+    };
+
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const userRef = useRef();
+    const confirmPaswordRef = useRef();
+    const dateRef = useRef();
+
+    var currentAccount = useSelector((state) => state.persistedReducer.auth);
+    useEffect(() => {
+        if (currentAccount.currentUser !== null && !!currentAccount.currentUser.accessToken) {
+            navigate(config.routeConfig.home);
+        }
+    }, []);
+    var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp);
+
+    useEffect(() => {
+        if (currentSignUpAccount.userSignUp !== null) {
+            // var dataTemp = currentSignUpAccount.userSignUp;
+            // userRef.current.value = dataTemp.userName;
+            // emailRef.current.value = dataTemp.email;
+            // passwordRef.current.value = dataTemp.password;
+            // confirmPaswordRef.current.value = dataTemp.password;
+            // dateRef.current.value = dataTemp.date;
+        }
+    }, []);
+
+    //check valid
+
+    const checkValidUserName = () => {
+        var valueUserName = userRef.current.value.trim();
+        if (
+            valueUserName.length === 0 ||
+            !valueUserName.match(
+                /^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/,
+            )
+        ) {
+            setvalidUserName('opacity-1');
+            return '';
+        } else {
+            setvalidUserName('opacity-0');
+            return valueUserName;
+        }
+    };
+
+    const checkValidEmail = () => {
+        var valueEmail = emailRef.current.value.trim();
+        if (valueEmail.length === 0 || !valueEmail.match(/^[a-zA-Z._0-9]+@[a-z]+\.[a-z]+$/)) {
+            setValidEmail('opacity-1');
+            return '';
+        } else {
+            setValidEmail('opacity-0');
+            return valueEmail;
+        }
+    };
+    const checkValidPassword = () => {
+        var valuePassword = passwordRef.current.value.trim();
+        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9\.@ ]{6,}$/)) {
+            setValidPassword('opacity-1');
+            return '';
+        } else {
+            setValidPassword('opacity-0');
+            return valuePassword;
+        }
+    };
+    const checkConfirmPassword = () => {
+        var valueConfirmPassword = confirmPaswordRef.current.value.trim();
+        if (valueConfirmPassword.length === 0 || valueConfirmPassword !== passwordRef.current.value.trim()) {
+            setvalidConfirmPassword('opacity-1');
+            return '';
+        } else {
+            setvalidConfirmPassword('opacity-0');
+            return valueConfirmPassword;
+        }
+    };
+
+    const checkDate = () => {
+        var userdate = dateRef.current.value;
+        console.log(userdate);
+        var birthday = userdate.split('-');
+        var mydate = new Date(birthday[0], birthday[1] - 1, birthday[2]);
+
+        if (new Date().getFullYear() - mydate.getFullYear() < 18) {
+            setValidDate('opacity-1');
+            return '';
+        } else {
+            setValidDate('opacity-0');
+            setDate(userdate);
+            return userdate;
+        }
+    };
+
+    const handleRegister = async () => {
+        var valueEmail = checkValidEmail();
+        var valuePassword = checkValidPassword();
+        var valueUserName = checkValidUserName();
+        var valueDate = checkDate();
+        var gender = selectedRadioBtn;
+        console.log(gender);
+
+        if (!!validEmail && !!validPassword) {
+            var user = {
+                userName: valueUserName,
+                email: valueEmail,
+                password: valuePassword,
+                birthday: valueDate,
+                gender: gender,
+            };
+            // đăng nhập thành công -->
+            var register = await sendOTP(user, dispatch, navigate);
+            if (register === false) {
+                setFailLogin('');
+            }
+        } else return false;
     };
 
     return (
@@ -27,7 +157,7 @@ function SignUp() {
                         <div className={cx('w-full relative  ')}>
                             <div
                                 className={cx(
-                                    'flex absolute text-lcn-blue-4 inset-y-0 left-0 items-center pl-3 pointer-events-none ',
+                                    'flex absolute text-lcn-blue-4 top-3 left-0 items-center pl-3 pointer-events-none ',
                                 )}
                             >
                                 <RiUserFill />
@@ -37,63 +167,81 @@ function SignUp() {
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none placeholder:text-lcn-placeholder',
                                 )}
-                                placeholder="Tên người dùng"
+                                placeholder="Tên đăng nhập"
+                                onChange={checkValidUserName}
+                                ref={userRef}
                             />
+                            <span className={cx('text-red-500 text-sm pl-3', validUserName)}>
+                                Tên người dùng không hợp lệ!
+                            </span>
                         </div>
                     </div>
                     <div className={cx('flex justify-center w-full')}>
                         <div className={cx('w-full relative  ')}>
                             <div
                                 className={cx(
-                                    'flex absolute text-lcn-blue-4 inset-y-0 left-0 items-center pl-3 pointer-events-none ',
+                                    'flex absolute text-lcn-blue-4 top-3 left-0 items-center pl-3 pointer-events-none ',
                                 )}
                             >
-                                <FaPhoneAlt />
+                                <MdMail />
                             </div>
                             <input
                                 type="text"
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none placeholder:text-lcn-placeholder',
                                 )}
-                                placeholder="Số điện thoại"
+                                placeholder="Nhập email"
+                                onChange={checkValidEmail}
+                                ref={emailRef}
                             />
+                            <span className={cx('text-red-500 text-sm pl-3', validEmail)}>Email không hợp lệ!</span>
                         </div>
                     </div>
                     <div className={cx('flex justify-center w-full')}>
                         <div className={cx('w-full relative  ')}>
                             <div
                                 className={cx(
-                                    'flex absolute text-lcn-blue-4 inset-y-0 left-0 items-center pl-3 pointer-events-none ',
+                                    'flex absolute text-lcn-blue-4 top-3 left-0 items-center pl-3 pointer-events-none ',
                                 )}
                             >
                                 <FaLock />
                             </div>
                             <input
-                                type="text"
+                                type="password"
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none placeholder:text-lcn-placeholder',
                                 )}
-                                placeholder="Nhập mật khẩu"
+                                placeholder="Nhập Mật khẩu"
+                                onChange={checkValidPassword}
+                                ref={passwordRef}
                             />
+                            <span className={cx('text-red-500 text-sm pl-3', validPassword)}>
+                                Mật khẩu không hợp lệ!
+                            </span>
                         </div>
                     </div>
 
                     <div className={cx('flex justify-center w-full')}>
-                        <div className={cx('w-full relative ')}>
+                        <div className={cx('w-full relative  ')}>
                             <div
                                 className={cx(
-                                    'flex absolute text-lcn-blue-4 inset-y-0 left-0 items-center pl-3 pointer-events-none ',
+                                    'flex absolute text-lcn-blue-4 top-3 left-0 items-center pl-3 pointer-events-none ',
                                 )}
                             >
                                 <FaLock />
                             </div>
                             <input
-                                type="text"
+                                type="password"
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none placeholder:text-lcn-placeholder',
                                 )}
-                                placeholder="Nhập lại mật khẩu"
+                                placeholder="Nhập lại Mật khẩu"
+                                onChange={checkConfirmPassword}
+                                ref={confirmPaswordRef}
                             />
+                            <span className={cx('text-red-500 text-sm pl-3', validConfirmPassword)}>
+                                Mật khẩu không trùng khớp!
+                            </span>
                         </div>
                     </div>
 
@@ -109,7 +257,10 @@ function SignUp() {
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none',
                                 )}
+                                ref={dateRef}
+                                onChange={(e) => checkDate(e)}
                             />
+                            <span className={cx('text-red-500 text-sm pl-3', validDate)}>Dưới 18!</span>
                         </div>
                     </div>
                     <div className={cx('w-full  flex flex-row justify-between')}>
@@ -154,6 +305,7 @@ function SignUp() {
                                 'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
                                 'bg-lcn-blue-3 justify-center',
                             )}
+                            onClick={handleRegister}
                         >
                             Đăng ký
                         </Button>
@@ -164,4 +316,4 @@ function SignUp() {
     );
 }
 
-export default SignUp;
+export default memo(SignUp);

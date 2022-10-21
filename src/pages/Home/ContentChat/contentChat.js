@@ -1,19 +1,41 @@
 import classNames from 'classnames';
-import { useState, useEffect } from 'react';
-import { memo } from 'react';
+import { useState, useEffect, memo } from 'react';
 
 import { FaPhone, FaVideo, FaInfoCircle } from 'react-icons/fa';
 
 import Button from '~/components/Button';
-import { lcnImage } from '~/image';
+
 import ContentMessage from '~/components/ContentMessage';
 import InputSend from '~/components/InputSend';
 import MiniProfile from '~/components/MiniProfile';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import Avartar from '~/components/Avartar';
+import { io } from 'socket.io-client';
+import { useRef } from 'react';
 
 const cx = classNames;
 
 function ContentChat() {
+    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
+
     var [widthValue, setWidthValue] = useState('');
+
+    const socket = useRef();
+
+    useEffect(() => {
+        socket.current = io('ws://localhost:8900');
+    }, []);
+
+    useEffect(() => {
+        console.log(currAccount);
+        socket.current.emit('addUserSocket', currAccount._id);
+        socket.current.on('getUsersSocket', (usersSocket) => {
+            console.log(usersSocket);
+        });
+    }, [currAccount]);
 
     const showMiniProfile = () => {
         if (widthValue === '') return <></>;
@@ -28,25 +50,17 @@ function ContentChat() {
 
     return (
         <div className={cx(' w-full flex overflow-hidden')}>
-            <div className={cx('w-full  h-full  justify-between relative')}>
-                <div className={cx('h-16 bg-lcn-blue-2 w-full flex absolute top-0')}>
+            <div className={cx('w-full  h-screen  justify-between relative')}>
+                <div className={cx('h-{20%} bg-lcn-blue-2 w-full flex absolute top-0')}>
                     <div className={cx('w-1/2  h-full flex pl-4')}>
-                        <Button>
-                            <div
-                                className={cx(
-                                    'w-12 h-12 bg-lcn-blue-4 rounded-full overflow-hidden flex justify-center items-center p-1  relative',
-                                )}
-                            >
-                                <img
-                                    src={lcnImage.avatarDefault}
-                                    alt="avartar"
-                                    className={cx('w-full h-full border ')}
-                                />
-                            </div>
+                        <Button type="button">
+                            <Avartar className={cx('h-12 w-12')} src={currChat?.avatar} />
                         </Button>
                         <div>
                             <div className="w-full flex items-center">
-                                <Button className="text-lcn-blue-5 font-semibold text-lg m-0 ">Trọng Phan</Button>
+                                <Button type="button" className="text-lcn-blue-5 font-semibold text-lg m-0 ">
+                                    {currChat?.name}
+                                </Button>
                                 <span className={cx('h-3 w-3 bg-lcn-green-1 rounded-full inline-block ml-2')}></span>
                             </div>
 
@@ -65,8 +79,12 @@ function ContentChat() {
                         </Button>
                     </div>
                 </div>
-                <ContentMessage />
-                <InputSend />
+                <div className="h-{70%}">
+                    <ContentMessage />
+                </div>
+                <div className="h-{10%}">
+                    <InputSend />
+                </div>
             </div>
             <div className={cx('bg-white h-full ', widthValue)}>{showMiniProfile()}</div>
         </div>

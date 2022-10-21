@@ -6,6 +6,7 @@ const notification = '/notification';
 const setting = '/setting';
 const signUp = '/dangky';
 const signIn = '/dangnhap';
+const otp = '/otp';
 
 /*
     Level 2
@@ -24,6 +25,7 @@ const routes = {
     setting: setting,
     signUp: signUp,
     signIn: signIn,
+    otp: otp,
     // level 2
     profile: profile,
     thongTinChung: thongTinChung,

@@ -23,7 +23,7 @@ function Home() {
     //     getUser();
     // }, []);
     return (
-        <div className={cx('flex overflow-hidden')}>
+        <div className={cx('flex h-screen overflow-hidden')}>
             <div className="w-[270px] h-screen  ">
                 <SideBar />
             </div>

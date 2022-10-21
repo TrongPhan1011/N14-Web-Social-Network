@@ -1,14 +1,15 @@
 import * as httpRequest from '~/utils/httpRequest';
 
-export const getChatByIdMember = async (idMember) => {
+export const getChatByIdMember = async (idMember, accessToken, axiosJWT) => {
     try {
-        const res = await httpRequest.get('/chat/user_id', {
+        const res = await axiosJWT.get('/chat/user_id', {
             params: {
                 id: idMember,
             },
+            headers: { token: `baerer ${accessToken}` },
         });
 
-        return res;
+        return res.data;
     } catch (error) {
         return null;
     }

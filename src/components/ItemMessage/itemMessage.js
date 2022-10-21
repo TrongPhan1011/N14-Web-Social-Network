@@ -1,32 +1,31 @@
 import classNames from 'classnames';
 
 import { lcnImage } from '~/image';
+import Avartar from '~/components/Avartar';
 
 const cx = classNames;
 
-function ItemMessage({ children, from }) {
+function ItemMessage({ children, from, messageData }) {
+    console.log(messageData);
     var bgMessage = 'bg-slate-100 ',
         flexRowReverse = '',
-        seen = '';
+        seen = '',
+        hiddenAvartar = '';
     if (!!from) {
         bgMessage = 'bg-lcn-blue-4 text-white';
         flexRowReverse = 'flex-row-reverse';
         seen = 'Đã xem';
+        hiddenAvartar = 'hidden';
     }
     return (
         <>
-            <div className={cx('flex w-full items-end mb-2', flexRowReverse)}>
-                <div
-                    className={cx(
-                        'w-8 h-8 bg-lcn-blue-4 rounded-full overflow-hidden flex justify-center items-center p-1  mb-8',
-                    )}
-                >
-                    <img src={lcnImage.avatarDefault} alt="avartar" className={cx('w-full h-full border ')} />
-                </div>
+            {/* <span>{messageData?.authorID.fullName}</span> */}
+            <div className={cx('flex w-full items-center ', flexRowReverse)}>
+                <Avartar className={cx('h-8 w-8', hiddenAvartar)} src={messageData?.authorID.profile.urlAvartar} />
 
-                <div className={cx('w-2/5 ml-2 mr-2   rounded-3xl p-3 ')}>
-                    <div className={cx('  break-words rounded-3xl p-3  ', bgMessage)}>{children}</div>
-                    <div className={cx('text-right text-[12px] text-slate-400 pr-2')}>{seen}</div>
+                <div className={cx('max-w-[40%] ml-1    rounded-xl p-1 ')}>
+                    <div className={cx('  break-words rounded-2xl p-3 text-sm ', bgMessage)}>{children}</div>
+                    {/* <div className={cx('text-right text-[12px] text-slate-400 pr-2')}>{seen}</div> */}
                 </div>
             </div>
         </>

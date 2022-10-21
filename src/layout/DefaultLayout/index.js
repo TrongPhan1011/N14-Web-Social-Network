@@ -16,7 +16,7 @@ function DefaultLayout({ children }) {
                     <div className="w-20 h-screen  flex justify-center ">
                         <Header type="SideBarChat" userLoginData={userLoginData} />
                     </div>
-                    <div className="w-full overflow-hidden">{children}</div>
+                    <div className="w-full h-screen overflow-hidden">{children}</div>
                 </div>
             );
     };
