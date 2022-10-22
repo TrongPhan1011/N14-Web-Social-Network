@@ -5,23 +5,18 @@ import ContentChat from './ContentChat';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
 import { useDispatch, useSelector } from 'react-redux';
+import socket from '~/utils/getSocketIO';
 import { useEffect } from 'react';
-import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function Home() {
-    // const dispatch = useDispatch();
-    // var currAuth = useSelector((state) => state.persistedReducer.auth);
-    // var currAccount = currAuth.currentUser;
-    // var axiosJWT = getAxiosJWT(dispatch, currAccount);
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
 
-    // useEffect(() => {
-    //     const getUser = async () => {
-    //         var user = await getUserById('633cf97fb4ca527f2a25f670', currAccount.accessToken, axiosJWT);
-    //         console.log(user);
-    //     };
-    //     getUser();
-    // }, []);
+    useEffect(() => {
+        socket.emit('addUserSocket', currAccount._id);
+    }, [currAccount]);
+
     return (
         <div className={cx('flex h-screen overflow-hidden')}>
             <div className="w-[270px] h-screen  ">

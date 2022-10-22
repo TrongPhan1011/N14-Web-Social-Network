@@ -11,31 +11,13 @@ import MiniProfile from '~/components/MiniProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import Avartar from '~/components/Avartar';
-import { io } from 'socket.io-client';
-import { useRef } from 'react';
 
 const cx = classNames;
 
 function ContentChat() {
     var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
-    var currAuth = useSelector((state) => state.persistedReducer.auth);
-    var currAccount = currAuth.currentUser;
 
     var [widthValue, setWidthValue] = useState('');
-
-    const socket = useRef();
-
-    useEffect(() => {
-        socket.current = io('ws://localhost:8900');
-    }, []);
-
-    useEffect(() => {
-        console.log(currAccount);
-        socket.current.emit('addUserSocket', currAccount._id);
-        socket.current.on('getUsersSocket', (usersSocket) => {
-            console.log(usersSocket);
-        });
-    }, [currAccount]);
 
     const showMiniProfile = () => {
         if (widthValue === '') return <></>;

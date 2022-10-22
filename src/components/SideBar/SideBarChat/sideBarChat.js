@@ -6,6 +6,7 @@ import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import ItemChat from '~/components/ItemChat';
 import { getChatByIdMember } from '~/services/chatService';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+import socket from '~/utils/getSocketIO';
 
 const cx = classNames;
 
@@ -28,10 +29,17 @@ function SideBarChat() {
         fetchChat();
     }, []);
 
+    const handdleConnectSocket = (item) => {
+        socket.emit('addUserSocket', item.id);
+    };
+
     const handleRenderChat = () => {
         if (chatResult.length > 0) {
             dispatch(currentChat(chatResult[0]));
-            return chatResult.map((item) => <ItemChat key={item.id} groupChat={item} userLoginData={userLoginData} />);
+            return chatResult.map((item) => {
+                handdleConnectSocket(item);
+                return <ItemChat key={item.id} groupChat={item} userLoginData={userLoginData} />;
+            });
         } else return <></>;
     };
 

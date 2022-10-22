@@ -6,7 +6,6 @@ import Avartar from '~/components/Avartar';
 const cx = classNames;
 
 function ItemMessage({ children, from, messageData }) {
-    console.log(messageData);
     var bgMessage = 'bg-slate-100 ',
         flexRowReverse = '',
         seen = '',
