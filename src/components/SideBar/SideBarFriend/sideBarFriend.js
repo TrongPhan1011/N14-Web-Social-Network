@@ -35,34 +35,34 @@ function SideBarFriend() {
             <div className={cx('h-10 w-full flex justify-around')}>
                 <Button
                     className={cx(
-                        'rounded-lcn-login-input ml-2 border w-20 h-7 flex items-center p-0 justify-center',
+                        'rounded-lcn-login-input ml-2 border w-20 h-8 flex items-center  justify-center',
                         'text-lcn-blue-4 border border-lcn-blue-4',
                         'hover:bg-lcn-blue-4 hover:text-white',
                     )}
                     onClick={() => setTabChange(true)}
                 >
                     {!tabChange ? (
-                        <div className={cx('h-full w-full ')}>Tất cả</div>
+                        <div className={cx('h-full w-full p-0')}>Tất cả</div>
                     ) : (
-                        <div className={cx('rounded-lcn-login-input  h-full w-full bg-lcn-blue-4 text-white')}>
+                        <div className={cx('rounded-lcn-login-input p-0 h-full w-full bg-lcn-blue-4 text-white')}>
                             Tất cả
                         </div>
                     )}
                 </Button>
                 <Button
                     className={cx(
-                        'rounded-lcn-login-input border w-36 h-7 flex items-center p-0 justify-center',
+                        'p-0 rounded-lcn-login-input border w-36 h-8 flex items-center  justify-center',
                         'text-lcn-blue-4 border-lcn-blue-4',
                         'hover:bg-lcn-blue-4 hover:text-white ',
                     )}
                     onClick={() => setTabChange(false)}
                 >
                     {!tabChange ? (
-                        <div className={cx('rounded-lcn-login-input  h-full w-full bg-lcn-blue-4 text-white')}>
+                        <div className={cx('rounded-lcn-login-input p-0 h-full w-full bg-lcn-blue-4 text-white')}>
                             Chờ xác nhận
                         </div>
                     ) : (
-                        <div className={cx('h-full w-full ')}>Chờ xác nhận</div>
+                        <div className={cx('h-full w-full p-0')}>Chờ xác nhận</div>
                     )}
                 </Button>
             </div>

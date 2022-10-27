@@ -107,7 +107,7 @@ function SignUp() {
 
     const checkDate = () => {
         var userdate = dateRef.current.value;
-        console.log(userdate);
+        console.log(typeof userdate);
         var birthday = userdate.split('-');
         var mydate = new Date(birthday[0], birthday[1] - 1, birthday[2]);
 

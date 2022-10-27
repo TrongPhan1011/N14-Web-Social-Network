@@ -32,6 +32,7 @@ function SideBarChat() {
     const handdleConnectSocket = (item) => {
         socket.emit('addUserSocket', item.id);
     };
+    console.log(chatResult);
 
     const handleRenderChat = () => {
         if (chatResult.length > 0) {
