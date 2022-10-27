@@ -24,8 +24,8 @@ function SideBar({ children, type }) {
 
     return (
         <div className={cx('w-full h-full border-l border-r border-lcn-blue-3')}>
-            <div className="w-full h-20 ">{HeaderSideBar ? <Search /> : <></>}</div>
-            <div className={cx('h-full ')}>
+            <div className="w-full h-[10vh] ">{HeaderSideBar ? <Search /> : <></>}</div>
+            <div className={cx('h-[90vh] ')}>
                 <Comp>{children}</Comp>
             </div>
         </div>

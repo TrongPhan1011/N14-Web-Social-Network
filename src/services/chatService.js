@@ -14,13 +14,3 @@ export const getChatByIdMember = async (idMember, accessToken, axiosJWT) => {
         return null;
     }
 };
-
-export const addUserSeenToMess = async (idGroupChat, data) => {
-    try {
-        await httpRequest.put(`groupchat/${idGroupChat}`, data);
-
-        return true;
-    } catch (error) {
-        console.log('Người dùng không tồn tại!');
-    }
-};

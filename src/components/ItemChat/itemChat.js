@@ -11,6 +11,8 @@ import { addUserSeenToMess } from '~/services/messageService';
 import { getMessageById } from '~/services/messageService';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import socket from '~/utils/getSocketIO';
+import { getLastName } from '~/lib/formatString';
 
 const cx = classNames;
 
@@ -20,10 +22,13 @@ function ItemChat({ groupChat, userLoginData }) {
     var currAccount = currAuth.currentUser;
     var accessToken = currAccount.accessToken;
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
+    var curSignIn = useSelector((state) => state.persistedReducer.signIn);
 
     const [messageLast, setMessageLast] = useState('');
     const [onlineValue, setOnlineValue] = useState('hidden');
-    const [itemSeen, setItemSeen] = useState(false);
+
+    const [seenState, setSeenState] = useState(false);
+    const [itemDataChat, setItemDataChat] = useState();
 
     var arrIdMessage = groupChat.message;
 
@@ -54,8 +59,25 @@ function ItemChat({ groupChat, userLoginData }) {
         };
         checkOnlineChat();
     }, []);
+    useEffect(() => {
+        socket.on('getMessage', (data) => {
+            if (!!data) {
+                var getNewMess = {
+                    id: data.id,
+                    title: data.title,
+                    authorID: data.authorID,
+                    seen: data.seen,
+                    type_mess: data.type,
+                    idChat: data.idChat,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt,
+                };
+                setMessageLast(getNewMess);
+            }
+        });
+    }, [socket]);
 
-    const checkSeen = (arrSeen, userId) => {
+    var checkSeen = (arrSeen, userId) => {
         if (!!arrSeen) {
             for (var user of arrSeen) {
                 if (user.id === userId) {
@@ -66,42 +88,56 @@ function ItemChat({ groupChat, userLoginData }) {
         return false;
     };
 
-    const getMessageLast = () => {
-        var titleMess = '',
-            messCreatedAt = '',
-            arrAuthorName = [];
-        if (!!messageLast) {
-            titleMess = messageLast.title || '';
-            messCreatedAt = formatTime(messageLast.createdAt, 'hh:mm') || '';
-            var fullNameAuthor = messageLast.authorID.fullName;
+    useEffect(() => {
+        var getClassSeen = () => {
+            var arrUserSeen = messageLast?.seen;
 
-            arrAuthorName = fullNameAuthor.split(' ');
-        }
+            var seen = checkSeen(arrUserSeen, userLoginData.id);
 
-        var arrUserSeen = messageLast.seen;
-
-        var seen = checkSeen(arrUserSeen, userLoginData.id);
-
-        var classSeen = {
-            textName: 'font-medium ',
-            textChatTitle: 'text-gray-400',
-            circleSeen: 'hidden',
+            if (!seen && !seenState) {
+                setSeenState(false);
+                return {
+                    textName: 'font-semibold ',
+                    textChatTitle: 'text-gray-900',
+                    circleSeen: '',
+                };
+            } else {
+                setSeenState(true);
+                return {
+                    textName: 'font-medium ',
+                    textChatTitle: 'text-gray-400',
+                    circleSeen: 'hidden',
+                };
+            }
         };
-        if (!seen) {
-            classSeen = {
-                textName: 'font-semibold ',
-                textChatTitle: 'text-gray-900',
-                circleSeen: '',
+        var getMessageLast = () => {
+            var titleMess = '',
+                messCreatedAt = '',
+                lastNameAuthor = 'Bạn';
+            if (!!messageLast) {
+                titleMess = messageLast.title || '';
+                messCreatedAt = formatTime(messageLast.createdAt, 'hh:mm') || '';
+                var fullNameAuthor = messageLast.authorID.fullName;
+
+                if (messageLast.authorID.id === curSignIn.userLogin.id) {
+                    lastNameAuthor = 'Bạn';
+                } else {
+                    lastNameAuthor = getLastName(fullNameAuthor);
+                }
+            }
+
+            var classSeen = getClassSeen();
+
+            return {
+                authorName: lastNameAuthor,
+                title: titleMess,
+                messCreatedAt,
+                classSeen,
             };
-        }
-        return {
-            authorName: arrAuthorName[arrAuthorName.length - 1] || '',
-            title: titleMess,
-            messCreatedAt,
-            classSeen,
         };
-    };
-    var itemDataChat = getMessageLast();
+        var itemData = getMessageLast();
+        setItemDataChat(itemData);
+    }, [messageLast]);
 
     const putUserSeen = async (idMess, dataSeen) => {
         await addUserSeenToMess(idMess, dataSeen, accessToken, axiosJWT);
@@ -117,7 +153,7 @@ function ItemChat({ groupChat, userLoginData }) {
         var seen = checkSeen(messageLast.seen, userClickSeen.id);
         if (!seen) {
             if (putUserSeen(messageLast.id, userClickSeen)) {
-                setItemSeen(true);
+                setSeenState(true);
             }
         }
         dispatch(currentChat(groupChat));

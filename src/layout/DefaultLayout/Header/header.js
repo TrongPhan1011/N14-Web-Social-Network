@@ -118,19 +118,19 @@ function Header({ userLoginData }) {
     };
 
     return (
-        <div className="  bg-lcn-blue-2 w-full  ">
+        <div className="  bg-lcn-blue-2 w-full h-screen ">
             <div className={cx('h-1/6 w-full flex pt-4')}>
                 <Button to={config.routeConfig.home} className="h-10 w-full ">
                     <img src={lcnImage.logo1} alt="logo" className="bg-none h-16 w-full " />
                 </Button>
                 <div className=""></div>
             </div>
-            <div className={cx('h-3/6 w-full ')}>
+            <div className={cx('h-2/6 w-full ')}>
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
                 <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
                 <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
             </div>
-            <div className={cx('h-2/6 w-full flex  flex-col justify-end items-center')}>
+            <div className={cx('h-3/6 w-full flex  flex-col justify-end items-center')}>
                 <div className={cx('pr-1 pl-1 w-full')}>
                     <Button className="h-14 w-full m-0 flex justify-center" onClick={handleShowModal}>
                         <div
