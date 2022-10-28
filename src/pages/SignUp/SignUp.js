@@ -111,7 +111,7 @@ function SignUp() {
         var birthday = userdate.split('-');
         var mydate = new Date(birthday[0], birthday[1] - 1, birthday[2]);
 
-        if (new Date().getFullYear() - mydate.getFullYear() < 18) {
+        if (new Date().getFullYear() - mydate.getFullYear() < 16) {
             setValidDate('opacity-1');
             return '';
         } else {
@@ -216,7 +216,7 @@ function SignUp() {
                                 ref={passwordRef}
                             />
                             <span className={cx('text-red-500 text-sm pl-3', validPassword)}>
-                                Mật khẩu không hợp lệ!
+                                Mật khẩu ít nhất phải có 6 kí tự!
                             </span>
                         </div>
                     </div>
@@ -260,7 +260,9 @@ function SignUp() {
                                 ref={dateRef}
                                 onChange={(e) => checkDate(e)}
                             />
-                            <span className={cx('text-red-500 text-sm pl-3', validDate)}>Dưới 18!</span>
+                            <span className={cx('text-red-500 text-sm pl-3', validDate)}>
+                                Tuổi của bạn phải trên 16
+                            </span>
                         </div>
                     </div>
                     <div className={cx('w-full  flex flex-row justify-between')}>
