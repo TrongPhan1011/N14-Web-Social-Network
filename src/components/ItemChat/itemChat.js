@@ -94,26 +94,25 @@ function ItemChat({ groupChat, userLoginData }) {
 
             var seen = checkSeen(arrUserSeen, userLoginData.id);
 
-            if (!seen && !seenState) {
-                setSeenState(false);
-                return {
+            if (!seen && curSignIn.userLogin.id !== messageLast.authorID.id) {
+                setSeenState({
                     textName: 'font-semibold ',
                     textChatTitle: 'text-gray-900',
                     circleSeen: '',
-                };
+                });
             } else {
-                setSeenState(true);
-                return {
+                setSeenState({
                     textName: 'font-medium ',
                     textChatTitle: 'text-gray-400',
                     circleSeen: 'hidden',
-                };
+                });
             }
         };
         var getMessageLast = () => {
             var titleMess = '',
                 messCreatedAt = '',
                 lastNameAuthor = 'Bạn';
+
             if (!!messageLast) {
                 titleMess = messageLast.title || '';
                 messCreatedAt = formatTime(messageLast.createdAt, 'hh:mm') || '';
@@ -124,15 +123,14 @@ function ItemChat({ groupChat, userLoginData }) {
                 } else {
                     lastNameAuthor = getLastName(fullNameAuthor);
                 }
-            }
 
-            var classSeen = getClassSeen();
+                getClassSeen();
+            }
 
             return {
                 authorName: lastNameAuthor,
                 title: titleMess,
                 messCreatedAt,
-                classSeen,
             };
         };
         var itemData = getMessageLast();
@@ -153,7 +151,11 @@ function ItemChat({ groupChat, userLoginData }) {
         var seen = checkSeen(messageLast.seen, userClickSeen.id);
         if (!seen) {
             if (putUserSeen(messageLast.id, userClickSeen)) {
-                setSeenState(true);
+                setSeenState({
+                    textName: 'font-medium ',
+                    textChatTitle: 'text-gray-400',
+                    circleSeen: 'hidden',
+                });
             }
         }
         dispatch(currentChat(groupChat));
@@ -176,7 +178,7 @@ function ItemChat({ groupChat, userLoginData }) {
                             )}
                         ></div>
                         <div className={cx('w-40  h-full ml-2 overflow-hidden')}>
-                            <div className={cx('text-left text-lcn-blue-5 h-8 w-96 ', itemDataChat.classSeen.textName)}>
+                            <div className={cx('text-left text-lcn-blue-5 h-8 w-96 ', seenState?.textName)}>
                                 {groupChat.name}
                             </div>
                             <div className={cx(' text-xs text-left h-8')}>
@@ -187,13 +189,13 @@ function ItemChat({ groupChat, userLoginData }) {
                             <div
                                 className={cx(
                                     'h-3 w-3 bg-lcn-blue-4 rounded-full  absolute top-4 right-0',
-                                    itemDataChat.classSeen.circleSeen,
+                                    seenState?.circleSeen,
                                 )}
                             ></div>
                             <div
                                 className={cx(
                                     'text-gray-500 text-xs text-left h-full flex items-end',
-                                    itemDataChat.classSeen.textChatTitle,
+                                    seenState?.textChatTitle,
                                 )}
                             >
                                 {itemDataChat.messCreatedAt}

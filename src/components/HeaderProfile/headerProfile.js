@@ -1,8 +1,14 @@
 import classNames from 'classnames';
+import { lcnImage } from '~/image';
+import Avartar from '~/components/Avartar';
 
 const cx = classNames;
 
-function HeaderProfile({ avatar, coverPhoto, userName }) {
+function HeaderProfile({ avatar, coverPhoto, userName, profile }) {
+    var ava = lcnImage.avatarDefault;
+    if (avatar) {
+        ava = avatar;
+    }
     return (
         <div className={cx('h-2/5 w-full mb-16')}>
             <div className={cx(' h-full w-full ')}>
@@ -14,9 +20,7 @@ function HeaderProfile({ avatar, coverPhoto, userName }) {
                                 'w-32 h-32 top-[-60%] z-0 relative overflow-hidden flex justify-center items-center rounded-full border-[3px] bg-black bg-opacity-20 border-white',
                             )}
                         >
-                            <div className={cx('w-28 h-28 overflow-hidden  rounded-full ')}>
-                                <img src={avatar} alt="avatar" className={cx('')} />
-                            </div>
+                            <Avartar className={cx('h-28 w-28')} src={ava} />
                         </div>
                     </div>
                 </div>

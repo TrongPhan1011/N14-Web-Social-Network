@@ -1,16 +1,43 @@
 import classNames from 'classnames';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ItemBanBe from '~/components/ItemBanBe';
 import ItemChoXacNhan from '~/components/ItemChoXacNhan';
-
 import ItemChan from '~/components/ItemChan';
-import { useSelector } from 'react-redux';
+
+import { getAllFriend, getWaitingFriend } from '~/services/userService';
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { findSuccess } from '~/redux/Slice/friendSlice';
 const cx = classNames;
 
 function ListItem({ type }) {
-    const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
+    const dispatch = useDispatch();
+    const [listFriend, setListFriend] = useState([]);
+    const [listAddFriend, setListAddFriend] = useState([]);
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
+    var accessToken = currAccount.accessToken;
+    var axiosJWT = getAxiosJWT(dispatch, currAccount);
+    var curSignIn = useSelector((state) => state.persistedReducer.signIn);
+    var curUser = curSignIn.userLogin;
 
-    var list = userLoginData.friend;
+    useEffect(() => {
+        const getListFriend = async () => {
+            const friendByStatus = await getAllFriend(curUser.id, accessToken, axiosJWT);
+            setListFriend(friendByStatus[0].friend);
+        };
+
+        getListFriend();
+    }, []);
+    useEffect(() => {
+        const getListWaiting = async () => {
+            const friendIsWaiting = await getWaitingFriend(curUser.id, accessToken, axiosJWT);
+            setListAddFriend(friendIsWaiting[0].friend);
+        };
+
+        getListWaiting();
+    }, []);
 
     var Comp = ItemBanBe;
     if (type === 'choXacNhan') {
@@ -19,10 +46,32 @@ function ListItem({ type }) {
         Comp = ItemChan;
     }
 
-    const renderBanBe = () => {
-        return list.map((item) => <Comp key={item.id} userId={item.id} />);
+    const handleRenderItem = () => {
+        var listAdd = listAddFriend;
+        delete listAdd[0];
+        if (listFriend.length > 0 && Comp === ItemBanBe) {
+            dispatch(findSuccess(listFriend[0]));
+            return listFriend.map((item) => {
+                return <Comp key={item.id} userId={item._id} name={item.fullName} avt={item.profile.urlAvartar} />;
+            });
+        }
+        if (listAdd.length > 0 && type === 'choXacNhan') {
+            dispatch(findSuccess(listAdd[0]));
+            return listAdd.map((item) => {
+                return (
+                    <Comp
+                        key={item._id}
+                        friendName={item.fullName}
+                        friendId={item._id}
+                        accessToken={accessToken}
+                        axiosJWT={axiosJWT}
+                    />
+                );
+            });
+        }
     };
-    return <div className={cx('w-full h-full overflow-y-scroll')}>{renderBanBe()}</div>;
+
+    return <div className={cx('w-full h-full overflow-y-scroll')}>{handleRenderItem()}</div>;
 }
 
 export default ListItem;
