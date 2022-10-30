@@ -196,7 +196,7 @@ function Header({ userLoginData }) {
                     <div>
                         <Button type="button" className={cx(' mb-7 mt-3 ')} onClick={handleShowMenu}>
                             <Avartar
-                                src={userLoginData.profile.urlAvartar}
+                                src={userLoginData?.profile?.urlAvartar}
                                 className={cx('h-14 w-14 bg-lcn-blue-4 border border-lcn-blue-4 ')}
                             />
                         </Button>

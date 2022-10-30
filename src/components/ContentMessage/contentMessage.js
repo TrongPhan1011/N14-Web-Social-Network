@@ -77,7 +77,7 @@ function ContentMessage() {
                 var isLastMess = false;
                 var indexLast = listMessage.length - 1;
                 if (index === indexLast) isLastMess = true;
-
+                var mess = item.title.replace('&#', '&#');
                 if (item.authorID.id === curUser.id) {
                     return (
                         <ItemMessage
@@ -86,7 +86,7 @@ function ContentMessage() {
                             messageData={item}
                             isLastMess={isLastMess}
                         >
-                            {item.title}
+                            {mess}
                         </ItemMessage>
                     );
                 } else {
@@ -111,15 +111,7 @@ function ContentMessage() {
             </div>
             <div className={cx('w-full  ')}>
                 {renderMessage()}
-                {/* <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage>
-                <ItemMessage>123</ItemMessage> */}
+
                 <span className="" ref={bottomRef}></span>
             </div>
         </div>

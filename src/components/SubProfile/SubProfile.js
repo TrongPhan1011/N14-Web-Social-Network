@@ -33,10 +33,10 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday }) {
     const renderSubGioiThieu = () => {
         return (
             <Comp
-                gender={data.gender}
+                gender={data?.gender}
                 birthday={birthday}
-                education={profile.education}
-                phoneNumber={data.phoneNumber}
+                education={profile?.education}
+                phoneNumber={data?.phoneNumber}
             />
         );
     };

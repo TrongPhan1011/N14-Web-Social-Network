@@ -66,8 +66,11 @@ export const register = async (user, navigate, dispatch) => {
         const res = await httpRequest.post('auth/register/', user);
         dispatch(userSignUp(null)); // xoa signIn
 
-        navigate(config.routeConfig.signIn);
-        return res;
+        if (!!res) {
+            return { userName: user.email, password: user.password };
+        }
+        // navigate(config.routeConfig.signIn);
+        // return res;
     } catch (error) {
         return null;
     }

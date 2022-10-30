@@ -7,6 +7,7 @@ import { MdMail } from 'react-icons/md';
 import Button from '~/components/Button';
 import { register } from '~/services/authService';
 import config from '~/configRoutes';
+import { loginUser } from '~/services/authService';
 
 const cx = classNames;
 
@@ -44,7 +45,9 @@ function Otp() {
 
         //dang ky thanh cong
         var registerHandle = await register(dangKy, navigate, dispatch);
-        if (registerHandle === false) {
+        if (!!registerHandle) {
+            await loginUser(registerHandle, dispatch, navigate);
+        } else {
             navigate(config.routeConfig.signUp);
         }
     };
