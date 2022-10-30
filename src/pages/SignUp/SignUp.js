@@ -139,7 +139,7 @@ function SignUp() {
             };
             // đăng nhập thành công -->
             var register = await sendOTP(user, dispatch, navigate);
-            if (register === false) {
+            if (!register) {
                 setFailLogin('');
             }
         } else return false;
@@ -153,6 +153,9 @@ function SignUp() {
             </div>
             <div className={cx('h-5/6 flex flex-row justify-center')}>
                 <form className={cx(' w-2/3 p-3 h-full flex flex-col justify-around')}>
+                    <div className={cx('text-red-500 text-sm text-center w-full pt-2', failLogin)}>
+                        Email đã được sử dụng
+                    </div>
                     <div className={cx('flex justify-center w-full')}>
                         <div className={cx('w-full relative  ')}>
                             <div

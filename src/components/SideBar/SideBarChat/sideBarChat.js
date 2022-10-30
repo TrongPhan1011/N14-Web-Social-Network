@@ -29,8 +29,9 @@ function SideBarChat() {
         fetchChat();
     }, []);
 
+    // khoi tao socket room
     const handdleConnectSocket = (item) => {
-        socket.emit('addUserSocket', item.id);
+        socket.emit('sendMessage', { receiverId: item.id, contentMessage: null });
     };
     console.log(chatResult);
 
@@ -44,7 +45,7 @@ function SideBarChat() {
         } else return <></>;
     };
 
-    return <div className={cx('p-2 h-screen overflow-y-auto')}>{handleRenderChat()}</div>;
+    return <div className={cx('p-2 h-full overflow-y-auto')}>{handleRenderChat()}</div>;
 }
 
 export default memo(SideBarChat);

@@ -1,5 +1,3 @@
-import * as httpRequest from '~/utils/httpRequest';
-
 export const getMessageById = async (idMessage, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.get('/message/id/' + idMessage, {
@@ -36,5 +34,16 @@ export const addUserSeenToMess = async (idMess, data, accessToken, axiosJWT) => 
         return true;
     } catch (error) {
         console.log('Người dùng không tồn tại!');
+    }
+};
+export const addMess = async (data, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.post(`/message/`, data, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        console.log('Luu tin nhan khong thanh cong');
     }
 };

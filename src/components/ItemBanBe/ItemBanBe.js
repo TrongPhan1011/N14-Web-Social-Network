@@ -5,6 +5,7 @@ import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 
 import routeConfig from '~/configRoutes';
+import Avartar from '~/components/Avartar';
 
 const cx = classNames;
 function ItemBanBe({ userId, name, avt }) {
@@ -18,13 +19,7 @@ function ItemBanBe({ userId, name, avt }) {
         return (
             <Button to={profile} className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
                 <div className={cx('relative w-full h-full flex items-center')}>
-                    <div
-                        className={cx(
-                            'w-10 h-10 bg-lcn-blue-4 rounded-full overflow-hidden flex justify-center items-center p-1 relative',
-                        )}
-                    >
-                        <img src={img} alt="avartar" className={cx('w-full h-full border ')} />
-                    </div>
+                    <Avartar className="w-10 h-10" src={img} />
 
                     <div className={cx('w-40  h-full ml-2 overflow-hidden flex items-center')}>
                         <div className={cx('text-left text-lcn-blue-5 font-semibold h-8 w-96 ')}>{name}</div>

@@ -52,7 +52,7 @@ function ListItem({ type }) {
         if (listFriend.length > 0 && Comp === ItemBanBe) {
             dispatch(findSuccess(listFriend[0]));
             return listFriend.map((item) => {
-                return <Comp key={item.id} userId={item._id} name={item.fullName} avt={item.profile.urlAvartar} />;
+                return <Comp key={item._id} userId={item._id} name={item.fullName} avt={item.profile.urlAvartar} />;
             });
         }
         if (listAdd.length > 0 && type === 'choXacNhan') {

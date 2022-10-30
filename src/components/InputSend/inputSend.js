@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '~/components/Button';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import socket from '~/utils/getSocketIO';
+import { addMess } from '~/services/messageService';
 
 const cx = classNames;
 
@@ -24,40 +25,71 @@ function InputSend({ type }) {
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
 
     const [currMessage, setCurrMessage] = useState('');
+    const [messageSend, setMessageSend] = useState();
     const txtSendRef = useRef();
 
     useEffect(() => {
-        // socket.on();
-    }, []);
+        if (!!curChat && !!messageSend) {
+            socket.emit('sendMessage', {
+                receiverId: curChat.id,
+                contentMessage: messageSend,
+            });
+            txtSendRef.current.value = '';
+        }
+    }, [messageSend]);
+
+    const saveMess = async (newMessSave, newMess) => {
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+
+            newMess.id = messData.id;
+            console.log(newMess);
+            setMessageSend(newMess);
+        }
+    };
 
     const handleSendMessage = () => {
         var newMess = {
             title: currMessage,
-            authorID: curSignIn.userLogin.id,
-            nameAuthor: curSignIn.userLogin.fullName,
-            avartar: curSignIn.userLogin.profile.urlAvartar,
+            authorID: {
+                id: curSignIn.userLogin.id,
+                fullName: curSignIn.userLogin.fullName,
+                profile: {
+                    urlAvartar: curSignIn.userLogin.profile.urlAvartar,
+                },
+            },
+
             type: 'text',
             idChat: curChat.id,
+            seen: [
+                {
+                    idSeen: curSignIn.userLogin.id,
+                    seenAt: Date.now(),
+                },
+            ],
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
 
-        socket.emit('sendMessage', {
-            senderId: curSignIn.id,
-            receiverId: curChat.id,
-            contentMessage: newMess,
-        });
+        var newMessSave = {
+            title: newMess.title,
+            authorID: newMess.authorID.id,
+            seen: newMess.seen,
+            type_mess: newMess.type,
+            idChat: newMess.idChat,
+            status: 1,
+        };
 
-        txtSendRef.current.value = '';
+        saveMess(newMessSave, newMess);
+    };
+    const handleKeyUpSendMess = (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
     };
 
-    var positon = 'absolute bottom-0';
-    if (type === 'comment') {
-        positon = '';
-    }
-
     return (
-        <div className={cx('h-16   bg-white p-2 w-full mr-20 flex items-center', positon)}>
+        <div className={cx('h-full  bg-white p-2 w-full mr-20 flex items-center z-20')}>
             <Button className={cx('m-0 ml-1')}>
                 <AiFillPlusCircle className={cx('text-lcn-blue-4 text-3xl')} />
             </Button>
@@ -73,6 +105,7 @@ function InputSend({ type }) {
                 onChange={(e) => {
                     setCurrMessage(e.target.value.trim());
                 }}
+                onKeyUp={handleKeyUpSendMess}
                 ref={txtSendRef}
             />
             <Button
