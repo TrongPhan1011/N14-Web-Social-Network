@@ -8,7 +8,8 @@ import Setting from '~/pages/Setting';
 import routeConfig from '~/configRoutes';
 import SignIn from '~/pages/SignIn';
 import Otp from '~/pages/Otp';
-
+import QuenMatKhau from '~/pages/QuenMatKhau';
+import SuaMatKhau from '~/pages/SuaMatKhau';
 //public
 const publicRoutes = [
     {
@@ -36,6 +37,16 @@ const publicRoutes = [
     {
         path: routeConfig.routeConfig.otp,
         component: Otp,
+        layout: LoginLayout,
+    },
+    {
+        path: routeConfig.routeConfig.quenMatKhau,
+        component: QuenMatKhau,
+        layout: LoginLayout,
+    },
+    {
+        path: routeConfig.routeConfig.suaMatKhau,
+        component: SuaMatKhau,
         layout: LoginLayout,
     },
     {

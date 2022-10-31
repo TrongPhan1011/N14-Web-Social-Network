@@ -33,7 +33,7 @@ function ContentProfile({ userId }) {
         const getProfile = async () => {
             const getUserProfile = await getUserById(userId, accessToken, axiosJWT);
             setUserProfile(getUserProfile);
-            setProfile(getUserProfile.profile);
+            setProfile(getUserProfile?.profile);
             // setBirthday(getUserProfile.birthday.split('-'));
             var date = getUserProfile.birthday.split('-');
             var myDate = `${date[2]}-${date[1]}-${date[0]}`;
@@ -58,9 +58,9 @@ function ContentProfile({ userId }) {
         <div className={cx(' w-full h-full relative flex overflow-hidden justify-center items-center')}>
             <div className={cx(' w-full h-screen bg-white flex flex-col items-center   overflow-y-scroll')}>
                 <HeaderProfile
-                    avatar={profile.urlAvartar}
+                    avatar={profile?.urlAvartar}
                     coverPhoto={lcnImage.coverPhoto}
-                    userName={userProfile.fullName}
+                    userName={userProfile?.fullName}
                 />
                 <div className={cx('mb-3 w-full h-14 flex justify-center')}>
                     <div className={cx('w-1/4 h-full flex flex-row justify-between ')}>

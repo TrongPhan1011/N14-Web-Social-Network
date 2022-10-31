@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaLock } from 'react-icons/fa';
 import { MdMail } from 'react-icons/md';
 import { RiUserFill } from 'react-icons/ri';
-import { sendOTP } from '~/services/authService';
+import { sendOTP, getAuthByMail } from '~/services/authService';
 import config from '~/configRoutes';
 import Button from '~/components/Button';
-import { userSignUp } from '~';
 
 const cx = classNames;
 
@@ -21,6 +20,7 @@ function SignUp() {
     const [validConfirmPassword, setvalidConfirmPassword] = useState('opacity-0');
     const [validDate, setValidDate] = useState('opacity-0');
     const [date, setDate] = useState(null);
+
     const [failLogin, setFailLogin] = useState('hidden');
 
     const dispatch = useDispatch();
@@ -84,9 +84,17 @@ function SignUp() {
             return valueEmail;
         }
     };
+    const checkExistEmail = async () => {
+        var valueEmail = emailRef.current.value.trim();
+
+        var userGeted = await getAuthByMail(valueEmail);
+        if (!!userGeted) {
+            setFailLogin('');
+        } else setFailLogin('hidden');
+    };
     const checkValidPassword = () => {
         var valuePassword = passwordRef.current.value.trim();
-        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9\.@ ]{6,}$/)) {
+        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9.@ ]{6,}$/)) {
             setValidPassword('opacity-1');
             return '';
         } else {
@@ -131,14 +139,15 @@ function SignUp() {
 
         if (!!validEmail && !!validPassword) {
             var user = {
-                userName: valueUserName,
-                email: valueEmail,
+                name: valueUserName,
+                userName: valueEmail,
                 password: valuePassword,
                 birthday: valueDate,
                 gender: gender,
             };
             // đăng nhập thành công -->
             var register = await sendOTP(user, dispatch, navigate);
+
             if (!register) {
                 setFailLogin('');
             }
@@ -153,7 +162,7 @@ function SignUp() {
             </div>
             <div className={cx('h-5/6 flex flex-row justify-center')}>
                 <form className={cx(' w-2/3 p-3 h-full flex flex-col justify-around')}>
-                    <div className={cx('text-red-500 text-sm text-center w-full pt-2', failLogin)}>
+                    <div className={cx(' text-red-500 text-sm text-center w-full pt-2', failLogin)}>
                         Email đã được sử dụng
                     </div>
                     <div className={cx('flex justify-center w-full')}>
@@ -170,7 +179,7 @@ function SignUp() {
                                 className={cx(
                                     'block p-2 pl-8 caret-lcn-blue-4 text-sm w-full rounded-lcn-login-input bg-transparent border border-lcn-blue-4 outline-none placeholder:text-lcn-placeholder',
                                 )}
-                                placeholder="Tên đăng nhập"
+                                placeholder="Tên người dùng"
                                 onChange={checkValidUserName}
                                 ref={userRef}
                             />
@@ -195,6 +204,7 @@ function SignUp() {
                                 )}
                                 placeholder="Nhập email"
                                 onChange={checkValidEmail}
+                                onBlur={checkExistEmail}
                                 ref={emailRef}
                             />
                             <span className={cx('text-red-500 text-sm pl-3', validEmail)}>Email không hợp lệ!</span>
@@ -219,7 +229,7 @@ function SignUp() {
                                 ref={passwordRef}
                             />
                             <span className={cx('text-red-500 text-sm pl-3', validPassword)}>
-                                Mật khẩu ít nhất phải có 6 kí tự!
+                                Mật khẩu phải có ít nhất 6 kí tự
                             </span>
                         </div>
                     </div>

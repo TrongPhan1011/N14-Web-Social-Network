@@ -10,8 +10,8 @@ export const get = async (path, option = {}) => {
     return resp.data;
 };
 
-export const post = async (path, data) => {
-    const resp = await request.post(path, data);
+export const post = async (path, data, option) => {
+    const resp = await request.post(path, data, option);
 
     return resp.data;
 };

@@ -46,8 +46,7 @@ function ItemChat({ groupChat, userLoginData }) {
 
         var userChatOther = null;
         const checkOnlineChat = async () => {
-            const NUMBER_MEMBER = 3;
-            if (groupChat.member.length < NUMBER_MEMBER) {
+            if (groupChat.typeChat === 'inbox') {
                 if (groupChat.member[0] !== userLoginData.id) {
                     userChatOther = await getUserById(groupChat.member[0], accessToken, axiosJWT);
                 } else userChatOther = await getUserById(groupChat.member[1], accessToken, axiosJWT);

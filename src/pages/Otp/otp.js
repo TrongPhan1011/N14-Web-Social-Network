@@ -1,12 +1,13 @@
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { MdMail } from 'react-icons/md';
 import Button from '~/components/Button';
-import { register } from '~/services/authService';
+import { register, verifyOtp } from '~/services/authService';
 import config from '~/configRoutes';
+import { loginUser } from '~/services/authService';
 
 const cx = classNames;
 
@@ -15,6 +16,7 @@ function Otp() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp.userSignUp);
+    // console.log(currentSignUpAccount);
 
     const otpRef = useRef();
 
@@ -44,11 +46,30 @@ function Otp() {
 
         //dang ky thanh cong
         var registerHandle = await register(dangKy, navigate, dispatch);
-        if (registerHandle === false) {
+        if (!!registerHandle) {
+            await loginUser(registerHandle, dispatch, navigate);
+        } else {
             navigate(config.routeConfig.signUp);
         }
     };
-
+    const handleVerify = async () => {
+        var otpValue = checkValidOTP();
+        var user = {
+            userName: currentSignUpAccount.userName,
+            otp: otpValue,
+        };
+        // console.log(user);
+        var thongBao = await verifyOtp(user, navigate);
+        console.log(thongBao);
+    };
+    const handleConfirmOtp = () => {
+        if (!!currentSignUpAccount.gender) {
+            handleRegister();
+        } else {
+            console.log(1);
+            handleVerify();
+        }
+    };
     return (
         <div className={cx('bg-white h-4/6 w-2/6 rounded-2xl drop-shadow-lcn-login')}>
             <div className={cx('h-1/4 p-5 border-b border-lcn-blue-4 border-opacity-20')}>
@@ -100,9 +121,9 @@ function Otp() {
                                 'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
                                 'bg-lcn-blue-3 justify-center',
                             )}
-                            onClick={handleRegister}
+                            onClick={handleConfirmOtp}
                         >
-                            Đăng ký
+                            Xác nhận
                         </Button>
                     </div>
                 </div>

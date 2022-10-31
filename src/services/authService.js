@@ -53,6 +53,7 @@ export const logout = async (dispatch, navigate, accessToken, axiosJWT) => {
 export const sendOTP = async (user, dispatch, navigate) => {
     try {
         const res = await httpRequest.post('otp/', user);
+        console.log(res);
         dispatch(userSignUp(user));
         navigate(config.routeConfig.otp);
         return res;
@@ -60,15 +61,57 @@ export const sendOTP = async (user, dispatch, navigate) => {
         return null;
     }
 };
-
+export const verifyOtp = async (user, navigate) => {
+    try {
+        const res = await httpRequest.get('otp/verify', {
+            params: {
+                email: user.userName,
+                otp: user.otp,
+            },
+        });
+        navigate(config.routeConfig.suaMatKhau);
+        return res;
+    } catch (error) {
+        return null;
+    }
+};
 export const register = async (user, navigate, dispatch) => {
     try {
         const res = await httpRequest.post('auth/register/', user);
         dispatch(userSignUp(null)); // xoa signIn
 
-        navigate(config.routeConfig.signIn);
+        if (!!res) {
+            return { userName: user.userName, password: user.password };
+        }
+        // navigate(config.routeConfig.signIn);
+        // return res;
+    } catch (error) {
+        return null;
+    }
+};
+export const getAuthByMail = async (email) => {
+    try {
+        const res = await httpRequest.get('auth/getauthbymail', {
+            params: {
+                email: email,
+            },
+        });
         return res;
     } catch (error) {
         return null;
+    }
+};
+export const updatePassword = async (user, dispatch, navigate) => {
+    try {
+        const dataUser = await httpRequest.put('auth/update', user);
+
+        if (!!dataUser) {
+            dispatch(userSignUp(null)); // lưu lại user trong redux
+            navigate(config.routeConfig.signIn);
+            return true;
+        } else return false;
+    } catch (error) {
+        dispatch(loginErorr());
+        return false;
     }
 };
