@@ -76,12 +76,13 @@ export const verifyOtp = async (user, navigate) => {
     }
 };
 export const register = async (user, navigate, dispatch) => {
+    console.log(user);
     try {
         const res = await httpRequest.post('auth/register/', user);
         dispatch(userSignUp(null)); // xoa signIn
-
+        console.log(res);
         if (!!res) {
-            return { userName: user.userName, password: user.password };
+            return { userName: user.email, password: user.password };
         }
         // navigate(config.routeConfig.signIn);
         // return res;

@@ -140,7 +140,7 @@ function SignIn() {
                                 </Button>
                             </div>
                             <div className={cx('w-full h-4 flex justify-center text-[#0289FF] font-semibold')}>
-                                <a href="/dangky" className={cx('')}>
+                                <a href="/quenMatKhau" className={cx('')}>
                                     Bạn quên mật khẩu ư?
                                 </a>
                             </div>

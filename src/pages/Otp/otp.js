@@ -16,7 +16,7 @@ function Otp() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp.userSignUp);
-    // console.log(currentSignUpAccount);
+    console.log(currentSignUpAccount);
 
     const otpRef = useRef();
 
@@ -35,9 +35,8 @@ function Otp() {
     const handleRegister = async () => {
         var otpValue = checkValidOTP();
         var dangKy = {
-            userName: currentSignUpAccount.userName,
-
-            email: currentSignUpAccount.email,
+            userName: currentSignUpAccount.name,
+            email: currentSignUpAccount.userName,
             password: currentSignUpAccount.password,
             birthday: currentSignUpAccount.birthday,
             gender: currentSignUpAccount.gender,
@@ -46,6 +45,7 @@ function Otp() {
 
         //dang ky thanh cong
         var registerHandle = await register(dangKy, navigate, dispatch);
+        console.log(registerHandle);
         if (!!registerHandle) {
             await loginUser(registerHandle, dispatch, navigate);
         } else {
@@ -64,6 +64,7 @@ function Otp() {
     };
     const handleConfirmOtp = () => {
         if (!!currentSignUpAccount.gender) {
+            console.log(2);
             handleRegister();
         } else {
             console.log(1);
