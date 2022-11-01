@@ -1,5 +1,3 @@
-import * as httpRequest from '~/utils/httpRequest';
-
 export const getChatByIdMember = async (idMember, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.get('/chat/user_id', {

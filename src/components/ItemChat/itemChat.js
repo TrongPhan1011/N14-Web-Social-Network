@@ -70,6 +70,7 @@ function ItemChat({ groupChat, userLoginData }) {
                     idChat: data.idChat,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
+                    file: data.file,
                 };
                 setMessageLast(getNewMess);
             }
@@ -113,7 +114,9 @@ function ItemChat({ groupChat, userLoginData }) {
                 lastNameAuthor = 'Bạn';
 
             if (!!messageLast) {
-                titleMess = messageLast.title || '';
+                if (messageLast.title === '') {
+                    titleMess = 'Đã gửi file';
+                } else titleMess = messageLast.title;
                 messCreatedAt = formatTime(messageLast.createdAt, 'hh:mm') || '';
                 var fullNameAuthor = messageLast.authorID.fullName;
 

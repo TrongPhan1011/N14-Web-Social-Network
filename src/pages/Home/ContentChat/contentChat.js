@@ -32,8 +32,8 @@ function ContentChat() {
 
     return (
         <div className={cx(' w-full h-full flex overflow-hidden ')}>
-            <div className={cx('w-full    justify-between ')}>
-                <div className={cx('h-[10vh] bg-lcn-blue-2 w-full flex  top-0')}>
+            <div className={cx('w-full    justify-between  ')}>
+                <div className={cx('h-[10vh] bg-lcn-blue-2  w-full flex  top-0')}>
                     <div className={cx('w-1/2  h-full flex pl-4')}>
                         <Button type="button">
                             <Avartar className={cx('h-12 w-12')} src={currChat?.avatar} />

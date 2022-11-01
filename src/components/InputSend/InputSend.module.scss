@@ -1,0 +1,6 @@
+[contentEditable='true']:empty:not(:focus):after {
+    content: attr(data-text);
+    color: gray;
+    position: relative;
+    z-index: -1;
+}

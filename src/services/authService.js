@@ -7,7 +7,7 @@ import config from '~/configRoutes';
 
 export const loginUser = async (user, dispatch, navigate) => {
     try {
-        const dataUser = await httpRequest.post('auth/login', user);
+        const dataUser = await httpRequest.post('auth/login', user, { withCredentials: true });
 
         if (!!dataUser) {
             dispatch(loginSuccess(dataUser)); // lưu lại user trong redux
@@ -24,9 +24,13 @@ export const loginUser = async (user, dispatch, navigate) => {
 };
 export const getRefreshToken = async () => {
     try {
-        const res = await httpRequest.post('auth/refresh', {
-            withCredentials: true,
-        });
+        const res = await httpRequest.post(
+            'auth/refresh',
+            {},
+            {
+                withCredentials: true,
+            },
+        );
         return res;
     } catch (error) {
         return null;
