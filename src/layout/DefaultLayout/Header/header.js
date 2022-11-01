@@ -172,7 +172,7 @@ function Header({ userLoginData }) {
                                 value={userLoginData.id}
                             />
                         </div>
-                        <div className={cx('flex justify-center')}>
+                        <div className={cx('flex justify-center text-red-600')}>
                             <Button
                                 className={cx(
                                     'bg-lcn-blue-1 border border-lcn-blue-4 text-lcn-blue-4 h-12 p-3 ml-2 mt-0 text-2xl justify-center',

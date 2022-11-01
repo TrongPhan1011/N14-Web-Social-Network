@@ -7,7 +7,8 @@ const setting = '/setting';
 const signUp = '/dangky';
 const signIn = '/dangnhap';
 const otp = '/otp';
-
+const quenMatKhau = '/quenMatKhau';
+const suaMatKhau = '/suaMatKhau';
 /*
     Level 2
 
@@ -26,6 +27,8 @@ const routes = {
     signUp: signUp,
     signIn: signIn,
     otp: otp,
+    quenMatKhau: quenMatKhau,
+    suaMatKhau: suaMatKhau,
     // level 2
     profile: profile,
     thongTinChung: thongTinChung,

@@ -63,10 +63,6 @@ export const getWaitingFriend = async (idUser, accessToken, axiosJWT) => {
     }
 };
 export const acceptFriend = async (idUser, idFriend, accessToken, axiosJWT) => {
-    console.log(idUser);
-    console.log(idFriend);
-    console.log(accessToken);
-
     try {
         const res = await axiosJWT.put(
             'user/acceptfriend/',

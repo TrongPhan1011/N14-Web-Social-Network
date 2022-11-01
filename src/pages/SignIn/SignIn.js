@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { FaLock } from 'react-icons/fa';
-import { FiMail } from 'react-icons/fi';
+
 import { MdMail } from 'react-icons/md';
 
 import Button from '~/components/Button';
@@ -138,6 +138,11 @@ function SignIn() {
                                 >
                                     Đăng nhập
                                 </Button>
+                            </div>
+                            <div className={cx('w-full h-4 flex justify-center text-[#0289FF] font-semibold')}>
+                                <a href="/quenMatKhau" className={cx('')}>
+                                    Bạn quên mật khẩu ư?
+                                </a>
                             </div>
                             <div className={cx('flex justify-center w-full text-[#004078]')}>
                                 Bạn chưa có tài khoản?

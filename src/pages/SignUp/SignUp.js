@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaLock } from 'react-icons/fa';
 import { MdMail } from 'react-icons/md';
 import { RiUserFill } from 'react-icons/ri';
-import { sendOTP } from '~/services/authService';
+import { sendOTP, getAuthByMail } from '~/services/authService';
 import config from '~/configRoutes';
 import Button from '~/components/Button';
-import { userSignUp } from '~';
 
 const cx = classNames;
 
@@ -21,6 +20,7 @@ function SignUp() {
     const [validConfirmPassword, setvalidConfirmPassword] = useState('opacity-0');
     const [validDate, setValidDate] = useState('opacity-0');
     const [date, setDate] = useState(null);
+
     const [failLogin, setFailLogin] = useState('hidden');
 
     const dispatch = useDispatch();
@@ -84,9 +84,17 @@ function SignUp() {
             return valueEmail;
         }
     };
+    const checkExistEmail = async () => {
+        var valueEmail = emailRef.current.value.trim();
+
+        var userGeted = await getAuthByMail(valueEmail);
+        if (!!userGeted) {
+            setFailLogin('');
+        } else setFailLogin('hidden');
+    };
     const checkValidPassword = () => {
         var valuePassword = passwordRef.current.value.trim();
-        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9\.@ ]{6,}$/)) {
+        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9.@ ]{6,}$/)) {
             setValidPassword('opacity-1');
             return '';
         } else {
@@ -111,7 +119,7 @@ function SignUp() {
         var birthday = userdate.split('-');
         var mydate = new Date(birthday[0], birthday[1] - 1, birthday[2]);
 
-        if (new Date().getFullYear() - mydate.getFullYear() < 18) {
+        if (new Date().getFullYear() - mydate.getFullYear() < 16) {
             setValidDate('opacity-1');
             return '';
         } else {
@@ -131,8 +139,8 @@ function SignUp() {
 
         if (!!validEmail && !!validPassword) {
             var user = {
-                userName: valueUserName,
-                email: valueEmail,
+                name: valueUserName,
+                userName: valueEmail,
                 password: valuePassword,
                 birthday: valueDate,
                 gender: gender,
@@ -196,6 +204,7 @@ function SignUp() {
                                 )}
                                 placeholder="Nhập email"
                                 onChange={checkValidEmail}
+                                onBlur={checkExistEmail}
                                 ref={emailRef}
                             />
                             <span className={cx('text-red-500 text-sm pl-3', validEmail)}>Email không hợp lệ!</span>
@@ -264,7 +273,9 @@ function SignUp() {
                                 ref={dateRef}
                                 onChange={(e) => checkDate(e)}
                             />
-                            <span className={cx('text-red-500 text-sm pl-3', validDate)}>Dưới 18!</span>
+                            <span className={cx('text-red-500 text-sm pl-3', validDate)}>
+                                Tuổi của bạn phải trên 16
+                            </span>
                         </div>
                     </div>
                     <div className={cx('w-full  flex flex-row justify-between')}>
