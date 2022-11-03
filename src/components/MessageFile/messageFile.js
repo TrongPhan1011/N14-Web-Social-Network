@@ -1,4 +1,7 @@
 import classNames from 'classnames';
+import { FiPaperclip } from 'react-icons/fi';
+import FileSaver from 'file-saver';
+import Button from '~/components/Button';
 const cx = classNames;
 function MessageFile({ messageData }) {
     var renderOneFile = (firstFile) => {
@@ -13,6 +16,32 @@ function MessageFile({ messageData }) {
                 <div className={cx('rounded-2xl overflow-hidden max-h-80 min-w-[100px] hover:cursor-pointer ')}>
                     <video src={firstFile?.path} alt="file img" className={cx('w-full')} controls={true} />
                 </div>
+            );
+        } else if (firstFile.fileType === 'doc') {
+            var fileName = firstFile.title;
+            if (firstFile.title.length > 30) {
+                fileName =
+                    fileName.slice(0, 20) +
+                    ' ... ' +
+                    fileName.slice(firstFile.title.length - 10, firstFile.title.length);
+            }
+            return (
+                <Button
+                    className={cx(
+                        'rounded-2xl text-sm m-0 text-slate-500 overflow-hidden h-16 min-w-[100px]  bg-slate-200 backdrop-blur-md flex items-center p-3',
+                        'font-semibold',
+                    )}
+                    onClick={() => {
+                        FileSaver.saveAs(firstFile.path, firstFile.title);
+                    }}
+                >
+                    <FiPaperclip
+                        className={cx(
+                            'text-3xl border-lcn-blue-3 border text-lcn-blue-4 p-1 h-9 w-9 bg-lcn-blue-2 rounded-full mr-2 ',
+                        )}
+                    />
+                    {fileName}
+                </Button>
             );
         }
     };

@@ -58,3 +58,12 @@ export const getLastName = (fullName) => {
     var arrName = fullName.split(' ');
     return arrName[arrName.length - 1];
 };
+
+export const getTypeOfDocument = () => {
+    const excel =
+        'application/pdf,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel';
+    const word =
+        ',.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    const other = ',.txt,.xml';
+    return excel + word + other;
+};

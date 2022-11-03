@@ -4,3 +4,7 @@
     position: relative;
     z-index: -1;
 }
+
+.bg-emoji aside {
+    backdrop-filter: blur(10%);
+}

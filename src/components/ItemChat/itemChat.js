@@ -72,7 +72,7 @@ function ItemChat({ groupChat, userLoginData }) {
                     updatedAt: data.updatedAt,
                     file: data.file,
                 };
-                setMessageLast(getNewMess);
+                if (getNewMess.idChat === groupChat.id) setMessageLast(getNewMess);
             }
         });
     }, [socket]);
@@ -94,7 +94,7 @@ function ItemChat({ groupChat, userLoginData }) {
 
             var seen = checkSeen(arrUserSeen, userLoginData.id);
 
-            if (!seen && curSignIn.userLogin.id !== messageLast.authorID.id) {
+            if (!seen && curSignIn.userLogin.id !== messageLast.authorID.id && messageLast.idChat === groupChat.id) {
                 setSeenState({
                     textName: 'font-semibold ',
                     textChatTitle: 'text-gray-900',
@@ -113,7 +113,7 @@ function ItemChat({ groupChat, userLoginData }) {
                 messCreatedAt = '',
                 lastNameAuthor = 'Bạn';
 
-            if (!!messageLast) {
+            if (!!messageLast && messageLast.idChat === groupChat.id) {
                 if (messageLast.title === '') {
                     titleMess = 'Đã gửi file';
                 } else titleMess = messageLast.title;

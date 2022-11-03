@@ -10,3 +10,18 @@ export const uploadFileImg = async (formData) => {
         return null;
     }
 };
+
+export const downloadFile = async (urlFile) => {
+    try {
+        const res = await httpRequest.get(urlFile, {
+            headers: {
+                'Content-Type': 'application/octet-stream',
+            },
+            responseType: 'blob',
+        });
+
+        return res;
+    } catch (error) {
+        console.log('error', error);
+    }
+};
