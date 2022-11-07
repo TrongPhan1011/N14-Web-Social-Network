@@ -65,25 +65,41 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
             });
             let arrMemberFilter = [...arrAdmin, ...arrMember];
             return arrMemberFilter.map((item) => {
-                return (
-                    <label
-                        htmlFor={item._id}
-                        key={item._id}
-                        className={cx('w-full h-14 hover:bg-lcn-blue-2 p-2 flex m-t-2 rounded-md items-center ')}
-                    >
-                        <input
-                            type="checkbox"
-                            name="chkMember"
-                            id={item._id}
-                            className={cx('')}
-                            onChange={getAllChecked}
-                            value={item._id}
-                        />
+                if (!curChat.memberWaiting.includes(item._id))
+                    return (
+                        <label
+                            htmlFor={item._id}
+                            key={item._id}
+                            className={cx('w-full h-14 hover:bg-lcn-blue-2 p-2 flex m-t-2 rounded-md items-center ')}
+                        >
+                            <input
+                                type="checkbox"
+                                name="chkMember"
+                                id={item._id}
+                                className={cx('')}
+                                onChange={getAllChecked}
+                                value={item._id}
+                            />
 
-                        <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
-                        <div className={cx()}>{item.fullName}</div>
-                    </label>
-                );
+                            <Avartar src={item.profile?.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
+                            <div className={cx()}>{item.fullName}</div>
+                        </label>
+                    );
+                else
+                    return (
+                        <label
+                            key={item._id}
+                            className={cx('w-full h-14 hover:bg-lcn-blue-2 p-2 flex m-t-2 rounded-md items-center ')}
+                        >
+                            <span className="w-3"></span>
+
+                            <Avartar src={item.profile?.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
+                            <div className={cx()}>{item.fullName}</div>
+                            <span className="font-semibold text-xs text-lcn-blue-4 bg-lcn-blue-1 p-1 ml-2 border border-lcn-blue-2 rounded-3xl">
+                                Đang chờ duyệt
+                            </span>
+                        </label>
+                    );
             });
         }
     };
@@ -101,7 +117,8 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                alert('Thêm thành viên thành công');
+                if (dataNewChat.status === 1) alert('Thêm thành viên thành công');
+                else alert('Thành viên đang chờ duyệt');
             }
         }
     };

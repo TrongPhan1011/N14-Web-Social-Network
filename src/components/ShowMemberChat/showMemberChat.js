@@ -46,12 +46,12 @@ function ShowMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                         key={item.id}
                         className={cx('w-full h-14 hover:bg-lcn-blue-2 p-2 flex m-t-2 rounded-md items-center')}
                     >
-                        <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11')} />
+                        <Avartar src={item.profile?.urlAvartar} className={cx('h-11 w-11')} />
                         <Button to={config.routeConfig.profile + `?id=${item.id}`} className={cx()} target="_blank">
                             {item.fullName}
                         </Button>
                         {item.isAdmin ? (
-                            <span className="font-semibold text-xs text-lcn-blue-4 bg-lcn-blue-1 p-1 rounded-3xl">
+                            <span className="font-semibold text-xs text-yellow-500 bg-yellow-50 border-yellow-200 border p-1 rounded-3xl">
                                 Quản trị viên
                             </span>
                         ) : (

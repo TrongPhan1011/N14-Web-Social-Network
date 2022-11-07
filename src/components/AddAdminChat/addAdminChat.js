@@ -67,9 +67,9 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                         {item.isAdmin ? (
                             <>
                                 <span className="w-3"></span>
-                                <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
+                                <Avartar src={item.profile?.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
                                 <div className={cx()}>{item.fullName}</div>
-                                <span className="font-semibold text-xs text-lcn-blue-4 bg-lcn-blue-1 p-1 rounded-3xl">
+                                <span className="font-semibold text-xs text-yellow-500 bg-yellow-50 border-yellow-200 border p-1 ml-2 rounded-3xl">
                                     Quản trị viên
                                 </span>
                             </>
