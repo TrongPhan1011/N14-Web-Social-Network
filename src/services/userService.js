@@ -96,3 +96,21 @@ export const declineFriend = async (idUser, idFriend, accessToken, axiosJWT) => 
         console.log(error);
     }
 };
+
+export const addFriend = async (idUser, idFriend, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/addfriend/',
+            {
+                idFriend: idFriend,
+                idUser: idUser,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

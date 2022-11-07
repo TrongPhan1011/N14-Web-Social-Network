@@ -64,10 +64,8 @@ function Otp() {
     };
     const handleConfirmOtp = () => {
         if (!!currentSignUpAccount.gender) {
-            console.log(2);
             handleRegister();
         } else {
-            console.log(1);
             handleVerify();
         }
     };

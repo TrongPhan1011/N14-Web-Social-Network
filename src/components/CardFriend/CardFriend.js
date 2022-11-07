@@ -4,7 +4,6 @@ import { lcnImage } from '~/image';
 const cx = classNames;
 
 function CardFriend() {
-    console.log(3);
     return (
         <div className={cx('w-full h-full p-5 flex flex-wrap justify-between')}>
             <div className={cx('w-1/2 h-1/2 flex flex-col p-2 ')}>

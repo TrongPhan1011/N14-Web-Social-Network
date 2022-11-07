@@ -9,9 +9,8 @@ import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { RiChat3Line } from 'react-icons/ri';
 import { lcnImage } from '~/image';
 import Post from '~/components/Post';
-import { getUserById } from '~/services/userService';
+import { getUserById, addFriend } from '~/services/userService';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 const cx = classNames.bind(styles);
 
@@ -34,26 +33,37 @@ function ContentProfile({ userId }) {
             const getUserProfile = await getUserById(userId, accessToken, axiosJWT);
             setUserProfile(getUserProfile);
             setProfile(getUserProfile?.profile);
-            // setBirthday(getUserProfile.birthday.split('-'));
             var date = getUserProfile.birthday.split('-');
             var myDate = `${date[2]}-${date[1]}-${date[0]}`;
             setBirthday(myDate);
-
             if (curUser.id === userId) {
                 setActive('hidden');
             } else {
                 setActive('');
             }
-            // var obj = curUser.friend.find((o) => o.id === userId);
-            // console.log(obj.id);
-            // if (obj.id === userId) {
-            //     console.log('dang la ban be');
-            // }
+            var obj = curUser.friend.find((o) => o.id === userId);
+            if (!!obj && obj.id === userId && obj.status === 1) {
+                setInRelationship('Bạn bè');
+            } else {
+                setInRelationship('Kết bạn');
+            }
         };
 
         getProfile();
     }, [userId]);
 
+    const handleKetBan = async () => {
+        var ketBan = await addFriend(curUser.id, userId, accessToken, axiosJWT);
+        if (!!ketBan) {
+            console.log(ketBan);
+        }
+    };
+
+    const handleBanBe = () => {
+        if (inRelationship === 'Kết bạn') {
+            handleKetBan();
+        }
+    };
     return (
         <div className={cx(' w-full h-full relative flex overflow-hidden justify-center items-center')}>
             <div className={cx(' w-full h-screen bg-white flex flex-col items-center   overflow-y-scroll')}>
@@ -69,9 +79,10 @@ function ContentProfile({ userId }) {
                                 'bg-lcn-blue-3 justify-center items-center w-28 font-[400] h-10 text-lcn-blue-4 border border-lcn-blue-3',
                                 active,
                             )}
+                            onClick={handleBanBe}
                         >
                             <AiOutlineUsergroupAdd className={cx('mr-1')} />
-                            Kết bạn
+                            {inRelationship}
                         </Button>
                         <Button
                             className={cx(

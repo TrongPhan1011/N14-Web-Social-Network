@@ -102,9 +102,9 @@ export const getAuthByMail = async (email) => {
         return null;
     }
 };
-export const updatePassword = async (user, dispatch, navigate) => {
+export const updatePassword = async (addBody, dispatch, navigate) => {
     try {
-        const dataUser = await httpRequest.put('auth/update', user);
+        const dataUser = await httpRequest.put('auth/update', addBody);
 
         if (!!dataUser) {
             dispatch(userSignUp(null)); // lưu lại user trong redux
