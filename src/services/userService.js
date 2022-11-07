@@ -39,9 +39,12 @@ export const getUserById = async (idUser, accessToken, axiosJWT) => {
     }
 };
 
-export const getAllFriend = async (idUser, accessToken, axiosJWT) => {
+export const getAllFriend = async (idUser, accessToken, axiosJWT, status = 1) => {
     try {
         const res = await axiosJWT.get(`user/friend/${idUser}?status=1`, {
+            params: {
+                status: status,
+            },
             headers: { token: `baerer ${accessToken}` },
         });
 

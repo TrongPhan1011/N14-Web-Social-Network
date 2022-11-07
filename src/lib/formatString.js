@@ -67,3 +67,21 @@ export const getTypeOfDocument = () => {
     const other = ',.txt,.xml';
     return excel + word + other;
 };
+
+export const isEmojiOnly = (string) => {
+    // remove all white spaces from the input
+    const stringToTest = string.replace(/ /g, '');
+    const regexForEmojis = /\p{Extended_Pictographic}/gu;
+    const regexForAlphaNums = /[\p{L}\p{N}]+/gu;
+
+    // check to see if the string contains emojis
+    if (regexForEmojis.test(stringToTest)) {
+        // check to see if it contains any alphanumerics
+        if (regexForAlphaNums.test(stringToTest)) {
+            return false;
+        }
+        return true;
+    }
+
+    return false;
+};

@@ -79,7 +79,7 @@ function ContentMessage() {
                 var indexLast = listMessage.length - 1;
                 if (index === indexLast) isLastMess = true;
 
-                if (item.authorID.id === curUser.id) {
+                if (item.authorID?.id === curUser.id) {
                     return (
                         <ItemMessage
                             from="me"

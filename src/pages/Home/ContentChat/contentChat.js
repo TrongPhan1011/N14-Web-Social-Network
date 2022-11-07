@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState, useEffect, memo } from 'react';
+import { useState, memo } from 'react';
 
 import { FaPhone, FaVideo, FaInfoCircle } from 'react-icons/fa';
 
@@ -8,8 +8,8 @@ import Button from '~/components/Button';
 import ContentMessage from '~/components/ContentMessage';
 import InputSend from '~/components/InputSend';
 import MiniProfile from '~/components/MiniProfile';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { useSelector } from 'react-redux';
+
 import Avartar from '~/components/Avartar';
 
 const cx = classNames;
@@ -21,8 +21,9 @@ function ContentChat() {
 
     const showMiniProfile = () => {
         if (widthValue === '') return <></>;
-        else if (widthValue === 'ease-right-to-left') return <MiniProfile profileIn={true} />;
-        else return <MiniProfile profileIn={false} />;
+        else if (widthValue === 'ease-right-to-left')
+            return <MiniProfile profileIn={true} typeChat={currChat?.typeChat} />;
+        else return <MiniProfile profileIn={false} typeChat={currChat?.typeChat} />;
     };
 
     const onClickInfo = () => {

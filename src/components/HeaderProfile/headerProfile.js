@@ -4,7 +4,7 @@ import Avartar from '~/components/Avartar';
 
 const cx = classNames;
 
-function HeaderProfile({ avatar, coverPhoto, userName, profile }) {
+function HeaderProfile({ avatar, coverPhoto, userName }) {
     var ava = lcnImage.avatarDefault;
     if (avatar) {
         ava = avatar;
@@ -13,7 +13,11 @@ function HeaderProfile({ avatar, coverPhoto, userName, profile }) {
         <div className={cx('h-2/5 w-full mb-16')}>
             <div className={cx(' h-full w-full ')}>
                 <div className={cx('h-full w-full ')}>
-                    <img src={coverPhoto} alt="coverPhoto" className={cx('w-full h-4/5')} />
+                    {!!coverPhoto ? (
+                        <img src={coverPhoto} alt="coverPhoto" className={cx('w-full h-4/5')} />
+                    ) : (
+                        <div className={cx('w-full h-4/5 bg-lcn-blue-3')}></div>
+                    )}
                     <div className={cx(' relative  h-2/5 w-full  flex justify-center ')}>
                         <div
                             className={cx(

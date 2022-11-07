@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 
-import { useEffect, useRef, memo, useState } from 'react';
+import { useEffect, useRef, memo, useState, useCallback } from 'react';
 
 import { AiFillFileImage } from 'react-icons/ai';
 import { RiSendPlaneFill } from 'react-icons/ri';
@@ -16,12 +16,11 @@ import { FiPaperclip } from 'react-icons/fi';
 import styles from './InputSend.module.scss';
 import { getTypeOfDocument } from '~/lib/formatString';
 
-import data from '@emoji-mart/data';
-import { Picker } from 'emoji-mart';
+import PickerEmoji from './PickerEmoji/PickerEmoji';
 
 const cx = classNames.bind(styles);
 
-function InputSend() {
+function InputSend({ type }) {
     const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
@@ -39,15 +38,22 @@ function InputSend() {
     const [listFileIMG, setListFileIMG] = useState([]);
     const [hiddenSendIMG, setHiddenSendIMG] = useState('hidden');
     const [selectedEmoji, setSelectedEmoji] = useState('');
+    const [showEmoji, setShowEmoji] = useState(false);
+
     const txtSendRef = useRef();
 
     useEffect(() => {
+        if (!/\p{Emoji}/u.test(messageSend)) {
+            console.log('');
+        }
         if (!!curChat && !!messageSend) {
             socket.emit('sendMessage', {
                 receiverId: curChat.id,
                 contentMessage: messageSend,
             });
             txtSendRef.current.textContent = '';
+            txtSendRef.current.focus();
+            showEmoji && setShowEmoji(false);
             setCurrMessage('');
             removeUpFile();
             setHeightText('h-11');
@@ -62,7 +68,7 @@ function InputSend() {
 
     const changeHeightText = (heightTextArea) => {
         const HEIGHT_11 = 44; // 44px
-        if (txtSendRef.current.textContent.trim() !== '' && heightTextArea > HEIGHT_11)
+        if (txtSendRef.current.textContent !== '' && heightTextArea > HEIGHT_11)
             setHeightText('h-[' + heightTextArea + 'px] ');
         else setHeightText('h-11');
     };
@@ -316,12 +322,28 @@ function InputSend() {
         }
         return <></>;
     };
+    function unicodeToChar(text) {
+        return String.fromCodePoint(parseInt(text, 16));
+    }
 
-    useEffect(() => {
-        console.log(txtSendRef.current);
-    }, [selectedEmoji]);
+    function onChosseEmoji(emojiData) {
+        txtSendRef.current.textContent += unicodeToChar(emojiData.unified);
+        setCurrMessage(txtSendRef.current.textContent);
+        var p = txtSendRef.current;
+        if (p.hasChildNodes()) {
+            // if the element is not empty
+            let s = window.getSelection();
+            let r = document.createRange();
+            let e = p.childElementCount > 0 ? p.lastChild : p;
+            r.setStart(e, 1);
+            r.setEnd(e, 1);
+            s.removeAllRanges();
+            s.addRange(r);
+        }
+    }
+
     return (
-        <div className={cx('h-full relative bg-white  p-2 w-full mr-20  flex items-center z-20')}>
+        <div className={cx('h-full relative bg-white  p-2 w-full mr-20  flex items-center ')}>
             <Button
                 type="button"
                 className={cx('absolute z-10 -top-24 right-2 m-0 p-0 ', hiddenSendIMG)}
@@ -372,7 +394,8 @@ function InputSend() {
                 )}
                 contentEditable={true}
                 onInput={(e) => {
-                    setCurrMessage(e.currentTarget.textContent.trim());
+                    setShowEmoji(false);
+                    setCurrMessage(e.currentTarget.textContent);
                     changeHeightText(e.currentTarget.scrollHeight);
                 }}
                 placeholder="Nhập tin nhắn"
@@ -385,15 +408,23 @@ function InputSend() {
                 ref={txtSendRef}
                 data-text="Nhập tin nhắn của bạn tại đây"
             ></div>
-            <div className={cx(' h-full flex items-center relative ')}>
+            <div
+                className={cx(' h-full flex items-center relative ')}
+                onClick={() => (!showEmoji ? setShowEmoji(true) : setShowEmoji(false))}
+            >
                 <FaRegSmile
                     className={cx(
                         'text-lcn-blue-4 text-2xl absolute -left-11 rounded-full cursor-pointer  hover:text-yellow-400 hover:p-0',
                     )}
                 />
             </div>
-            <div className={cx(' absolute -top-[21.5rem]  right-2', 'bg-emoji')}></div>
-            {/* !!Picker ?<Picker data={data} onEmojiSelect={console.log} />:<></> */}
+
+            {showEmoji && (
+                <div className={cx(' absolute -top-[21.5rem]  right-2', 'bg-emoji')}>
+                    <PickerEmoji onChosseEmoji={onChosseEmoji} />
+                </div>
+            )}
+
             <Button
                 type="button"
                 className={cx(' flex justify-center items-center rounded-full m-0 w-14  h-12')}

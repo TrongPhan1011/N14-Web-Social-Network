@@ -1,0 +1,12 @@
+.lcn-slider li {
+    width: 25% !important;
+    position: relative !important;
+}
+.lcn-slider ul {
+    width: 100% !important;
+    overflow: auto !important;
+    height: 100px !important;
+    position: relative !important;
+    bottom: 0 !important;
+    display: flex !important;
+}

@@ -7,7 +7,7 @@ import { MdReply } from 'react-icons/md';
 
 import Button from '~/components/Button';
 import Avartar from '~/components/Avartar';
-import { formatTimeAuto, getLastName } from '~/lib/formatString';
+import { formatTimeAuto, getLastName, isEmojiOnly } from '~/lib/formatString';
 import style from './ItemMessage.module.scss';
 import MessageFile from '~/components/MessageFile';
 
@@ -22,9 +22,7 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
     var bgMessage = 'bg-slate-100 ',
         flexRowReverse = '',
         seen = '',
-        hidden = '',
-        bgFileIMG = '',
-        CompIMG;
+        hidden = '';
 
     if (!!from) {
         bgMessage = 'bg-lcn-blue-4 text-white';
@@ -39,10 +37,15 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
             }
         }
     }
+
     var renderMessage = () => {
         if (!!messageData.file && messageData.file.length > 0) {
             return <MessageFile messageData={messageData} />;
         }
+        if (isEmojiOnly(children)) {
+            return <div className={cx('break-words rounded-3xl  pr-1 pl-1 text-2xl text-center')}>{children}</div>;
+        }
+
         return (
             <div className={cx('break-words rounded-3xl p-2 pr-3 pl-3 text-sm text-center', bgMessage)}>{children}</div>
         );
