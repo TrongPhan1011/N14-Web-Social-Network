@@ -69,6 +69,19 @@ export const requestMemberChat = async (idChat, arrMember, action, accessToken, 
         return null;
     }
 };
+export const removeMemberChat = async (idChat, arrMember, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.put('/chat/removeMember/' + idChat, arrMember, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+        if (!!res) {
+            return res.data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
 export const addAdminToChat = async (idChat, arrAdmin, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.put('/chat/admin/' + idChat, arrAdmin, {

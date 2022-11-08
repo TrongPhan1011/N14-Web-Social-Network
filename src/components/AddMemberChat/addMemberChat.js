@@ -26,7 +26,7 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         const fectUser = async () => {
             let userLoginFetch = await getAllFriend(curUser.id, accessToken, axiosJWT);
 
-            let arrMember = userLoginFetch[0].friend.filter((item) => !curChat.member.includes(item._id));
+            let arrMember = userLoginFetch[0].friend.filter((item) => !item.listGroup.includes(curChat.id));
             setListMember(arrMember);
         };
         if (showModal === true) fectUser();

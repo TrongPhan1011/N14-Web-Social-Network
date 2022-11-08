@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { HiOutlinePaperClip, HiOutlineTrash } from 'react-icons/hi';
-import { AiOutlineSetting, AiOutlineUserDelete } from 'react-icons/ai';
+import { AiOutlineSetting } from 'react-icons/ai';
 import { BiEdit, BiLogOutCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +16,7 @@ import { RiChatPrivateLine } from 'react-icons/ri';
 
 import AddAdminChat from '~/components/AddAdminChat';
 import RequestMemberChat from '~/components/RequestMemberChat';
+import RemoveMemberChat from '~/components/RemoveMemberChat';
 
 const cx = classNames;
 function Group() {
@@ -62,12 +63,12 @@ function Group() {
                                 <span className={cx('  ml-4  w-4/5 ')}>Quyền gửi tin nhắn</span>
                             </div>
                         </Button>
-                        <Button className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}>
-                            <div className={cx('flex items-center')}>
-                                <AiOutlineUserDelete className={cx('text-red-500 w-7 h-7 ')} />{' '}
-                                <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Xoá thành viên</span>
-                            </div>
-                        </Button>
+                        <RemoveMemberChat
+                            accessToken={accessToken}
+                            axiosJWT={axiosJWT}
+                            curChat={curChat}
+                            curUser={curUser}
+                        />
                         <Button className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}>
                             <div className={cx('flex items-center')}>
                                 <HiOutlineTrash className={cx('text-red-500 w-7 h-7 ')} />{' '}
