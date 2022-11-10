@@ -174,11 +174,11 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                         className={cx('outline-none w-full h-full caret-lcn-blue-4')}
                     />
                 </div>
-                <div className={cx('h-3/4 w-full overflow-scroll p-2')}>Tất cả bạn bè của bạn đã vào nhóm</div>
+                <div className={cx('h-3/4 w-full  overflow-scroll p-2')}>Tất cả bạn bè của bạn đã vào nhóm</div>
                 <div className={cx('flex justify-between self-end border-t border-lcn-blue-2')}>
                     <Button
                         type="button"
-                        className={cx('bg-slate-400 w-full p-1 pr-3 pl-3 text-white text-sm')}
+                        className={cx('bg-slate-400 w-full p-1 pr-3 pl-3 text-white text-sm justify-center')}
                         onClick={handleHideModal}
                     >
                         Huỷ

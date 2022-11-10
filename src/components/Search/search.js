@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useState, useCallback, memo, useEffect } from 'react';
 
-import { BiEdit, BiSearch } from 'react-icons/bi';
+import { BiSearch } from 'react-icons/bi';
 import { FaTimes } from 'react-icons/fa';
 
 import Button from '~/components/Button';
@@ -13,17 +13,29 @@ import * as userService from '~/services/userService';
 import config from '~/configRoutes';
 import Modal from '~/components/Modal';
 import ItemSearchAll from './ItemSearchAll';
-import ModalCreateChat from '~/components/Modal/ModalCreateChat';
+import AddGroupChat from '~/components/AddGroupChat';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
 const cx = classNames;
 
 function Search() {
+    const dispatch = useDispatch();
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
+    var accessToken = currAccount.accessToken;
+    var axiosJWT = getAxiosJWT(dispatch, currAccount);
+
+    var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
+
+    var curSignIn = useSelector((state) => state.persistedReducer.signIn);
+    var curUser = curSignIn.userLogin;
+
     const [showSearch, setShowSearch] = useState(false);
     const [hiddenSearchResult, setHiddenSearchResult] = useState('hidden');
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [showCreateChat, setShowCreateChat] = useState(false);
 
     const [searchValueMore, setSearchValueMore] = useState('');
     const [searchResultMore, setSearchResultMore] = useState([]);
@@ -121,13 +133,6 @@ function Search() {
         return searchResultMore.map((item) => <ItemSearchAll key={item.id} data={item} />);
     };
 
-    const handleShowCreateChat = () => {
-        setShowCreateChat(true);
-    };
-    const handleHideCreateChat = useCallback(() => {
-        setShowCreateChat(false);
-    }, []);
-
     return (
         <>
             <div className={cx('p-2 w-full h-full flex justify-between items-center')}>
@@ -148,15 +153,7 @@ function Search() {
                         </Button>
                     </div>
                 </Dropdown>
-                <Button
-                    className={cx(
-                        'w-10 rounded-full m-0 flex justify-center items-center h-10 bg-lcn-blue-3 ',
-                        'hover:text-white ',
-                    )}
-                    onClick={handleShowCreateChat}
-                >
-                    <BiEdit className={cx('text-2xl text-lcn-blue-4')} />
-                </Button>
+                <AddGroupChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
 
                 <Modal isShow={showModal}>
                     <div className={cx('flex items-center p-1 border-b  border-lcn-blue-1')}>
@@ -184,8 +181,6 @@ function Search() {
                     </div>
                     <div className={cx('w-full h-3/4  overflow-y-auto p-3')}>{handleShowSearchMore()}</div>
                 </Modal>
-
-                <ModalCreateChat showCreateChat={showCreateChat} handleHideCreateChat={handleHideCreateChat} />
             </div>
         </>
     );

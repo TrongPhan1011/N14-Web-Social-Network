@@ -23,6 +23,7 @@ import Avartar from '~/components/Avartar';
 import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
 import { logout } from '~/services/authService';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { removeCurrentChat } from '~/redux/Slice/sidebarChatSlice';
 
 const cx = classNames;
 
@@ -109,6 +110,7 @@ function Header({ userLoginData }) {
         await logout(dispatch, navigate, currAccount.accessToken, axiosJWT);
         dispatch(logOutSuccess());
         dispatch(userLogin(null));
+        dispatch(removeCurrentChat());
         navigate(config.routeConfig.signIn);
     };
 

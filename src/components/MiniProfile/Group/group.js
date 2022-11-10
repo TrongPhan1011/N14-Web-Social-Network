@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '~/components/Button';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
-import { useEffect } from 'react';
+import { memo } from 'react';
 
 import HeaderProfile from '~/components/HeaderProfile';
 import ShowMemberChat from '~/components/ShowMemberChat';
@@ -17,6 +17,9 @@ import { RiChatPrivateLine } from 'react-icons/ri';
 import AddAdminChat from '~/components/AddAdminChat';
 import RequestMemberChat from '~/components/RequestMemberChat';
 import RemoveMemberChat from '~/components/RemoveMemberChat';
+import { leaveChat } from '~/services/chatService';
+import { userLogin } from '~/redux/Slice/signInSlice';
+import { removeCurrentChat } from '~/redux/Slice/sidebarChatSlice';
 
 const cx = classNames;
 function Group() {
@@ -31,7 +34,18 @@ function Group() {
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
 
-    useEffect(() => {}, [curChat]);
+    const handleLeaveChat = async () => {
+        var confirmRemoveMember = window.confirm('Bạn có chắc muốn rời nhóm không?');
+        if (confirmRemoveMember) {
+            var newUser = await leaveChat(curChat.id, curUser.id, accessToken, axiosJWT);
+
+            if (!!newUser) {
+                dispatch(removeCurrentChat(null));
+                dispatch(userLogin(newUser));
+                alert('Bạn đã rời nhóm');
+            }
+        }
+    };
 
     const renderFuctionalAdmin = () => {
         if (curChat.adminChat.includes(curUser.id)) {
@@ -102,7 +116,11 @@ function Group() {
                     <AddMemberChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
 
                     {renderFuctionalAdmin()}
-                    <Button className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}>
+                    <Button
+                        type="button"
+                        className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}
+                        onClick={handleLeaveChat}
+                    >
                         <div className={cx('flex items-center')}>
                             <BiLogOutCircle className={cx('text-red-500 w-7 h-7 ')} />{' '}
                             <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Rời nhóm</span>
@@ -114,4 +132,4 @@ function Group() {
     );
 }
 
-export default Group;
+export default memo(Group);

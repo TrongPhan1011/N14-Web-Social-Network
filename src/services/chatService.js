@@ -82,6 +82,27 @@ export const removeMemberChat = async (idChat, arrMember, accessToken, axiosJWT)
         return null;
     }
 };
+export const leaveChat = async (idChat, idUser, accessToken, axiosJWT) => {
+    try {
+        console.log(idUser);
+        const res = await axiosJWT.put(
+            '/chat/memberLeaveChat/' + idChat,
+            {},
+            {
+                params: {
+                    idUser: idUser,
+                },
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        if (!!res) {
+            return res.data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
 export const addAdminToChat = async (idChat, arrAdmin, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.put('/chat/admin/' + idChat, arrAdmin, {
@@ -107,6 +128,19 @@ export const changeStatusChat = async (idChat, status, accessToken, axiosJWT) =>
                 headers: { token: `baerer ${accessToken}` },
             },
         );
+        if (!!res) {
+            return res.data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
+export const addGroupChat = async (newGroup, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.post('/chat/', newGroup, {
+            headers: { token: `baerer ${accessToken}` },
+        });
         if (!!res) {
             return res.data;
         }

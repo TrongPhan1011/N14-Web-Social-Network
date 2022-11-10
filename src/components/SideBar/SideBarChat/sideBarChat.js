@@ -29,7 +29,7 @@ function SideBarChat() {
             }
         };
         fetchChat();
-    }, []);
+    }, [userLoginData]);
 
     // khoi tao socket room
     const handdleConnectSocket = (item) => {
@@ -39,6 +39,7 @@ function SideBarChat() {
     const handleRenderChat = () => {
         if (chatResult.length > 0) {
             dispatch(currentChat(chatResult[0]));
+
             return chatResult.map((item) => {
                 handdleConnectSocket(item);
                 return <ItemChat key={item.id} groupChat={item} userLoginData={userLoginData} />;
