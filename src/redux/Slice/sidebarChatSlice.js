@@ -13,6 +13,11 @@ const sidebarChatSlice = createSlice({
             state.error = false;
         },
 
+        removeCurrentChat: (state) => {
+            state.currentChat = null;
+            state.error = false;
+        },
+
         addCountUnseenChat: (state, action) => {
             // state.unseenChat = action.payload;
             console.log(state);
@@ -20,6 +25,6 @@ const sidebarChatSlice = createSlice({
     },
 });
 
-export const { currentChat, loginErorr, addCountUnseenChat } = sidebarChatSlice.actions;
+export const { currentChat, loginErorr, addCountUnseenChat, removeCurrentChat } = sidebarChatSlice.actions;
 
 export default sidebarChatSlice.reducer;

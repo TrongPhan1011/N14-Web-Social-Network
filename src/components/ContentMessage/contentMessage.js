@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { getMessageByIdChat } from '~/services/messageService';
 import socket from '~/utils/getSocketIO';
+import { HiVariable } from 'react-icons/hi';
 
 const cx = classNames;
 
@@ -46,6 +47,8 @@ function ContentMessage() {
                 setArrivalMessage(getNewMess);
             }
         });
+
+        // theo doi xem tin nhan bat ki nao do co thay doi khong vd: xoa tin, tha cam xuc,....
     }, []);
     useEffect(() => {
         const scrollToBottom = () => {
@@ -71,7 +74,7 @@ function ContentMessage() {
             setListMessage((prev) => [...prev, arrivalMessage]);
     }, [curChat, arrivalMessage]);
 
-    const renderMessage = () => {
+    var renderMessage = () => {
         if (listMessage.length > 0) {
             return listMessage.map((item, index) => {
                 // truyen thong tin last mess vao item de in ra dong "da gui","da xem",...

@@ -7,15 +7,16 @@ import { useState, memo, useEffect } from 'react';
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
 
-import { addAdminToChat } from '~/services/chatService';
+import { removeMemberChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { useDispatch } from 'react-redux';
 import { getMemberOfChat } from '~/services/chatService';
-import { MdOutlineSecurity } from 'react-icons/md';
+
+import { AiOutlineUserDelete } from 'react-icons/ai';
 
 const cx = classNames;
-function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
+function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
     const dispatch = useDispatch();
 
     const [showModal, setShowModal] = useState(false);
@@ -52,11 +53,14 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                 }
                 return false;
             });
+            arrAdmin = arrAdmin.filter((admin) => admin.id !== curUser.id);
+
             let arrMember = listMember.filter((member) => {
                 if (!curChat.adminChat.includes(member.id) && inCludesString(searchValue, member.fullName)) return true;
                 else return false;
             });
             let arrMemberFilter = [...arrAdmin, ...arrMember];
+
             return arrMemberFilter.map((item) => {
                 return (
                     <label
@@ -64,28 +68,22 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                         key={item.id}
                         className={cx('w-full h-14 hover:bg-lcn-blue-2 p-2 flex m-t-2 rounded-md items-center ')}
                     >
+                        <input
+                            type="checkbox"
+                            name="chkMember"
+                            id={item.id}
+                            className={cx('')}
+                            onChange={getAllChecked}
+                            value={item.id}
+                        />
+                        <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
+                        <div className={cx()}>{item.fullName}</div>
                         {item.isAdmin ? (
-                            <>
-                                <span className="w-3"></span>
-                                <Avartar src={item.profile?.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
-                                <div className={cx()}>{item.fullName}</div>
-                                <span className="font-semibold text-xs text-yellow-500 bg-yellow-50 border-yellow-200 border p-1 ml-2 rounded-3xl">
-                                    Quản trị viên
-                                </span>
-                            </>
+                            <span className="font-semibold text-xs text-yellow-500 bg-yellow-50 border-yellow-200 border p-1 ml-2 rounded-3xl">
+                                Quản trị viên
+                            </span>
                         ) : (
-                            <>
-                                <input
-                                    type="checkbox"
-                                    name="chkMember"
-                                    id={item.id}
-                                    className={cx('')}
-                                    onChange={getAllChecked}
-                                    value={item.id}
-                                />
-                                <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
-                                <div className={cx()}>{item.fullName}</div>
-                            </>
+                            <></>
                         )}
                     </label>
                 );
@@ -97,18 +95,21 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
         setSearchValue(valueSearch);
     };
 
-    const handleAddMember = async () => {
+    const handleRemoveMember = async () => {
         if (!!listChecked && listChecked.length > 0) {
-            var dataNewChat = await addAdminToChat(curChat.id, listChecked, accessToken, axiosJWT);
+            var confirmRemoveMember = window.confirm('Bạn có chắc muốn xoá người này ra khỏi nhóm không');
+            if (confirmRemoveMember) {
+                var dataNewChat = await removeMemberChat(curChat.id, listChecked, accessToken, axiosJWT);
 
-            if (dataNewChat) {
-                dispatch(currentChat(dataNewChat));
-                setListChecked([]);
-                setListMember([]);
-                setShowModal(false);
-                alert('Đã cập nhật thông tin quản trị viên');
+                if (dataNewChat) {
+                    dispatch(currentChat(dataNewChat));
+                    setListChecked([]);
+                    setListMember([]);
+                    setShowModal(false);
+                    alert('Đã xoá thành công');
+                }
             }
-        }
+        } else alert('Bạn chưa chọn thành viên cần xoá');
     };
 
     const renderModalShowMember = () => {
@@ -119,7 +120,7 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                     className={cx('w-96 text-black p-2 overflow-hidden')}
                     isHidden={handleHideModal}
                 >
-                    <h4 className="text-center font-semibold border-b border-lcn-blue-3">Thêm thành viên nhóm</h4>
+                    <h4 className="text-center font-semibold border-b border-lcn-blue-3">Xoá thành viên khỏi nhóm</h4>
                     <div
                         className={cx(
                             'border border-lcn-blue-4 rounded-3xl w-full h-11 flex items-center p-1 pr-4 pl-4 mt-2',
@@ -136,10 +137,10 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                     <div className={cx('flex justify-end self-center border-t border-lcn-blue-2')}>
                         <Button
                             type="button"
-                            className={cx('bg-lcn-1 p-1 pr-3 pl-3 text-white bg-lcn-blue-4 bg-opacity-100')}
-                            onClick={handleAddMember}
+                            className={cx('bg-lcn-1 p-1 pr-3 pl-3 text-white bg-red-500 bg-opacity-100')}
+                            onClick={handleRemoveMember}
                         >
-                            Thêm quyền quản trị viên
+                            Xoá thành viên
                         </Button>
                     </div>
                 </Modal>
@@ -149,10 +150,10 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
     };
     return (
         <>
-            <Button className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')} onClick={handleShowModal}>
+            <Button className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')} onClick={handleShowModal}>
                 <div className={cx('flex items-center')}>
-                    <MdOutlineSecurity className={cx('text-lcn-blue-4 w-7 h-7 ')} />
-                    <span className={cx('  ml-4  w-4/5 ')}>Quyền quản trị viên</span>
+                    <AiOutlineUserDelete className={cx('text-red-500 w-7 h-7 ')} />{' '}
+                    <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Xoá thành viên</span>
                 </div>
             </Button>
             {renderModalShowMember()}
@@ -160,4 +161,4 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
     );
 }
 
-export default memo(AddAdminChat);
+export default memo(RemoveMemberChat);

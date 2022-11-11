@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 
-import { useEffect, useRef, memo, useState, useCallback } from 'react';
+import { useEffect, useRef, memo, useState } from 'react';
 
 import { AiFillFileImage } from 'react-icons/ai';
 import { RiSendPlaneFill } from 'react-icons/ri';
@@ -37,7 +37,7 @@ function InputSend({ type }) {
     const [listFileDoc, setListFileDoc] = useState([]);
     const [listFileIMG, setListFileIMG] = useState([]);
     const [hiddenSendIMG, setHiddenSendIMG] = useState('hidden');
-    const [selectedEmoji, setSelectedEmoji] = useState('');
+
     const [showEmoji, setShowEmoji] = useState(false);
 
     const txtSendRef = useRef();

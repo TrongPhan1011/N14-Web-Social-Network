@@ -7,7 +7,7 @@ import { useState, memo, useEffect } from 'react';
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
 
-import { addAdminToChat, changeStatusChat } from '~/services/chatService';
+import { requestMemberChat, changeStatusChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { useDispatch } from 'react-redux';
@@ -25,7 +25,7 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
     const [listMember, setListMember] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [listChecked, setListChecked] = useState([]);
-    const [checkedTypeChat, setCheckedTypeChat] = useState();
+    const [checkedTypeChat, setCheckedTypeChat] = useState(false);
 
     useEffect(() => {
         if (curChat.status === PUBLIC_CHAT) {
@@ -94,20 +94,22 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         setSearchValue(valueSearch);
     };
 
-    const handleAddMember = async () => {
+    const handleRequestMember = async (action) => {
         if (!!listChecked && listChecked.length > 0) {
-            var dataNewChat = await addAdminToChat(curChat.id, listChecked, accessToken, axiosJWT);
+            var dataNewChat = await requestMemberChat(curChat.id, listChecked, action, accessToken, axiosJWT);
 
             if (dataNewChat) {
                 dispatch(currentChat(dataNewChat));
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                alert('Đã thêm thành viên');
+                if (action === 'accept') alert('Đã thêm thành viên');
+                else alert('Đã xoá thành viên khỏi danh sách chờ duyệt');
             }
         }
     };
-    const handleChangeStatusChat = async () => {
+    const handleChangeStatusChat = async (e) => {
+        e.preventDefault();
         var status = PRIVATE_CHAT;
         if (curChat.status !== PUBLIC_CHAT) status = PUBLIC_CHAT;
         var newChatStatus = await changeStatusChat(curChat.id, status, accessToken, axiosJWT);
@@ -130,7 +132,13 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
 
                     <label className="flex items-center cursor-pointer" onClick={handleChangeStatusChat}>
                         <div className="relative">
-                            <input type="checkbox" id="toggle" className="sr-only" defaultChecked={checkedTypeChat} />
+                            <input
+                                type="checkbox"
+                                id="toggle"
+                                className="sr-only"
+                                checked={checkedTypeChat}
+                                defaultChecked={false}
+                            />
 
                             <div className={cx('block bg-gray-300 w-10 h-6 rounded-full', 'bg-toggle')}></div>
 
@@ -154,11 +162,18 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                             />
                         </div>
                         <div className={cx('h-2/3 w-full overflow-scroll p-2')}>{renderItemMember()}</div>
-                        <div className={cx('flex justify-end self-center border-t border-lcn-blue-2')}>
+                        <div className={cx('flex justify-between self-center border-t border-lcn-blue-2')}>
+                            <Button
+                                type="button"
+                                className={cx('bg-lcn-1 p-1 pr-3 pl-3 text-white bg-red-400 bg-opacity-100')}
+                                onClick={() => handleRequestMember('remove')}
+                            >
+                                Xoá thành viên
+                            </Button>
                             <Button
                                 type="button"
                                 className={cx('bg-lcn-1 p-1 pr-3 pl-3 text-white bg-lcn-blue-4 bg-opacity-100')}
-                                onClick={handleAddMember}
+                                onClick={() => handleRequestMember('accept')}
                             >
                                 Duyệt thành viên
                             </Button>
