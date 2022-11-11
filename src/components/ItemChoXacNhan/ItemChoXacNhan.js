@@ -21,10 +21,10 @@ function ItemChoXacNhan({ friendName, friendId }) {
     var curUser = curSignIn.userLogin;
 
     const handleDongY = async () => {
-        await acceptFriend(curUser.id, friendId, accessToken, axiosJWT);
+        await acceptFriend(curUser.id, friendId, accessToken, axiosJWT, dispatch);
     };
     const handleTuchoi = async () => {
-        await declineFriend(curUser.id, friendId, accessToken, axiosJWT);
+        await declineFriend(curUser.id, friendId, accessToken, axiosJWT, dispatch);
     };
     const handleXacNhan = () => {
         if (dongY) {

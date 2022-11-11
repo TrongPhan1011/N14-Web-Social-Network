@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 
 const cx = classNames;
-function Button({ children, className, type = 'button', to, href, onClick, navLink, ...passProps }) {
+function Button({ children, className, type = 'button', to, href, target, onClick, navLink, ...passProps }) {
     let Comp = 'button';
     const _props = {
         onClick,
         type,
+        target,
         ...passProps,
     };
 
@@ -20,20 +21,13 @@ function Button({ children, className, type = 'button', to, href, onClick, navLi
         Comp = 'a';
     }
 
-    var _className = cx(
-        'p-1 flex items-center  rounded-3xl m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100',
-        className,
-    );
+    var _className = cx('p-1 flex items-center  rounded-3xl m-1  hover:bg-opacity-80 active:bg-opacity-100', className);
     if (navLink) {
         Comp = NavLink;
         _className = (nav) =>
-            cx(
-                'p-1 rounded-3xl flex items-center m-1 bg-opacity-60 hover:bg-opacity-80 active:bg-opacity-100',
-                className,
-                {
-                    active: nav.isActive,
-                },
-            );
+            cx('p-1 rounded-3xl flex items-center m-1  hover:bg-opacity-80 active:bg-opacity-100', className, {
+                active: nav.isActive,
+            });
     }
 
     return (

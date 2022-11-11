@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ItemBanBe from '~/components/ItemBanBe';
@@ -24,22 +24,22 @@ function ListItem({ type }) {
 
     useEffect(() => {
         const getListFriend = async () => {
-            const friendByStatus = await getAllFriend(curUser.id, accessToken, axiosJWT);
+            const friendByStatus = await getAllFriend(curUser.id, accessToken, axiosJWT, dispatch);
 
             setListFriend(friendByStatus[0].friend);
         };
 
         getListFriend();
-    }, []);
+    }, [curUser]);
     useEffect(() => {
         const getListWaiting = async () => {
-            const friendIsWaiting = await getWaitingFriend(curUser.id, accessToken, axiosJWT);
+            const friendIsWaiting = await getWaitingFriend(curUser.id, accessToken, axiosJWT, dispatch);
 
             setListAddFriend(friendIsWaiting[0].friend);
         };
 
         getListWaiting();
-    }, []);
+    }, [curUser]);
 
     var Comp = ItemBanBe;
     if (type === 'choXacNhan') {
@@ -51,13 +51,13 @@ function ListItem({ type }) {
     const handleRenderItem = () => {
         var listAdd = listAddFriend;
         if (listFriend.length > 0 && Comp === ItemBanBe) {
-            dispatch(findSuccess(listFriend[0]));
+            // dispatch(findSuccess(listFriend[0]));
             return listFriend.map((item) => {
                 return <Comp key={item._id} userId={item._id} name={item.fullName} avt={item?.profile?.urlAvartar} />;
             });
         }
         if (listAdd.length > 0 && type === 'choXacNhan') {
-            dispatch(findSuccess(listAdd[0]));
+            // dispatch(findSuccess(listAdd[0]));
             return listAdd.map((item) => {
                 return (
                     <Comp
@@ -75,4 +75,4 @@ function ListItem({ type }) {
     return <div className={cx('w-full h-full overflow-y-scroll')}>{handleRenderItem()}</div>;
 }
 
-export default ListItem;
+export default memo(ListItem);

@@ -58,3 +58,30 @@ export const getLastName = (fullName) => {
     var arrName = fullName.split(' ');
     return arrName[arrName.length - 1];
 };
+
+export const getTypeOfDocument = () => {
+    const excel =
+        'application/pdf,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel';
+    const word =
+        ',.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    const other = ',.txt,.xml';
+    return excel + word + other;
+};
+
+export const isEmojiOnly = (string) => {
+    // remove all white spaces from the input
+    const stringToTest = string.replace(/ /g, '');
+    const regexForEmojis = /\p{Extended_Pictographic}/gu;
+    const regexForAlphaNums = /[\p{L}\p{N}]+/gu;
+
+    // check to see if the string contains emojis
+    if (regexForEmojis.test(stringToTest)) {
+        // check to see if it contains any alphanumerics
+        if (regexForAlphaNums.test(stringToTest)) {
+            return false;
+        }
+        return true;
+    }
+
+    return false;
+};

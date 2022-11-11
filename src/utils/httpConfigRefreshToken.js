@@ -5,6 +5,7 @@ import { getRefreshToken } from '~/services/authService';
 import { loginSuccess } from '~/redux/Slice/authSlice';
 
 export const getAxiosJWT = (dispatch, currAccount) => {
+    axios.defaults.withCredentials = true;
     var axiosJWT = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
     });

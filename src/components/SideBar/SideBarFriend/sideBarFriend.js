@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 
@@ -8,7 +8,7 @@ import Button from '~/components/Button';
 
 const cx = classNames;
 
-function SideBarFriend() {
+function SideBarFriend({ count }) {
     const [tabChange, setTabChange] = useState(true);
 
     return (
@@ -30,7 +30,7 @@ function SideBarFriend() {
                 <div className={cx('h-full ml-2 w-48 flex items-center text-lg ')}>Danh sách nhóm</div>
             </div>
             <div className={cx('h-10 w-full text-2xl text-lcn-blue-5')}>
-                <h1>Bạn bè (96)</h1>
+                <h1>Bạn bè ({count})</h1>
             </div>
             <div className={cx('h-10 w-full flex justify-around')}>
                 <Button

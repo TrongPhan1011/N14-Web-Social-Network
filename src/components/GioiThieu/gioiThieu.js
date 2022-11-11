@@ -4,7 +4,7 @@ import { FaSchool, FaTransgender, FaMobileAlt, FaBirthdayCake } from 'react-icon
 
 const cx = classNames;
 
-function GioiThieu({ data, birthday, education, gender, phoneNumber }) {
+function GioiThieu({ data, birthday, education, gender, phoneNumber = '' }) {
     return (
         <div className={'  w-full p-5'}>
             <div className={cx('flex  w-full mb-4')}>

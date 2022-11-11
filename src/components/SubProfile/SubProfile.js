@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import classNames from 'classnames';
 
 import GioiThieu from '~/components/GioiThieu';
@@ -7,14 +8,16 @@ import Button from '~/components/Button';
 
 const cx = classNames;
 
-function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday }) {
+function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday, listFriend }) {
     var Comp = GioiThieu;
     var title = 'Thông tin chung';
     var soLuong = '';
+    var list = [];
     if (type === 'banbe') {
         Comp = CardFriend;
         title = 'Bạn bè';
         soLuong = `(${soLuongBan})`;
+        list = listFriend;
     }
     if (type === 'img') {
         Comp = CardImg;
@@ -41,7 +44,7 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday }) {
         );
     };
     const renderSubBanBe = () => {
-        return <Comp />;
+        return <Comp list={list} />;
     };
     const renderSubHinhAnh = () => {
         return <Comp />;
@@ -65,4 +68,4 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday }) {
     );
 }
 
-export default SubProfile;
+export default memo(SubProfile);

@@ -1,4 +1,5 @@
 @import 'normalize.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -102,4 +103,14 @@ select {
 }
 ::-webkit-scrollbar {
     display: none;
+}
+details summary::-webkit-details-marker {
+    display: none;
+}
+
+#toggle:checked ~ .dot {
+    transform: translateX(100%);
+}
+#toggle:checked ~ .bg-toggle {
+    background-color: var(--lcn-blue-4);
 }

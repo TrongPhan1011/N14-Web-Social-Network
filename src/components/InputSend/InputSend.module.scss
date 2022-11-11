@@ -1,0 +1,10 @@
+[contentEditable='true']:empty:not(:focus):after {
+    content: attr(data-text);
+    color: gray;
+    position: relative;
+    z-index: -1;
+}
+
+.bg-emoji aside {
+    backdrop-filter: blur(10%);
+}

@@ -24,6 +24,22 @@ export const getMessageByIdChat = async (idChat, limit, accessToken, axiosJWT) =
         return null;
     }
 };
+export const getMessageFileByIdChat = async (idChat, limit, skip, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get('/message/mess_file', {
+            params: {
+                limit: limit,
+                skip: skip,
+                idchat: idChat,
+            },
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+};
 
 export const addUserSeenToMess = async (idMess, data, accessToken, axiosJWT) => {
     try {

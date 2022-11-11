@@ -11,20 +11,22 @@ import socket from '~/utils/getSocketIO';
 const cx = classNames;
 
 function SideBarChat() {
-    const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
-    var axiosJWT = getAxiosJWT(dispatch, currAccount);
 
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
 
     const [chatResult, setChatResult] = useState([]);
 
+    const dispatch = useDispatch();
     useEffect(() => {
+        var axiosJWT = getAxiosJWT(dispatch, currAccount);
         const fetchChat = async () => {
             const arrChat = await getChatByIdMember(userLoginData.id, currAccount.accessToken, axiosJWT);
 
-            setChatResult(arrChat);
+            if (!!arrChat) {
+                setChatResult(arrChat);
+            }
         };
         fetchChat();
     }, []);
@@ -33,7 +35,6 @@ function SideBarChat() {
     const handdleConnectSocket = (item) => {
         socket.emit('sendMessage', { receiverId: item.id, contentMessage: null });
     };
-    console.log(chatResult);
 
     const handleRenderChat = () => {
         if (chatResult.length > 0) {

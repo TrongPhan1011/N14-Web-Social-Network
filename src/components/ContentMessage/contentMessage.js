@@ -39,6 +39,7 @@ function ContentMessage() {
                     seen: data.seen,
                     type_mess: data.type,
                     idChat: data.idChat,
+                    file: data.file,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
                 };
@@ -77,8 +78,8 @@ function ContentMessage() {
                 var isLastMess = false;
                 var indexLast = listMessage.length - 1;
                 if (index === indexLast) isLastMess = true;
-                var mess = item.title.replace('&#', '&#');
-                if (item.authorID.id === curUser.id) {
+
+                if (item.authorID?.id === curUser.id) {
                     return (
                         <ItemMessage
                             from="me"
@@ -86,7 +87,7 @@ function ContentMessage() {
                             messageData={item}
                             isLastMess={isLastMess}
                         >
-                            {mess}
+                            {item.title}
                         </ItemMessage>
                     );
                 } else {
