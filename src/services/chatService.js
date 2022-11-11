@@ -82,6 +82,27 @@ export const removeMemberChat = async (idChat, arrMember, accessToken, axiosJWT)
         return null;
     }
 };
+export const removeChat = async (idChat, curUserId, accessToken, axiosJWT) => {
+    try {
+        console.log(curUserId);
+        const res = await axiosJWT.put(
+            '/chat/removeChat/' + idChat,
+            {},
+            {
+                params: {
+                    idCurUser: curUserId,
+                },
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        if (!!res) {
+            return res.data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
 export const leaveChat = async (idChat, idUser, accessToken, axiosJWT) => {
     try {
         console.log(idUser);
@@ -124,6 +145,27 @@ export const changeStatusChat = async (idChat, status, accessToken, axiosJWT) =>
             {
                 params: {
                     status: status,
+                },
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        if (!!res) {
+            return res.data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
+export const changeNameChat = async (idChat, newNameChat, idUser, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.put(
+            '/chat/changeNameChat/' + idChat,
+            {},
+            {
+                params: {
+                    name: newNameChat,
+                    idUser: idUser,
                 },
                 headers: { token: `baerer ${accessToken}` },
             },

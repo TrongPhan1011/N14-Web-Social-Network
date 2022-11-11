@@ -17,9 +17,10 @@ import { RiChatPrivateLine } from 'react-icons/ri';
 import AddAdminChat from '~/components/AddAdminChat';
 import RequestMemberChat from '~/components/RequestMemberChat';
 import RemoveMemberChat from '~/components/RemoveMemberChat';
-import { leaveChat } from '~/services/chatService';
+import { leaveChat, removeChat, changeNameChat } from '~/services/chatService';
 import { userLogin } from '~/redux/Slice/signInSlice';
 import { removeCurrentChat } from '~/redux/Slice/sidebarChatSlice';
+import FormConfirm from '~/components/FormConfirm';
 
 const cx = classNames;
 function Group() {
@@ -45,6 +46,28 @@ function Group() {
                 alert('Bạn đã rời nhóm');
             }
         }
+    };
+
+    const handleRemoveChat = async (value) => {
+        if (value === 'Xác nhận') {
+            var newCurrUser = await removeChat(curChat.id, curUser.id, accessToken, axiosJWT);
+
+            if (!!newCurrUser) {
+                dispatch(userLogin(newCurrUser));
+            }
+            alert('Nhóm đã xoá thành công');
+        } else alert('Thông tin xác nhận không đúng');
+    };
+    const changeNameOfChat = async (value) => {
+        if (!!value) {
+            var newCurrUser = await changeNameChat(curChat.id, value, curUser.id, accessToken, axiosJWT);
+
+            console.log(newCurrUser);
+            if (!!newCurrUser) {
+                dispatch(userLogin(newCurrUser));
+                alert('Đổi tên nhóm thành công');
+            }
+        } else alert('Thông tin xác nhận không đúng');
     };
 
     const renderFuctionalAdmin = () => {
@@ -83,12 +106,19 @@ function Group() {
                             curChat={curChat}
                             curUser={curUser}
                         />
-                        <Button className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}>
-                            <div className={cx('flex items-center')}>
-                                <HiOutlineTrash className={cx('text-red-500 w-7 h-7 ')} />{' '}
-                                <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Xoá nhóm trò chuyện</span>
-                            </div>
-                        </Button>
+                        <FormConfirm
+                            title="Xác nhận xoá nhóm"
+                            nameChat={curChat.name}
+                            text={'Nhập vào "Xác nhận" để chắc chắn bạn muốn xoá nhóm này'}
+                            onAccept={handleRemoveChat}
+                        >
+                            <Button type="button" className={cx('flex   w-full p-2 mb-2 hover:bg-red-100')}>
+                                <div className={cx('flex items-center')}>
+                                    <HiOutlineTrash className={cx('text-red-500 w-7 h-7 ')} />{' '}
+                                    <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Xoá nhóm trò chuyện</span>
+                                </div>
+                            </Button>
+                        </FormConfirm>
                     </div>
                 </details>
             );
@@ -100,12 +130,20 @@ function Group() {
             <HeaderProfile avatar={curChat.avatar} userName={curChat?.name} />
             <div className={cx('w-full h-0  border-t border-lcn-blue-3 ', 'text-sm')}>
                 <div className={cx('  flex flex-col items-center p-5 pt-3  text-lcn-blue-4', '')}>
-                    <Button className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')}>
-                        <div className={cx('flex items-center hover:text-lcn-blue-4')}>
-                            <BiEdit className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
-                            <span className={cx('  ml-4  w-4/5 ')}>Đổi tên nhóm</span>
-                        </div>
-                    </Button>
+                    <FormConfirm
+                        title="Đổi tên nhóm"
+                        nameChat={curChat.name}
+                        text={'Nhập vào tên nhóm bạn muốn thay đổi'}
+                        onAccept={changeNameOfChat}
+                    >
+                        <Button type="button" className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')}>
+                            <div className={cx('flex items-center hover:text-lcn-blue-4')}>
+                                <BiEdit className={cx('text-lcn-blue-4 w-7 h-7 ')} />
+                                <span className={cx('  ml-4  w-4/5 ')}>Đổi tên nhóm</span>
+                            </div>
+                        </Button>
+                    </FormConfirm>
+
                     <Button className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')}>
                         <div className={cx('flex items-center')}>
                             <HiOutlinePaperClip className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
