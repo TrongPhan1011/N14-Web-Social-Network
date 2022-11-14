@@ -8,6 +8,7 @@ import { AiOutlineMessage, AiFillMessage, AiFillSetting, AiOutlineSetting } from
 import { RiUserLine, RiUserFill, RiQrCodeLine } from 'react-icons/ri';
 import { FaTimes } from 'react-icons/fa';
 import { BiCopyAlt, BiLogInCircle, BiUserCircle } from 'react-icons/bi';
+import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
 
 import config from '~/configRoutes';
 import { lcnImage } from '~/image';
@@ -20,7 +21,6 @@ import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import { logOutSuccess } from '~/redux/Slice/authSlice';
 import { userLogin } from '~/redux/Slice/signInSlice';
 import Avartar from '~/components/Avartar';
-import { HiNewspaper, HiOutlineNewspaper } from 'react-icons/hi';
 import { logout } from '~/services/authService';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { removeCurrentChat } from '~/redux/Slice/sidebarChatSlice';
