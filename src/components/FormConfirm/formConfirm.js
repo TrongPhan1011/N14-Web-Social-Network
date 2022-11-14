@@ -40,7 +40,7 @@ function FormConfirm({ children, title, text, onAccept }) {
         return (
             <Modal
                 isShow={showModal}
-                className={cx(' w-1/3 h-44 text-black p-2 overflow-hidden')}
+                className={cx(' w-1/3 max-h-44 text-black p-2 overflow-hidden')}
                 isHidden={handleHideModal}
             >
                 <h4 className="text-center font-semibold border-b mt-2 mb-2 border-lcn-blue-3">{title}</h4>

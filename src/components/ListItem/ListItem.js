@@ -34,7 +34,6 @@ function ListItem({ type }) {
     useEffect(() => {
         const getListWaiting = async () => {
             const friendIsWaiting = await getWaitingFriend(curUser.id, accessToken, axiosJWT, dispatch);
-
             setListAddFriend(friendIsWaiting[0].friend);
         };
 

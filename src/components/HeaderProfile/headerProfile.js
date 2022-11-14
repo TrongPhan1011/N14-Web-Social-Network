@@ -1,5 +1,5 @@
-import { useEffect, useState, memo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, memo, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import Dropdown from '~/components/Dropdown';
 import Button from '~/components/Button';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
@@ -7,18 +7,24 @@ import classNames from 'classnames';
 import { lcnImage } from '~/image';
 import Avartar from '~/components/Avartar';
 import { uploadFileImg } from '~/services/fileService';
-
+import Modal from '~/components/Modal';
+import { FaTimes } from 'react-icons/fa';
+import { AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { BiZoomIn, BiZoomOut } from 'react-icons/bi';
 const cx = classNames;
 
 function HeaderProfile({ avatar, coverPhoto, userName, active }) {
     const dispatch = useDispatch();
     const [hiddenMenu, setHiddenMenu] = useState('hidden');
     const [showMenu, setShowMenu] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     var ava = lcnImage.avatarDefault;
     if (avatar) {
         ava = avatar;
     }
+    console.log(ava);
     var handlePreviewIMG = async (e) => {
         const selectedFiles = e.target.files;
         var listFileImgPreview = [];
@@ -35,18 +41,27 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             return;
         }
         img.preview = URL.createObjectURL(img);
-        console.log(img);
+
         listFileImgPreview.push(img);
         // saveFile();
-        console.log(listFileImgPreview);
+
         const formDataFile = new FormData();
-        console.log(listFileImgPreview[0]);
+
         formDataFile.append('images', listFileImgPreview[0]);
-        console.log(formDataFile);
-        // var urlIMG = await uploadFileImg(formDataFile);
-        // ava = urlIMG;
-        // console.log(ava);
+
+        var urlIMG = await uploadFileImg(formDataFile);
+
+        ava = urlIMG[0].path;
+        console.log(ava);
         e.target.value = null;
+    };
+
+    const handleShowModal = () => {
+        setShowModal(true);
+        setHiddenMenu('hidden');
+    };
+    const handleHideModal = () => {
+        setShowModal(false);
     };
 
     const handleHiddenMenu = useCallback(() => {
@@ -73,17 +88,18 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
                             'hover:bg-blue-100',
                             'active:bg-blue-200',
                         )}
-                        // onClick={handleHuyKetBan}
+                        onClick={handleShowModal}
                     >
                         Xem ảnh
                     </ItemDropdown>
+
                     <ItemDropdown
                         className={cx(
                             'rounded-md text-lcn-blue-5 font-medium',
                             'hover:bg-blue-100',
                             'active:bg-blue-200',
                         )}
-                        // onClick={handleHuyKetBan}
+                        // onClick={han}
                     >
                         <input
                             id="file-img"
@@ -100,7 +116,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             return (
                 <ItemDropdown
                     className={cx('rounded-md text-lcn-blue-5 font-medium', 'hover:bg-blue-100', 'active:bg-blue-200')}
-                    // onClick={handleHuyKetBan}
+                    onClick={handleShowModal}
                 >
                     Xem ảnh
                 </ItemDropdown>
@@ -123,6 +139,59 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
     };
     return (
         <div className={cx('h-2/5 w-full mb-16')}>
+            <Modal isShow={showModal} isHidden={handleHideModal}>
+                <div className={cx('flex p-4 border-b border-lcn-blue-2')}>
+                    <div className="w-1/3"></div>
+                    <p className={cx('w-1/3 text-xl text-lcn-blue-4 font-semibold text-center')}>Ảnh của bạn</p>
+                    <div className={cx('w-1/3 flex justify-end')}>
+                        <Button
+                            className={cx(' text-red-500 hover:text-white hover:bg-red-500')}
+                            onClick={handleHideModal}
+                        >
+                            <FaTimes />
+                        </Button>
+                    </div>
+                </div>
+                <div className={cx(' mt-3 flex w-full h-[435px]  justify-center items-center ')}>
+                    <TransformWrapper defaultScale={1} defaultPositionX={1} defaultPositionY={1}>
+                        {({ zoomIn, zoomOut, ...rest }) => (
+                            <>
+                                <div className={cx('w-full h-full flex justify-center items-center relative ')}>
+                                    <TransformComponent>
+                                        <div
+                                            className={cx(
+                                                'h-[435px] flex w-[490px]  items-center justify-center rounded  ',
+                                            )}
+                                        >
+                                            <img
+                                                src={ava}
+                                                alt="qrcode"
+                                                className={cx('h-[435px] w-[490px] rounded-xl')}
+                                            />
+                                        </div>
+                                    </TransformComponent>
+                                    <Button
+                                        className={cx(
+                                            'absolute text-white text-lg bg-black opacity-40 top-1 right-32 hover:opacity-40 active:opacity-60',
+                                        )}
+                                        onClick={() => zoomIn()}
+                                    >
+                                        <BiZoomIn icon="plus" />
+                                    </Button>
+                                    <Button
+                                        className={cx(
+                                            'absolute text-white text-lg bg-black opacity-40 top-1 right-40 hover:opacity-40 active:opacity-60  ',
+                                        )}
+                                        onClick={() => zoomOut()}
+                                    >
+                                        <BiZoomOut icon="minus" />
+                                    </Button>
+                                </div>
+                            </>
+                        )}
+                    </TransformWrapper>
+                </div>
+            </Modal>
             <div className={cx(' h-full w-full ')}>
                 <div className={cx('h-full w-full ')}>
                     {!!coverPhoto ? (
@@ -157,4 +226,4 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
     );
 }
 
-export default HeaderProfile;
+export default memo(HeaderProfile);
