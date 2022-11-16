@@ -14,23 +14,36 @@ import { useNavigate } from 'react-router-dom';
 
 const cx = classNames;
 
-function ItemSearchAll({ itemData, type, accessToken, axiosJWT, curChat, curUser }) {
+function ItemSearchMini({ itemData, type, searchMore, hidden, accessToken, axiosJWT, curChat, curUser }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const getDataRender = () => {
         var srcAvatar = itemData?.profile?.urlAvartar;
         var name = itemData?.fullName;
         var to = config.routeConfig.profile + `?id=${itemData.id}`;
-
+        var classItem = {
+            nameClass: 'w-28',
+            avatarClass: 'w-8 h-8',
+            chatClass: 'text-xl',
+        };
         if (type === 'group') {
             srcAvatar = itemData.avatar;
             name = itemData.name;
             to = null;
         }
+        if (searchMore) {
+            classItem = {
+                avatarClass: 'w-11 h-11',
+                nameClass: ' text-base',
+                chatClass: 'text-2xl',
+            };
+        }
         return {
             srcAvatar,
             name,
             to,
+            classItem,
         };
     };
     const dataRender = getDataRender();
@@ -42,6 +55,7 @@ function ItemSearchAll({ itemData, type, accessToken, axiosJWT, curChat, curUser
             navigate(config.routeConfig.home);
 
             dispatch(currentChat(chat));
+            hidden();
         }
     };
     const handleShowGroup = async () => {
@@ -57,16 +71,29 @@ function ItemSearchAll({ itemData, type, accessToken, axiosJWT, curChat, curUser
     };
 
     return (
-        <div className={cx('flex items-center m-2 mb-5')}>
-            <div className={cx('flex items-center w-2/3')}>
-                <Avartar src={dataRender.srcAvatar} className={cx('w-12 h-12')} />
-                <div className={cx('text-lcn-blue-5 font-medium pr-3 pl-3 text-lg')}>{dataRender.name}</div>
-            </div>
-            <div className={cx('flex items-center w-1/3 justify-end')}>
-                <Button className={cx('bg-lcn-blue-4 bg-opacity-100 text-white p-2 pr-3 pl-3')}>Kết bạn</Button>
-            </div>
+        <div className="relative flex items-center">
+            <ItemDropdown to={dataRender.to} className={cx('w-full')} onClick={handleShowGroup}>
+                <div className={cx('flex break-words items-center justify-start')}>
+                    <Avartar src={dataRender.srcAvatar} className={cx(dataRender.classItem?.avatarClass)} />
+                    <div
+                        className={cx(
+                            ' break-words text-left pl-2 pr-2 text-sm font-medium text-lcn-blue-5',
+                            dataRender.classItem?.nameClass,
+                        )}
+                    >
+                        {dataRender.name}
+                    </div>
+                </div>
+            </ItemDropdown>
+            {type === 'friend' ? (
+                <Button onClick={handleShowChat} className={cx('absolute right-2  bg-yellow-400 mr-0 ml-0')}>
+                    <AiOutlineMessage className={cx(' text-white ', dataRender.classItem?.chatClass)} />
+                </Button>
+            ) : (
+                <></>
+            )}
         </div>
     );
 }
 
-export default ItemSearchAll;
+export default ItemSearchMini;

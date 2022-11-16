@@ -13,6 +13,7 @@ const cx = classNames;
 function SideBarChat() {
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
+    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
 
@@ -38,7 +39,10 @@ function SideBarChat() {
 
     const handleRenderChat = () => {
         if (chatResult.length > 0) {
-            dispatch(currentChat(chatResult[0]));
+            if (currChat === null) {
+                dispatch(currentChat(chatResult[0]));
+            }
+            console.log(currChat);
 
             return chatResult.map((item) => {
                 handdleConnectSocket(item);

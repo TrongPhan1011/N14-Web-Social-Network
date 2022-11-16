@@ -12,6 +12,32 @@ export const getChatByIdMember = async (idMember, accessToken, axiosJWT) => {
         return null;
     }
 };
+export const getChatByIdChat = async (idChat, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get('/chat/id/' + idChat, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+};
+export const getInboxByIdFriend = async (idUser, idFriend, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get('/chat/idInbox', {
+            params: {
+                idUser: idUser,
+                idFriend: idFriend,
+            },
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+};
 export const getMemberOfChat = async (idChat, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.get('/chat/member', {

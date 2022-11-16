@@ -15,16 +15,18 @@ export const getUserByUserName = async (userName) => {
         console.log('Người dùng không tồn tại!');
     }
 };
-export const getUserByTextSearch = async (searchValue, limit) => {
+export const getUserByTextSearch = async (idUser, searchValue, limit, accessToken, axiosJWT) => {
     try {
-        const res = await httpRequest.get('user/', {
+        const res = await axiosJWT.get('user/textsearch', {
             params: {
                 q: searchValue,
                 _limit: limit,
+                idUser,
             },
+            headers: { token: `baerer ${accessToken}` },
         });
 
-        return res;
+        return res.data;
     } catch (error) {
         console.log('Người dùng không tồn tại!');
     }
