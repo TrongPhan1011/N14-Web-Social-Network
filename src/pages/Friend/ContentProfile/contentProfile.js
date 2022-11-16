@@ -155,11 +155,11 @@ function ContentProfile({ userId }) {
     };
 
     return (
-        <div className={cx(' w-full h-full relative flex overflow-hidden justify-center items-center')}>
+        <div className={cx(' w-full h-full  flex overflow-hidden justify-center items-center')}>
             <div className={cx(' w-full h-screen bg-white flex flex-col items-center   overflow-y-scroll')}>
                 <HeaderProfile
                     avatar={profile?.urlAvartar}
-                    coverPhoto={lcnImage.coverPhoto}
+                    coverPhoto={profile?.urlCoverPhoto}
                     userName={userProfile?.fullName}
                     active={active}
                 />

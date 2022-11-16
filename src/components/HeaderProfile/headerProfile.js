@@ -1,5 +1,5 @@
-import { useState, memo, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, memo, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from '~/components/Dropdown';
 import Button from '~/components/Button';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
@@ -7,11 +7,16 @@ import classNames from 'classnames';
 import { lcnImage } from '~/image';
 import Avartar from '~/components/Avartar';
 import { uploadFileImg } from '~/services/fileService';
-import Modal from '~/components/Modal';
-import { FaTimes } from 'react-icons/fa';
-import { AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
+import { updateAvatar, updateBanner } from '~/services/userService';
+
+import { MdSaveAlt } from 'react-icons/md';
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { BiZoomIn, BiZoomOut } from 'react-icons/bi';
+import { AiFillCamera } from 'react-icons/ai';
+import { FaRegTimesCircle } from 'react-icons/fa';
+
 const cx = classNames;
 
 function HeaderProfile({ avatar, coverPhoto, userName, active }) {
@@ -19,49 +24,105 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
     const [hiddenMenu, setHiddenMenu] = useState('hidden');
     const [showMenu, setShowMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
-
+    const [hiddenSave, setHiddenSave] = useState('hidden');
+    const [banner, setBanner] = useState(false);
+    var currAuth = useSelector((state) => state.persistedReducer.auth);
+    var currAccount = currAuth.currentUser;
+    var accessToken = currAccount.accessToken;
+    var axiosJWT = getAxiosJWT(dispatch, currAccount);
+    var curSignIn = useSelector((state) => state.persistedReducer.signIn);
+    var curUser = curSignIn.userLogin;
     var ava = lcnImage.avatarDefault;
+    console.log(banner);
     if (avatar) {
         ava = avatar;
     }
-    console.log(ava);
+    const [selectedFile, setSelectedFile] = useState();
+    const [preview, setPreview] = useState(ava);
+
+    // create a preview as a side effect, whenever selected file is changed
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreview(ava);
+            setBanner(false);
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(selectedFile);
+        setPreview(objectUrl);
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl);
+    }, [selectedFile, userName]);
+
     var handlePreviewIMG = async (e) => {
-        const selectedFiles = e.target.files;
-        var listFileImgPreview = [];
         const SIZE_FILE = 62914560; // = 60MB
+        setSelectedFile(e.target.files[0]);
+        // if (selectedFile.length > 1) {
+        //     alert('Chỉ được chọn một ảnh');
+        //     return;
+        // }
 
-        if (selectedFiles.length > 1) {
-            alert('Chỉ được chọn một ảnh');
-            return;
-        }
-        var img = selectedFiles[0];
+        // if (selectedFile.size > SIZE_FILE) {
+        //     alert('Dung lượng mỗi ảnh hoặc video tối đa là 60MB');
+        //     return;
+        // }
 
-        if (img.size > SIZE_FILE) {
-            alert('Dung lượng mỗi ảnh hoặc video tối đa là 60MB');
-            return;
-        }
-        img.preview = URL.createObjectURL(img);
+        setHiddenSave('');
+        handleShowModal();
+        renderModal(preview);
+        e.target.value = null;
+    };
+    var handlePreviewBanner = (e) => {
+        const SIZE_FILE = 62914560; // = 60MB
+        setSelectedFile(e.target.files[0]);
+        // if (selectedFile.length > 1) {
+        //     alert('Chỉ được chọn một ảnh');
+        //     return;
+        // }
 
-        listFileImgPreview.push(img);
-        // saveFile();
+        // if (selectedFile.size > SIZE_FILE) {
+        //     alert('Dung lượng mỗi ảnh hoặc video tối đa là 60MB');
+        //     return;
+        // }
+        setHiddenSave('');
 
+        renderModalBanner(preview);
+        e.target.value = null;
+    };
+    const saveImg = async () => {
+        var listFileImgPreview = [];
+
+        listFileImgPreview.push(selectedFile);
         const formDataFile = new FormData();
 
         formDataFile.append('images', listFileImgPreview[0]);
 
         var urlIMG = await uploadFileImg(formDataFile);
-
-        ava = urlIMG[0].path;
-        console.log(ava);
-        e.target.value = null;
+        if (banner === true) {
+            const updateImg = await updateBanner(curUser.id, urlIMG[0].path, accessToken, axiosJWT, dispatch);
+            if (!!updateImg) {
+                alert('Đổi ảnh thành công');
+                window.location.reload(false);
+            }
+        } else {
+            const updateImg = await updateAvatar(curUser.id, urlIMG[0].path, accessToken, axiosJWT, dispatch);
+            if (!!updateImg) {
+                alert('Đổi ảnh thành công');
+                window.location.reload(false);
+            }
+        }
     };
-
     const handleShowModal = () => {
         setShowModal(true);
         setHiddenMenu('hidden');
     };
     const handleHideModal = () => {
         setShowModal(false);
+
+        setHiddenSave('hidden');
+        setSelectedFile();
+        setPreview(ava);
     };
 
     const handleHiddenMenu = useCallback(() => {
@@ -77,7 +138,13 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             setShowMenu(false);
         }
     };
+    const renderModalBanner = (newBanner) => {
+        setBanner(true);
+        setPreview(newBanner);
+        handleShowModal();
 
+        renderModal(newBanner);
+    };
     const renderData = () => {
         if (active === 'hidden') {
             return (
@@ -99,7 +166,6 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
                             'hover:bg-blue-100',
                             'active:bg-blue-200',
                         )}
-                        // onClick={han}
                     >
                         <input
                             id="file-img"
@@ -127,7 +193,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
         return (
             <div
                 className={cx(
-                    'w-52 relative left-20 top-[-70px] bg-white border border-lcn-blue-2 rounded-lg shadow-lg p-2',
+                    'w-52 relative left-32 top-[-25px] bg-white border border-lcn-blue-2 rounded-lg shadow-lg p-2',
                     hiddenMenu,
                 )}
                 // tabIndex="0"
@@ -137,68 +203,121 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             </div>
         );
     };
-    return (
-        <div className={cx('h-2/5 w-full mb-16')}>
-            <Modal isShow={showModal} isHidden={handleHideModal}>
-                <div className={cx('flex p-4 border-b border-lcn-blue-2')}>
-                    <div className="w-1/3"></div>
-                    <p className={cx('w-1/3 text-xl text-lcn-blue-4 font-semibold text-center')}>Ảnh của bạn</p>
-                    <div className={cx('w-1/3 flex justify-end')}>
+    const renderModal = (preview) => {
+        if (showModal) {
+            return (
+                <div
+                    className={cx(
+                        'w-screen h-screen  absolute z-20 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  backdrop-blur-md',
+                        'block',
+                    )}
+                >
+                    <div
+                        className={cx(
+                            'w-screen h-screen  absolute z-50 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  backdrop-blur-md',
+                            'block',
+                        )}
+                    >
                         <Button
-                            className={cx(' text-red-500 hover:text-white hover:bg-red-500')}
+                            className={cx('absolute top-2 left-3 text-3xl text-white hover:text-lcn-blue-4')}
                             onClick={handleHideModal}
                         >
-                            <FaTimes />
+                            <FaRegTimesCircle />
                         </Button>
+                        <TransformWrapper defaultScale={1} defaultPositionX={1} defaultPositionY={1}>
+                            {({ zoomIn, zoomOut, ...rest }) => (
+                                <>
+                                    <div className={cx('w-full h-full flex justify-center items-center  ')}>
+                                        <TransformComponent>
+                                            <div
+                                                className={cx(
+                                                    'h-[680px] flex w-full items-center justify-center rounded  ',
+                                                )}
+                                            >
+                                                <img
+                                                    src={preview}
+                                                    alt="qrcode"
+                                                    className={cx('h-full w-full rounded-xl')}
+                                                />
+                                            </div>
+                                        </TransformComponent>
+                                        <Button
+                                            className={cx(
+                                                ' text-white absolute text-3xl bg-black opacity-40 top-2 right-32 hover:opacity-40 active:opacity-60',
+                                            )}
+                                            onClick={() => zoomIn()}
+                                        >
+                                            <BiZoomIn icon="plus" />
+                                        </Button>
+                                        <Button
+                                            className={cx(
+                                                ' text-white text-3xl bg-black absolute opacity-40 top-2 right-44 hover:opacity-40 active:opacity-60  ',
+                                            )}
+                                            onClick={() => zoomOut()}
+                                        >
+                                            <BiZoomOut icon="minus" />
+                                        </Button>
+                                        <Button
+                                            className={cx(
+                                                ' text-white text-3xl bg-black absolute opacity-40 top-2 right-56 hover:opacity-40 active:opacity-60  ',
+                                                hiddenSave,
+                                            )}
+                                            onClick={saveImg}
+                                        >
+                                            <MdSaveAlt />
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                        </TransformWrapper>
                     </div>
                 </div>
-                <div className={cx(' mt-3 flex w-full h-[435px]  justify-center items-center ')}>
-                    <TransformWrapper defaultScale={1} defaultPositionX={1} defaultPositionY={1}>
-                        {({ zoomIn, zoomOut, ...rest }) => (
-                            <>
-                                <div className={cx('w-full h-full flex justify-center items-center relative ')}>
-                                    <TransformComponent>
-                                        <div
-                                            className={cx(
-                                                'h-[435px] flex w-[490px]  items-center justify-center rounded  ',
-                                            )}
-                                        >
-                                            <img
-                                                src={ava}
-                                                alt="qrcode"
-                                                className={cx('h-[435px] w-[490px] rounded-xl')}
-                                            />
-                                        </div>
-                                    </TransformComponent>
-                                    <Button
-                                        className={cx(
-                                            'absolute text-white text-lg bg-black opacity-40 top-1 right-32 hover:opacity-40 active:opacity-60',
-                                        )}
-                                        onClick={() => zoomIn()}
-                                    >
-                                        <BiZoomIn icon="plus" />
-                                    </Button>
-                                    <Button
-                                        className={cx(
-                                            'absolute text-white text-lg bg-black opacity-40 top-1 right-40 hover:opacity-40 active:opacity-60  ',
-                                        )}
-                                        onClick={() => zoomOut()}
-                                    >
-                                        <BiZoomOut icon="minus" />
-                                    </Button>
-                                </div>
-                            </>
-                        )}
-                    </TransformWrapper>
-                </div>
-            </Modal>
-            <div className={cx(' h-full w-full ')}>
-                <div className={cx('h-full w-full ')}>
-                    {!!coverPhoto ? (
-                        <img src={coverPhoto} alt="coverPhoto" className={cx('w-full h-4/5')} />
-                    ) : (
-                        <div className={cx('w-full h-4/5 bg-lcn-blue-3')}></div>
+            );
+        } else {
+            return (
+                <div
+                    className={cx(
+                        'w-screen h-screen absolute top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40 backdrop-blur-md',
+                        'hidden',
                     )}
+                ></div>
+            );
+        }
+    };
+    return (
+        <div className={cx('h-2/5 w-full mb-14 ')}>
+            {renderModal(preview)}
+            <div className={cx(' h-full w-full ')}>
+                <div className={cx('w-full h-[220px] relative')}>
+                    {!!coverPhoto ? (
+                        <div className={cx('w-full h-full')}>
+                            <img src={coverPhoto} alt="coverPhoto" className={cx('w-full h-full object-cover')} />
+                        </div>
+                    ) : (
+                        <div className={cx('w-full h-full bg-lcn-blue-3')}></div>
+                    )}
+                    {active === 'hidden' ? (
+                        <Button
+                            className={cx(
+                                'absolute right-8 h-10 text-sm top-2 w-36 flex justify-center border border-lcn-blue-4 bg-white rounded-lg text-lcn-blue-4 hover:bg-lcn-blue-4 hover:text-white',
+                            )}
+                        >
+                            <input
+                                id="file-banner"
+                                className="hidden"
+                                type="file"
+                                onChange={handlePreviewBanner}
+                                accept="image/*"
+                            />
+                            <label htmlFor="file-banner" className={cx('flex items-center')}>
+                                <AiFillCamera />
+                                Thay đổi ảnh nền
+                            </label>
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
+
                     <div className={cx(' relative  h-2/5 w-full  flex justify-center ')}>
                         <Dropdown render={handleLoadMenu} visible={showMenu} hidden={handleHiddenMenu}>
                             <div>
@@ -217,7 +336,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             </div>
             <div
                 className={cx(
-                    'bg-white w-full h-14 text-2xl flex justify-center items-center font-semibold text-lcn-blue-5',
+                    'bg-white w-full h-16 text-2xl flex justify-center items-center font-semibold text-lcn-blue-5',
                 )}
             >
                 {userName}

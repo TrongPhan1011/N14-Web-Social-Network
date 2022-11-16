@@ -18,7 +18,11 @@ function CardFriend({ list }) {
                 const linkTrangCaNhan = config.routeConfig.profile + `?id=${item._id}`;
 
                 return (
-                    <Button to={linkTrangCaNhan} className={cx('w-[120px] h-[100px] flex flex-col p-2 ')}>
+                    <Button
+                        key={item._id}
+                        to={linkTrangCaNhan}
+                        className={cx('w-[120px] h-[100px] flex flex-col p-2 ')}
+                    >
                         <div className={cx('h-4/5 w-full block overflow-hidden')}>
                             <img src={img} alt="avartar" className={cx('w-full h-full rounded')} />
                         </div>

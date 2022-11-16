@@ -135,3 +135,73 @@ export const addFriend = async (idUser, idFriend, accessToken, axiosJWT, dispatc
         console.log(error);
     }
 };
+
+export const updateAvatar = async (idUser, newAvatar, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/avatar',
+            {
+                idUser: idUser,
+                avatar: newAvatar,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const updateBanner = async (idUser, newBanner, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/banner',
+            {
+                idUser: idUser,
+                banner: newBanner,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const updateProfile = async (idUser, newProfile, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/',
+            {
+                idUser: idUser,
+                education: newProfile.education,
+                birthday: newProfile.birthday,
+                gender: newProfile.gender,
+                fullName: newProfile.fullName,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
