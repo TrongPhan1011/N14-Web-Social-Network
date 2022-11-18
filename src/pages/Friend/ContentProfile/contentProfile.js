@@ -8,7 +8,8 @@ import { getAllFriend } from '~/services/userService';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { userLogin } from '~/redux/Slice/signInSlice';
-
+import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+import { getInboxByIdFriend } from '~/services/chatService';
 import Dropdown from '~/components/Dropdown';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import styles from './ContentProfile.module.scss';
@@ -20,10 +21,13 @@ import { RiChat3Line } from 'react-icons/ri';
 import { lcnImage } from '~/image';
 import Post from '~/components/Post';
 import { acceptFriend } from '~/services/userService';
+import { useNavigate } from 'react-router-dom';
+import config from '~/configRoutes';
 
 const cx = classNames.bind(styles);
 
 function ContentProfile({ userId }) {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [hiddenMenu, setHiddenMenu] = useState('hidden');
     const [showMenu, setShowMenu] = useState(false);
@@ -44,8 +48,10 @@ function ContentProfile({ userId }) {
 
     useEffect(() => {
         const getProfile = async () => {
-            const getUserProfile = await getUserById(userId, accessToken, axiosJWT, dispatch);
-
+            const getUserProfile = await getUserById(userId, curUser.id, accessToken, axiosJWT, dispatch);
+            if (!getUserProfile) {
+                navigate(config.routeConfig + '404page');
+            }
             setUserProfile(getUserProfile);
             setProfile(getUserProfile?.profile);
 
@@ -58,6 +64,7 @@ function ContentProfile({ userId }) {
                 setActive('');
             }
             var obj = curUser.friend.find((o) => o.id === userId);
+
             if (!!obj && obj.id === userId && obj.status === 1) {
                 setInRelationship('Bạn bè');
             } else if (!!obj && obj.id === userId && obj.status === 2) {
@@ -67,7 +74,6 @@ function ContentProfile({ userId }) {
             } else {
                 setInRelationship('Kết bạn');
             }
-
             setCount(0);
             for (var i = 0; i <= getUserProfile.friend.length; i++) {
                 if (getUserProfile.friend[i]?.status === 1) {
@@ -78,7 +84,7 @@ function ContentProfile({ userId }) {
 
         getProfile();
     }, [userId]);
-
+    console.log(userProfile.email);
     useEffect(() => {
         const getListFriend = async () => {
             const friendByStatus = await getAllFriend(userId, accessToken, axiosJWT);
@@ -153,7 +159,11 @@ function ContentProfile({ userId }) {
             </div>
         );
     };
-
+    const handleInbox = async () => {
+        var inboxChat = await getInboxByIdFriend(curUser.id, userId, accessToken, axiosJWT);
+        dispatch(currentChat(inboxChat));
+        navigate(config.routeConfig.home);
+    };
     return (
         <div className={cx(' w-full h-full  flex overflow-hidden justify-center items-center')}>
             <div className={cx(' w-full h-screen bg-white flex flex-col items-center   overflow-y-scroll')}>
@@ -185,6 +195,7 @@ function ContentProfile({ userId }) {
                                 'active:bg-opacity-40',
                                 active,
                             )}
+                            onClick={handleInbox}
                         >
                             <RiChat3Line className={cx('mr-1')} /> Nhắn tin
                         </Button>
@@ -192,8 +203,13 @@ function ContentProfile({ userId }) {
                 </div>
                 <div className={cx('w-full h-full bg-lcn-blue-1')}>
                     <div className={cx('w-full  p-3 flex flex-row justify-around')}>
-                        <SubProfile data={userProfile} profile={profile} birthday={birthday} />
-                        <SubProfile type="banbe" soLuongBan={count} listFriend={userFriend} />
+                        <SubProfile
+                            data={userProfile}
+                            profile={profile}
+                            birthday={birthday}
+                            email={userProfile.email}
+                        />
+                        <SubProfile type="banbe" soLuongBan={count} listFriend={userFriend} userId={userId} />
                         <SubProfile type="img" soLuongAnh="11" />
                     </div>
                 </div>

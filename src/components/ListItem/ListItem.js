@@ -8,7 +8,7 @@ import ItemChan from '~/components/ItemChan';
 
 import { getAllFriend, getWaitingFriend } from '~/services/userService';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-import { findSuccess } from '~/redux/Slice/friendSlice';
+
 const cx = classNames;
 
 function ListItem({ type }) {
@@ -21,7 +21,7 @@ function ListItem({ type }) {
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
-
+    console.log(listFriend);
     useEffect(() => {
         const getListFriend = async () => {
             const friendByStatus = await getAllFriend(curUser.id, accessToken, axiosJWT, dispatch);
@@ -30,7 +30,7 @@ function ListItem({ type }) {
         };
 
         getListFriend();
-    }, [curUser]);
+    }, [type, curUser.friend]);
     useEffect(() => {
         const getListWaiting = async () => {
             const friendIsWaiting = await getWaitingFriend(curUser.id, accessToken, axiosJWT, dispatch);
@@ -38,7 +38,7 @@ function ListItem({ type }) {
         };
 
         getListWaiting();
-    }, [curUser]);
+    }, [type, curUser.friend]);
 
     var Comp = ItemBanBe;
     if (type === 'choXacNhan') {
@@ -56,15 +56,13 @@ function ListItem({ type }) {
             });
         }
         if (listAdd.length > 0 && type === 'choXacNhan') {
-            // dispatch(findSuccess(listAdd[0]));
             return listAdd.map((item) => {
                 return (
                     <Comp
                         key={item._id}
                         friendName={item.fullName}
                         friendId={item._id}
-                        accessToken={accessToken}
-                        axiosJWT={axiosJWT}
+                        friendAva={item?.profile?.urlAvartar}
                     />
                 );
             });

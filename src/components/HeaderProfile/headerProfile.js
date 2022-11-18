@@ -10,6 +10,7 @@ import { uploadFileImg } from '~/services/fileService';
 import { updateAvatar, updateBanner } from '~/services/userService';
 
 import { MdSaveAlt } from 'react-icons/md';
+import { BsFillCloudUploadFill } from 'react-icons/bs';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -208,13 +209,13 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             return (
                 <div
                     className={cx(
-                        'w-screen h-screen  absolute z-20 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  backdrop-blur-md',
+                        'w-screen h-screen  absolute z-20 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  ',
                         'block',
                     )}
                 >
                     <div
                         className={cx(
-                            'w-screen h-screen  absolute z-50 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  backdrop-blur-md',
+                            'w-screen h-screen  absolute z-50 top-0 left-0 flex justify-center items-center bg-slate-500 bg-opacity-40  ',
                             'block',
                         )}
                     >
@@ -264,7 +265,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
                                             )}
                                             onClick={saveImg}
                                         >
-                                            <MdSaveAlt />
+                                            <BsFillCloudUploadFill />
                                         </Button>
                                     </div>
                                 </>
@@ -288,10 +289,20 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
         <div className={cx('h-2/5 w-full mb-14 ')}>
             {renderModal(preview)}
             <div className={cx(' h-full w-full ')}>
-                <div className={cx('w-full h-[220px] relative')}>
+                <div className={cx('w-full h-[220px] relative p-0 m-0')}>
                     {!!coverPhoto ? (
-                        <div className={cx('w-full h-full')}>
-                            <img src={coverPhoto} alt="coverPhoto" className={cx('w-full h-full object-cover')} />
+                        <div
+                            className={cx('w-full h-full p-0 m-0 cursor-pointer')}
+                            onClick={() => {
+                                handleShowModal();
+                                renderModalBanner(coverPhoto);
+                            }}
+                        >
+                            <img
+                                src={coverPhoto}
+                                alt="coverPhoto"
+                                className={cx('w-full p-0 m-0 h-full object-cover')}
+                            />
                         </div>
                     ) : (
                         <div className={cx('w-full h-full bg-lcn-blue-3')}></div>

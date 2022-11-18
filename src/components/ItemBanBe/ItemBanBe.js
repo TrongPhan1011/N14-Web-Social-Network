@@ -8,7 +8,7 @@ import routeConfig from '~/configRoutes';
 import Avartar from '~/components/Avartar';
 
 const cx = classNames;
-function ItemBanBe({ userId, name, avt }) {
+function ItemBanBe({ userId, name, avt, onClick }) {
     const _route = routeConfig.routeConfig;
     var profile = _route.profile + '?id=' + userId;
     var img = lcnImage.avatarDefault;
@@ -17,7 +17,11 @@ function ItemBanBe({ userId, name, avt }) {
     }
     const renderFriendItem = () => {
         return (
-            <Button to={profile} className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
+            <Button
+                to={profile}
+                className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}
+                onClick={onClick}
+            >
                 <div className={cx('relative w-full h-full flex items-center')}>
                     <Avartar className="w-10 h-10" src={img} />
 

@@ -86,10 +86,10 @@ function ContentThongTinChung() {
             };
             console.log(user);
             console.log(curUser.id);
-            // var update = await updateProfile(curUser.id, user, accessToken, axiosJWT, dispatch);
-            // if (!!update) {
-            //     console.log('update thành công');
-            // }
+            var update = await updateProfile(curUser.id, user, accessToken, axiosJWT, dispatch);
+            if (!!update) {
+                alert('Sửa thông tin thành công');
+            }
         } else {
             console.log('huỷ lưu');
         }

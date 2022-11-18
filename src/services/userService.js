@@ -31,12 +31,16 @@ export const getUserByTextSearch = async (idUser, searchValue, limit, accessToke
         console.log('Người dùng không tồn tại!');
     }
 };
-export const getUserById = async (idUser, accessToken, axiosJWT, dispatch) => {
+export const getUserById = async (idUser, curUserId, accessToken, axiosJWT, dispatch) => {
     try {
         const res = await axiosJWT.get(`user/id/${idUser}`, {
             headers: { token: `baerer ${accessToken}` },
         });
+        const dataUserLogin = await axiosJWT.get(`user/id/${curUserId}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
 
+        dispatch(userLogin(dataUserLogin.data));
         return res.data;
     } catch (error) {
         console.log(error);
@@ -61,6 +65,17 @@ export const getAllFriend = async (idUser, accessToken, axiosJWT, status = 1) =>
 export const getWaitingFriend = async (idUser, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.get(`user/friend/${idUser}?status=2`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const getBlockFriend = async (idUser, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get(`user/friend/${idUser}?status=-1`, {
             headers: { token: `baerer ${accessToken}` },
         });
 

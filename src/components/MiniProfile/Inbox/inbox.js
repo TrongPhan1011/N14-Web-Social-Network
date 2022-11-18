@@ -34,7 +34,7 @@ function Inbox() {
             const idReceiver = curChat.member.filter((member) => {
                 return member !== curUser.id;
             });
-            var receiverFetch = await getUserById(idReceiver[0], accessToken, axiosJWT);
+            var receiverFetch = await getUserById(idReceiver[0], curUser.id, accessToken, axiosJWT, dispatch);
             console.log(receiverFetch);
             setReceiver(receiverFetch);
         };
@@ -52,6 +52,7 @@ function Inbox() {
                 birthday={receiver?.birthday}
                 education={receiver?.profile?.education}
                 gender={receiver?.gender}
+                email={receiver?.email}
             />
             <div className={cx('w-full h-0  border-t border-lcn-blue-3 ', '')}>
                 <div className={cx(' bg-lcn-blue-1 flex flex-col items-center p-5 pt-3  text-lcn-blue-4', '')}>
