@@ -43,9 +43,6 @@ function InputSend({ type }) {
     const txtSendRef = useRef();
 
     useEffect(() => {
-        if (!/\p{Emoji}/u.test(messageSend)) {
-            console.log('');
-        }
         if (!!curChat && !!messageSend) {
             socket.emit('sendMessage', {
                 receiverId: curChat.id,

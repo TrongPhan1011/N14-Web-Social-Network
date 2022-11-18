@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import Button from '~/components/Button';
 import Avartar from '~/components/Avartar';
-import { formatTime } from '~/lib/formatString';
+import { formatTimeAuto } from '~/lib/formatString';
 import { getUserById } from '~/services/userService';
 import { addUserSeenToMess } from '~/services/messageService';
 
@@ -13,6 +13,7 @@ import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import socket from '~/utils/getSocketIO';
 import { getLastName } from '~/lib/formatString';
+import { getMemberOfChat } from '~/services/chatService';
 
 const cx = classNames;
 
@@ -23,9 +24,12 @@ function ItemChat({ groupChat, userLoginData }) {
     var accessToken = currAccount.accessToken;
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
+    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     const [messageLast, setMessageLast] = useState('');
     const [onlineValue, setOnlineValue] = useState('hidden');
+    const [currentInbox, setCurrentInbox] = useState();
+    const [memberFetch, setMemberFetch] = useState();
 
     const [seenState, setSeenState] = useState(false);
     const [itemDataChat, setItemDataChat] = useState();
@@ -51,6 +55,7 @@ function ItemChat({ groupChat, userLoginData }) {
                     userChatOther = await getUserById(groupChat.member[0], accessToken, axiosJWT);
                 } else userChatOther = await getUserById(groupChat.member[1], accessToken, axiosJWT);
 
+                setCurrentInbox(userChatOther);
                 if (userChatOther.statusOnline) {
                     setOnlineValue('');
                 } else setOnlineValue('hidden');
@@ -72,7 +77,9 @@ function ItemChat({ groupChat, userLoginData }) {
                     updatedAt: data.updatedAt,
                     file: data.file,
                 };
-                if (getNewMess.idChat === groupChat.id) setMessageLast(getNewMess);
+                if (getNewMess.idChat === groupChat.id) {
+                    setMessageLast(getNewMess);
+                }
             }
         });
     }, [socket]);
@@ -94,7 +101,12 @@ function ItemChat({ groupChat, userLoginData }) {
 
             var seen = checkSeen(arrUserSeen, userLoginData.id);
 
-            if (!seen && curSignIn.userLogin.id !== messageLast.authorID.id && messageLast.idChat === groupChat.id) {
+            if (
+                currChat.id !== groupChat.id &&
+                !seen &&
+                curSignIn.userLogin.id !== messageLast.authorID.id &&
+                messageLast.idChat === groupChat.id
+            ) {
                 setSeenState({
                     textName: 'font-semibold ',
                     textChatTitle: 'text-gray-900',
@@ -117,7 +129,7 @@ function ItemChat({ groupChat, userLoginData }) {
                 if (messageLast.title === '') {
                     titleMess = 'Đã gửi file';
                 } else titleMess = messageLast.title;
-                messCreatedAt = formatTime(messageLast.createdAt, 'hh:mm') || '';
+                messCreatedAt = formatTimeAuto(messageLast.createdAt) || '';
                 var fullNameAuthor = messageLast.authorID.fullName;
 
                 if (messageLast.authorID.id === curSignIn.userLogin.id) {
@@ -150,9 +162,9 @@ function ItemChat({ groupChat, userLoginData }) {
             seenAt: currentDate,
         };
 
-        var seen = checkSeen(messageLast.seen, userClickSeen.id);
+        var seen = checkSeen(messageLast?.seen, userClickSeen.id);
         if (!seen) {
-            if (putUserSeen(messageLast.id, userClickSeen)) {
+            if (putUserSeen(messageLast?.id, userClickSeen) || currChat.id === groupChat.id) {
                 setSeenState({
                     textName: 'font-medium ',
                     textChatTitle: 'text-gray-400',
@@ -163,16 +175,26 @@ function ItemChat({ groupChat, userLoginData }) {
         dispatch(currentChat(groupChat));
     };
 
+    var itemSelected = '';
+    if (currChat.id === groupChat.id) {
+        itemSelected = 'bg-lcn-blue-1';
+    }
+
     return (
         <>
             {!!itemDataChat ? (
                 <Button
                     type="button"
                     onClick={handleClickChat}
-                    className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}
+                    className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-2 mt-1', itemSelected)}
                 >
                     <div className={cx('relative w-full h-full flex items-center')}>
-                        <Avartar className={cx('h-10 w-10')} src={groupChat.avatar} />
+                        <Avartar
+                            className={cx('h-10 w-10')}
+                            src={groupChat.typeChat === 'group' ? groupChat.avatar : currentInbox?.profile?.urlAvartar}
+                            typeAvatar={groupChat.typeChat === 'group' ? 'group' : 'inbox'}
+                            idGroup={groupChat.id}
+                        />
                         <div
                             className={cx(
                                 'bg-lcn-green-1 w-3 h-3 absolute  rounded-full bottom-[2px] left-7',
@@ -180,14 +202,19 @@ function ItemChat({ groupChat, userLoginData }) {
                             )}
                         ></div>
                         <div className={cx('w-40  h-full ml-2 overflow-hidden')}>
-                            <div className={cx('text-left text-lcn-blue-5 h-8 w-96 ', seenState?.textName)}>
-                                {groupChat.name}
+                            <div
+                                className={cx(
+                                    'text-left break-words text-[15px] text-lcn-blue-5 h-8 w-96 ',
+                                    seenState?.textName,
+                                )}
+                            >
+                                {groupChat.typeChat === 'group' ? groupChat.name : currentInbox?.fullName}
                             </div>
                             <div className={cx(' text-xs text-left h-8')}>
                                 <span>{itemDataChat.authorName}: </span> {itemDataChat.title}
                             </div>
                         </div>
-                        <div className={cx('h-full w-8 relative')}>
+                        <div className={cx('h-full w-10 relative')}>
                             <div
                                 className={cx(
                                     'h-3 w-3 bg-lcn-blue-4 rounded-full  absolute top-4 right-0',
@@ -196,7 +223,7 @@ function ItemChat({ groupChat, userLoginData }) {
                             ></div>
                             <div
                                 className={cx(
-                                    'text-gray-500 text-xs text-left h-full flex items-end',
+                                    'text-gray-500 text-[10px] text-left h-full pt-2 pb-2 flex items-end',
                                     seenState?.textChatTitle,
                                 )}
                             >

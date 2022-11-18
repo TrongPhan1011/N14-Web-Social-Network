@@ -10,6 +10,7 @@ import SignIn from '~/pages/SignIn';
 import Otp from '~/pages/Otp';
 import QuenMatKhau from '~/pages/QuenMatKhau';
 import SuaMatKhau from '~/pages/SuaMatKhau';
+import Call from '~/pages/Call';
 //public
 const publicRoutes = [
     {
@@ -68,6 +69,11 @@ const publicRoutes = [
     {
         path: routeConfig.routeConfig.chan,
         component: Setting,
+    },
+    {
+        path: routeConfig.routeConfig.call,
+        component: Call,
+        layout: null,
     },
 ];
 const privateRoutes = [];

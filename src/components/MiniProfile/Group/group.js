@@ -127,7 +127,14 @@ function Group() {
 
     return (
         <>
-            <HeaderProfile avatar={curChat.avatar} userName={curChat?.name} />
+            {!!curChat && (
+                <HeaderProfile
+                    avatar={curChat?.avatar}
+                    userName={curChat?.name}
+                    typeAvatar={'group'}
+                    idGroup={curChat?.id}
+                />
+            )}
             <div className={cx('w-full h-0  border-t border-lcn-blue-3 ', 'text-sm')}>
                 <div className={cx('  flex flex-col items-center p-5 pt-3  text-lcn-blue-4', '')}>
                     <FormConfirm

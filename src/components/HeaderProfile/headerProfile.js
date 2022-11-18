@@ -9,22 +9,22 @@ import Avartar from '~/components/Avartar';
 import { uploadFileImg } from '~/services/fileService';
 import Modal from '~/components/Modal';
 import { FaTimes } from 'react-icons/fa';
-import { AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
+
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { BiZoomIn, BiZoomOut } from 'react-icons/bi';
 const cx = classNames;
 
-function HeaderProfile({ avatar, coverPhoto, userName, active }) {
+function HeaderProfile({ avatar, coverPhoto, userName, active, typeAvatar, idGroup }) {
     const dispatch = useDispatch();
     const [hiddenMenu, setHiddenMenu] = useState('hidden');
     const [showMenu, setShowMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    var ava = lcnImage.avatarDefault;
-    if (avatar) {
+    var ava = '';
+    if (!!avatar) {
         ava = avatar;
     }
-    console.log(ava);
+
     var handlePreviewIMG = async (e) => {
         const selectedFiles = e.target.files;
         var listFileImgPreview = [];
@@ -208,7 +208,12 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
                                     )}
                                     onClick={handleShowMenu}
                                 >
-                                    <Avartar className={cx('h-28 w-28')} src={ava} />
+                                    <Avartar
+                                        className={cx('h-28 w-28')}
+                                        src={ava}
+                                        idGroup={idGroup}
+                                        typeAvatar={typeAvatar}
+                                    />
                                 </Button>
                             </div>
                         </Dropdown>
@@ -217,7 +222,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active }) {
             </div>
             <div
                 className={cx(
-                    'bg-white w-full h-14 text-2xl flex justify-center items-center font-semibold text-lcn-blue-5',
+                    'bg-white w-full h-14 text-xl text-center flex justify-center items-center font-semibold text-lcn-blue-5',
                 )}
             >
                 {userName}

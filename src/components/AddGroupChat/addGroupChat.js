@@ -14,6 +14,8 @@ import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { useDispatch } from 'react-redux';
 import { BiEdit } from 'react-icons/bi';
 import { userLogin } from '~/redux/Slice/signInSlice';
+import socket from '~/utils/getSocketIO';
+import { addMess } from '~/services/messageService';
 
 const cx = classNames;
 function AddGroupChat({ accessToken, axiosJWT, curChat, curUser }) {
@@ -84,9 +86,28 @@ function AddGroupChat({ accessToken, axiosJWT, curChat, curUser }) {
         let valueSearch = e.target.value;
         setSearchValue(valueSearch);
     };
+    const saveMess = async (newGroupFetch) => {
+        var newMessSave = {
+            title: 'Tạo nhóm thành công',
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: newGroupFetch.newChat.id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+
+            socket.emit('sendMessage', {
+                receiverId: curChat.id,
+                contentMessage: messData,
+            });
+        }
+    };
 
     const handleAddGroupChat = async () => {
-        if (!!listChecked && listChecked.length > 0) {
+        if (!!listChecked && listChecked.length > 1) {
             var newGroup = {
                 name: 'Cuộc trò chuyện mới',
                 userCreate: curUser.id,
@@ -101,12 +122,14 @@ function AddGroupChat({ accessToken, axiosJWT, curChat, curUser }) {
             if (newGroupFetch) {
                 dispatch(userLogin(newGroupFetch.userLogin));
                 dispatch(currentChat(newGroupFetch.newChat));
+
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
                 alert('Tạo cuộc trò chuyện thành công');
+                saveMess(newGroupFetch);
             }
-        } else alert('Vui lòng chọn thành viên trước khi tạo cuộc trò chuyện mới');
+        } else alert('Vui lòng chọn ít nhất 2 thành viên để tạo nhóm');
     };
 
     const renderModalShowMember = () => {

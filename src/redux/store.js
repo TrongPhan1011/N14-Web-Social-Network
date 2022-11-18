@@ -7,6 +7,7 @@ import friendSlice from './Slice/friendSlice';
 import signInSlice from './Slice/signInSlice';
 import sidebarChatSlice from './Slice/sidebarChatSlice';
 import signUpSlice from './Slice/signUpSlice';
+import callSlice from './Slice/callSlice';
 
 const persistConfig = {
     key: 'root',
@@ -27,6 +28,7 @@ export const store = configureStore({
         persistedReducer,
         sidebarChatSlice,
         friendSlice,
+        callSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -35,5 +37,6 @@ export const store = configureStore({
             },
         }),
 });
-
+// "react": "^18.2.0",
+// "react-dom": "^18.2.0",
 export let persistor = persistStore(store);

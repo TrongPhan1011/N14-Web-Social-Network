@@ -18,31 +18,44 @@ function SideBarChat() {
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
 
     const [chatResult, setChatResult] = useState([]);
+    const [reRender, setReRender] = useState(true);
 
     const dispatch = useDispatch();
     useEffect(() => {
         var axiosJWT = getAxiosJWT(dispatch, currAccount);
         const fetchChat = async () => {
-            const arrChat = await getChatByIdMember(userLoginData.id, currAccount.accessToken, axiosJWT);
+            if (reRender) {
+                const arrChat = await getChatByIdMember(userLoginData.id, currAccount.accessToken, axiosJWT);
 
-            if (!!arrChat) {
-                setChatResult(arrChat);
+                if (!!arrChat) {
+                    setChatResult(arrChat);
+
+                    setReRender(false);
+                }
             }
         };
         fetchChat();
-    }, [userLoginData]);
+    }, [userLoginData, reRender, currChat]);
+    useEffect(() => {}, []);
+    useEffect(() => {
+        socket.on('getMessage', (data) => {
+            if (!!data) {
+                setReRender(true);
+            }
+        });
+    }, [socket]);
 
     // khoi tao socket room
     const handdleConnectSocket = (item) => {
         socket.emit('sendMessage', { receiverId: item.id, contentMessage: null });
     };
 
-    const handleRenderChat = () => {
+    var handleRenderChat = () => {
         if (chatResult.length > 0) {
+            chatResult.sort((item1, item2) => item2.updatedAt.localeCompare(item1.updatedAt));
             if (currChat === null) {
                 dispatch(currentChat(chatResult[0]));
             }
-            console.log(currChat);
 
             return chatResult.map((item) => {
                 handdleConnectSocket(item);

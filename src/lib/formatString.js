@@ -13,7 +13,7 @@ export const formatTimeAuto = (date) => {
     var currentDate = new Date();
 
     var aDay = 86400000;
-    var totalDay = (currentDate.getTime() - _date.getTime()) / aDay;
+    var totalDay = Math.round((currentDate.getTime() - _date.getTime()) / aDay);
 
     var hh = _date.getHours();
     var mm = _date.getMinutes();

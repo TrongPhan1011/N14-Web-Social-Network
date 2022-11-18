@@ -9,9 +9,9 @@ const signIn = '/dangnhap';
 const otp = '/otp';
 const quenMatKhau = '/quenMatKhau';
 const suaMatKhau = '/suaMatKhau';
+const call = '/call';
 /*
     Level 2
-
 */
 const profile = friends + '/profile';
 const thongTinChung = setting + '/thongtinchung';
@@ -34,5 +34,6 @@ const routes = {
     thongTinChung: thongTinChung,
     doiMatKhau: doiMatKhau,
     chan: chan,
+    call: call,
 };
 export default routes;
