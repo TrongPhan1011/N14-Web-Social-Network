@@ -3,14 +3,24 @@ import { useState, memo } from 'react';
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 import { acceptFriend, declineFriend } from '~/services/userService';
+import { addGroupChat } from '~/services/chatService';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+import { userLogin } from '~/redux/Slice/signInSlice';
+import routeConfig from '~/configRoutes';
 
 const cx = classNames;
 
-function ItemChoXacNhan({ friendName, friendId }) {
+function ItemChoXacNhan({ friendName, friendId, friendAva }) {
     const dispatch = useDispatch();
+    const _route = routeConfig.routeConfig;
+    var profile = _route.profile + '?id=' + friendId;
+    var img = lcnImage.avatarDefault;
 
+    if (friendAva) {
+        img = friendAva;
+    }
     const [xacNhan, setXacNhan] = useState(true);
     const [dongY, setDongY] = useState(true);
     var currAuth = useSelector((state) => state.persistedReducer.auth);
@@ -22,6 +32,20 @@ function ItemChoXacNhan({ friendName, friendId }) {
 
     const handleDongY = async () => {
         await acceptFriend(curUser.id, friendId, accessToken, axiosJWT, dispatch);
+        var newGroup = {
+            name: '',
+            userCreate: curUser.id,
+            avatar: friendAva,
+            adminChat: [curUser.id],
+            typeChat: 'inbox',
+            member: [curUser.id, friendId],
+        };
+        var newGroupFetch = await addGroupChat(newGroup, accessToken, axiosJWT);
+        if (!!newGroupFetch) {
+            dispatch(userLogin(newGroupFetch.userLogin));
+            dispatch(currentChat(newGroupFetch.newChat));
+            alert('Bạn đã có thể nhắn tin với người này');
+        }
     };
     const handleTuchoi = async () => {
         await declineFriend(curUser.id, friendId, accessToken, axiosJWT, dispatch);
@@ -60,14 +84,14 @@ function ItemChoXacNhan({ friendName, friendId }) {
         }
     };
     return (
-        <div className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
+        <Button to={profile} className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}>
             <div className={cx('relative w-full h-full flex items-center')}>
                 <div
                     className={cx(
                         'w-10 h-10 bg-lcn-blue-4 rounded-full overflow-hidden flex justify-center items-center p-1 relative',
                     )}
                 >
-                    <img src={lcnImage.avatarDefault} alt="avartar" className={cx('w-full h-full border ')} />
+                    <img src={img} alt="avartar" className={cx('w-full h-full border ')} />
                 </div>
                 <div className={cx('w-48  h-full ml-2 overflow-hidden')}>
                     <div className={cx('text-left mb-1 text-lcn-blue-5 font-semibold h-6 w-96 ')}>{friendName}</div>
@@ -102,7 +126,7 @@ function ItemChoXacNhan({ friendName, friendId }) {
                     )}
                 </div>
             </div>
-        </div>
+        </Button>
     );
 }
 

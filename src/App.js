@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes } from '~/routes';
 import { Fragment } from 'react';
 import { DefaultLayout } from './layout';
-
+import Page404 from '~/pages/Page404';
 function App() {
     return (
         <Router>
@@ -26,6 +26,7 @@ function App() {
                         />
                     );
                 })}
+                <Route path="*" element={<Page404 />} />
             </Routes>
         </Router>
     );

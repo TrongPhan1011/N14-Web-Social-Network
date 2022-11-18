@@ -69,6 +69,17 @@ export const getWaitingFriend = async (idUser, accessToken, axiosJWT) => {
         console.log(error);
     }
 };
+export const getBlockFriend = async (idUser, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get(`user/friend/${idUser}?status=-1`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const acceptFriend = async (idUser, idFriend, accessToken, axiosJWT, dispatch) => {
     try {
         const res = await axiosJWT.put(
@@ -122,6 +133,76 @@ export const addFriend = async (idUser, idFriend, accessToken, axiosJWT, dispatc
             {
                 idFriend: idFriend,
                 idUser: idUser,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateAvatar = async (idUser, newAvatar, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/avatar',
+            {
+                idUser: idUser,
+                avatar: newAvatar,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const updateBanner = async (idUser, newBanner, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/banner',
+            {
+                idUser: idUser,
+                banner: newBanner,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const updateProfile = async (idUser, newProfile, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/profile/',
+            {
+                idUser: idUser,
+                education: newProfile.education,
+                birthday: newProfile.birthday,
+                gender: newProfile.gender,
+                fullName: newProfile.fullName,
             },
             {
                 headers: { token: `baerer ${accessToken}` },

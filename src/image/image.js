@@ -6,7 +6,7 @@ import coverPhoto from '~/assets/imgBase/coverPhoto.jpg';
 import friendConnect from '~/assets/imgBase/friendConnect.svg';
 import connectCircle from '~/assets/imgBase/connectCircle.svg';
 import qrCode from '~/assets/imgBase/qrCode.png';
-
+import page404 from '~/assets/imgBase/404page.png';
 export const lcnImage = {
     logo1: logo1,
     sloganLogo: sloganLogo,
@@ -16,4 +16,5 @@ export const lcnImage = {
     friendConnect: friendConnect,
     connectCircle: connectCircle,
     qrCode: qrCode,
+    page404: page404,
 };

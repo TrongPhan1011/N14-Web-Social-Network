@@ -112,11 +112,30 @@ export const updatePassword = async (addBody, dispatch, navigate) => {
 
         if (!!dataUser) {
             dispatch(userSignUp(null)); // lưu lại user trong redux
+            dispatch(userLogin(null)); // xoa signIn
+            dispatch(logOutSuccess()); // xoa Account
             navigate(config.routeConfig.signIn);
             return true;
         } else return false;
     } catch (error) {
         dispatch(loginErorr());
+        return false;
+    }
+};
+export const checkOldPassword = async (addBody) => {
+    console.log(addBody);
+    try {
+        const dataUser = await httpRequest.get('auth/checkpass', {
+            params: {
+                userName: addBody.userName,
+                password: addBody.password,
+            },
+        });
+
+        if (!!dataUser) {
+            return true;
+        } else return false;
+    } catch (error) {
         return false;
     }
 };
