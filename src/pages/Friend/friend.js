@@ -11,6 +11,7 @@ import routeConfig from '~/configRoutes';
 import ContentProfile from './ContentProfile';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
 function useQuery() {
@@ -45,8 +46,9 @@ function Friends() {
     }, [curUser.friend]);
     useEffect(() => {
         const getProfile = async () => {
-            const getUserProfile = await getUserById(curUser.id, curUser.id, accessToken, axiosJWT, dispatch);
-            setUserProfile(getUserProfile);
+            const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT, dispatch);
+            dispatch(userLogin(getCurrentUserProfile));
+            setUserProfile(getCurrentUserProfile);
         };
         getProfile();
     }, []);

@@ -48,7 +48,10 @@ function ContentProfile({ userId }) {
 
     useEffect(() => {
         const getProfile = async () => {
-            const getUserProfile = await getUserById(userId, curUser.id, accessToken, axiosJWT, dispatch);
+            const getUserProfile = await getUserById(userId, accessToken, axiosJWT, dispatch);
+            const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT, dispatch);
+            dispatch(userLogin(getCurrentUserProfile));
+
             if (!getUserProfile) {
                 navigate(config.routeConfig + '404page');
             }

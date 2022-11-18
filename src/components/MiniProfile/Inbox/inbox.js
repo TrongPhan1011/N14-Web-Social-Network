@@ -13,6 +13,7 @@ import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getUserById } from '~/services/userService';
 import { useEffect, useState } from 'react';
 import config from '~/configRoutes';
+import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
 function Inbox() {
@@ -34,7 +35,9 @@ function Inbox() {
             const idReceiver = curChat.member.filter((member) => {
                 return member !== curUser.id;
             });
-            var receiverFetch = await getUserById(idReceiver[0], curUser.id, accessToken, axiosJWT, dispatch);
+            var receiverFetch = await getUserById(idReceiver[0], accessToken, axiosJWT);
+            const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT);
+            dispatch(userLogin(getCurrentUserProfile));
             console.log(receiverFetch);
             setReceiver(receiverFetch);
         };
