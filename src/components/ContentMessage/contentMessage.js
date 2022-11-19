@@ -72,7 +72,7 @@ function ContentMessage({ currentInbox, curUser, curChat, accessToken, axiosJWT 
                 if (index === indexLast) isLastMess = true;
                 if (item.type_mess === 'system') {
                     return (
-                        <div key={index + ''} className={cx('text-xs text-center   text-slate-500')}>
+                        <div key={index + ''} className={cx('text-xs text-center mt-2 mb-2 text-slate-500')}>
                             {item.title}
                         </div>
                     );

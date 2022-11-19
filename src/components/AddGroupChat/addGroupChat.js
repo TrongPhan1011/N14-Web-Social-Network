@@ -109,7 +109,7 @@ function AddGroupChat({ accessToken, axiosJWT, curChat, curUser }) {
     const handleAddGroupChat = async () => {
         if (!!listChecked && listChecked.length > 1) {
             var newGroup = {
-                name: 'Cuộc trò chuyện mới',
+                name: '',
                 userCreate: curUser.id,
                 avatar: '',
                 adminChat: [curUser.id],
@@ -126,7 +126,6 @@ function AddGroupChat({ accessToken, axiosJWT, curChat, curUser }) {
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                alert('Tạo cuộc trò chuyện thành công');
                 saveMess(newGroupFetch);
             }
         } else alert('Vui lòng chọn ít nhất 2 thành viên để tạo nhóm');

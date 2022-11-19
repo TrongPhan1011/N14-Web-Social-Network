@@ -3,20 +3,21 @@ import classNames from 'classnames';
 import Button from '~/components/Button';
 
 import { useState, memo, useEffect } from 'react';
-import config from '~/configRoutes';
+
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { getAllFriend } from '~/services/userService';
 import { addMemberToChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
-import { useDispatch } from 'react-redux';
+
+import { addMess } from '~/services/messageService';
+import socket from '~/utils/getSocketIO';
+import { getUserById } from '~/services/userService';
+import { requestMemberChat } from '~/services/chatService';
 
 const cx = classNames;
 function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
     const [listMember, setListMember] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -107,18 +108,44 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         let valueSearch = e.target.value;
         setSearchValue(valueSearch);
     };
+    const saveMessSystem = async (id, text) => {
+        var newMessSave = {
+            title: text,
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            socket.emit('sendMessage', {
+                receiverId: id,
+                contentMessage: messData,
+            });
+        }
+    };
 
     const handleAddMember = async () => {
         if (!!listChecked && listChecked.length > 0) {
-            var dataNewChat = await addMemberToChat(curChat.id, listChecked, accessToken, axiosJWT);
+            var dataNewChat;
+            if (curChat.status === 2 && curChat.adminChat.includes(curUser.id)) {
+                dataNewChat = await requestMemberChat(curChat.id, listChecked, 'accept', accessToken, axiosJWT);
+            } else dataNewChat = await addMemberToChat(curChat.id, listChecked, accessToken, axiosJWT);
 
-            if (dataNewChat) {
-                dispatch(currentChat(dataNewChat));
+            if (!!dataNewChat) {
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                if (dataNewChat.status === 1) alert('Thêm thành viên thành công');
-                else alert('Thành viên đang chờ duyệt');
+                if (dataNewChat.status === 1 || curChat.adminChat.includes(curUser.id)) {
+                    for (let memberId of listChecked) {
+                        var member = await getUserById(memberId, accessToken, axiosJWT);
+                        saveMessSystem(dataNewChat.id, curUser.fullName + ' đã thêm ' + member.fullName);
+                    }
+                } else {
+                    saveMessSystem(dataNewChat.id, listChecked.length + ' thành viên đang chờ duyệt ');
+                }
             }
         }
     };

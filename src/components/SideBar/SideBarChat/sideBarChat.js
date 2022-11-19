@@ -7,22 +7,23 @@ import ItemChat from '~/components/ItemChat';
 import { getChatByIdMember } from '~/services/chatService';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import socket from '~/utils/getSocketIO';
+import { getChatByIdChat } from '~/services/chatService';
 
 const cx = classNames;
 
 function SideBarChat() {
+    const dispatch = useDispatch();
+
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
     var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
-
+    var axiosJWT = getAxiosJWT(dispatch, currAccount);
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
 
     const [chatResult, setChatResult] = useState([]);
     const [reRender, setReRender] = useState(true);
 
-    const dispatch = useDispatch();
     useEffect(() => {
-        var axiosJWT = getAxiosJWT(dispatch, currAccount);
         const fetchChat = async () => {
             if (reRender) {
                 const arrChat = await getChatByIdMember(userLoginData.id, currAccount.accessToken, axiosJWT);
@@ -38,8 +39,16 @@ function SideBarChat() {
     }, [userLoginData, reRender, currChat]);
     useEffect(() => {}, []);
     useEffect(() => {
+        const resetGroupChat = async () => {
+            var newCurChat = await getChatByIdChat(currChat.id, currAccount.accessToken, axiosJWT);
+            dispatch(currentChat(newCurChat));
+        };
+
         socket.on('getMessage', (data) => {
             if (!!data) {
+                if (!!currChat) {
+                    resetGroupChat();
+                }
                 setReRender(true);
             }
         });

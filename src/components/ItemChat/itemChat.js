@@ -13,7 +13,6 @@ import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import socket from '~/utils/getSocketIO';
 import { getLastName } from '~/lib/formatString';
-import { getMemberOfChat } from '~/services/chatService';
 
 const cx = classNames;
 
@@ -29,7 +28,6 @@ function ItemChat({ groupChat, userLoginData }) {
     const [messageLast, setMessageLast] = useState('');
     const [onlineValue, setOnlineValue] = useState('hidden');
     const [currentInbox, setCurrentInbox] = useState();
-    const [memberFetch, setMemberFetch] = useState();
 
     const [seenState, setSeenState] = useState(false);
     const [itemDataChat, setItemDataChat] = useState();
@@ -71,7 +69,7 @@ function ItemChat({ groupChat, userLoginData }) {
                     title: data.title,
                     authorID: data.authorID,
                     seen: data.seen,
-                    type_mess: data.type,
+                    type_mess: data.type_mess,
                     idChat: data.idChat,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
@@ -108,7 +106,7 @@ function ItemChat({ groupChat, userLoginData }) {
                 messageLast.idChat === groupChat.id
             ) {
                 setSeenState({
-                    textName: 'font-semibold ',
+                    textName: ' font-semibold ',
                     textChatTitle: 'text-gray-900',
                     circleSeen: '',
                 });
@@ -124,8 +122,12 @@ function ItemChat({ groupChat, userLoginData }) {
             var titleMess = '',
                 messCreatedAt = '',
                 lastNameAuthor = 'Bạn';
-
-            if (!!messageLast && messageLast.idChat === groupChat.id) {
+            console.log(messageLast);
+            if (messageLast.type_mess === 'system') {
+                titleMess = messageLast.title;
+                messCreatedAt = formatTimeAuto(messageLast.createdAt) || '';
+                lastNameAuthor = '';
+            } else if (!!messageLast && messageLast.idChat === groupChat.id) {
                 if (messageLast.title === '') {
                     titleMess = 'Đã gửi file';
                 } else titleMess = messageLast.title;
@@ -147,8 +149,10 @@ function ItemChat({ groupChat, userLoginData }) {
                 messCreatedAt,
             };
         };
-        var itemData = getMessageLast();
-        setItemDataChat(itemData);
+        if (!!messageLast) {
+            var itemData = getMessageLast();
+            setItemDataChat(itemData);
+        }
     }, [messageLast]);
 
     const putUserSeen = async (idMess, dataSeen) => {

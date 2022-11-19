@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 import Button from '~/components/Button';
 
-import { useState, memo, useEffect } from 'react';
+import { useState, memo } from 'react';
 
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
@@ -13,6 +13,9 @@ import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { useDispatch } from 'react-redux';
 import { getMemberOfChat } from '~/services/chatService';
 import { MdOutlineSecurity } from 'react-icons/md';
+import { addMess } from '~/services/messageService';
+import socket from '~/utils/getSocketIO';
+import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
@@ -97,6 +100,25 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
         setSearchValue(valueSearch);
     };
 
+    const saveMessSystem = async (id, text) => {
+        var newMessSave = {
+            title: text,
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            socket.emit('sendMessage', {
+                receiverId: id,
+                contentMessage: messData,
+            });
+        }
+    };
+
     const handleAddMember = async () => {
         if (!!listChecked && listChecked.length > 0) {
             var dataNewChat = await addAdminToChat(curChat.id, listChecked, accessToken, axiosJWT);
@@ -106,7 +128,11 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                alert('Đã cập nhật thông tin quản trị viên');
+
+                for (let memberId of listChecked) {
+                    var member = await getUserById(memberId, accessToken, axiosJWT);
+                    saveMessSystem(dataNewChat.id, member.fullName + ' đã trở thành quản trị viên');
+                }
             }
         }
     };

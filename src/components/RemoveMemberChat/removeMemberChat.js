@@ -14,6 +14,9 @@ import { useDispatch } from 'react-redux';
 import { getMemberOfChat } from '~/services/chatService';
 
 import { AiOutlineUserDelete } from 'react-icons/ai';
+import { addMess } from '~/services/messageService';
+import socket from '~/utils/getSocketIO';
+import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
@@ -94,6 +97,24 @@ function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         let valueSearch = e.target.value;
         setSearchValue(valueSearch);
     };
+    const saveMessSystem = async (id, text) => {
+        var newMessSave = {
+            title: text,
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            socket.emit('sendMessage', {
+                receiverId: id,
+                contentMessage: messData,
+            });
+        }
+    };
 
     const handleRemoveMember = async () => {
         if (!!listChecked && listChecked.length > 0) {
@@ -102,11 +123,14 @@ function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                 var dataNewChat = await removeMemberChat(curChat.id, listChecked, accessToken, axiosJWT);
 
                 if (dataNewChat) {
-                    dispatch(currentChat(dataNewChat));
                     setListChecked([]);
                     setListMember([]);
                     setShowModal(false);
-                    alert('Đã xoá thành công');
+
+                    for (let memberId of listChecked) {
+                        var member = await getUserById(memberId, accessToken, axiosJWT);
+                        saveMessSystem(dataNewChat.id, member.fullName + ' đã bị xoá khỏi nhóm');
+                    }
                 }
             }
         } else alert('Bạn chưa chọn thành viên cần xoá');

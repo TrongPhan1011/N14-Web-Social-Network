@@ -12,15 +12,17 @@ import { memo } from 'react';
 import HeaderProfile from '~/components/HeaderProfile';
 import ShowMemberChat from '~/components/ShowMemberChat';
 import AddMemberChat from '~/components/AddMemberChat';
-import { RiChatPrivateLine } from 'react-icons/ri';
 
 import AddAdminChat from '~/components/AddAdminChat';
 import RequestMemberChat from '~/components/RequestMemberChat';
 import RemoveMemberChat from '~/components/RemoveMemberChat';
-import { leaveChat, removeChat, changeNameChat } from '~/services/chatService';
+import { leaveChat, removeChat, changeNameChat, getChatByIdChat } from '~/services/chatService';
 import { userLogin } from '~/redux/Slice/signInSlice';
-import { removeCurrentChat } from '~/redux/Slice/sidebarChatSlice';
+
 import FormConfirm from '~/components/FormConfirm';
+import { addMess } from '~/services/messageService';
+import socket from '~/utils/getSocketIO';
+import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 
 const cx = classNames;
 function Group() {
@@ -35,15 +37,34 @@ function Group() {
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
 
+    const saveMessSystem = async (id, text) => {
+        var newMessSave = {
+            title: text,
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            socket.emit('sendMessage', {
+                receiverId: id,
+                contentMessage: messData,
+            });
+        }
+    };
+
     const handleLeaveChat = async () => {
         var confirmRemoveMember = window.confirm('Bạn có chắc muốn rời nhóm không?');
         if (confirmRemoveMember) {
             var newUser = await leaveChat(curChat.id, curUser.id, accessToken, axiosJWT);
 
             if (!!newUser) {
-                dispatch(removeCurrentChat(null));
                 dispatch(userLogin(newUser));
-                alert('Bạn đã rời nhóm');
+                saveMessSystem(curChat.id, curUser.fullName + ' đã rời nhóm');
+                dispatch(currentChat(null));
             }
         }
     };
@@ -55,19 +76,18 @@ function Group() {
             if (!!newCurrUser) {
                 dispatch(userLogin(newCurrUser));
             }
-            alert('Nhóm đã xoá thành công');
         } else alert('Thông tin xác nhận không đúng');
     };
     const changeNameOfChat = async (value) => {
-        if (!!value) {
+        if (value.trim() !== '') {
             var newCurrUser = await changeNameChat(curChat.id, value, curUser.id, accessToken, axiosJWT);
-
-            console.log(newCurrUser);
             if (!!newCurrUser) {
-                dispatch(userLogin(newCurrUser));
-                alert('Đổi tên nhóm thành công');
+                saveMessSystem(curChat.id, curUser.fullName + ' đã đổi tên nhóm thành ' + value);
+
+                return true;
             }
-        } else alert('Thông tin xác nhận không đúng');
+        } else alert('Tên nhóm bạn đặt chưa hợp lệ');
+        return false;
     };
 
     const renderFuctionalAdmin = () => {
@@ -94,12 +114,7 @@ function Group() {
                             curChat={curChat}
                             curUser={curUser}
                         />
-                        <Button className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')}>
-                            <div className={cx('flex items-center')}>
-                                <RiChatPrivateLine className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
-                                <span className={cx('  ml-4  w-4/5 ')}>Quyền gửi tin nhắn</span>
-                            </div>
-                        </Button>
+
                         <RemoveMemberChat
                             accessToken={accessToken}
                             axiosJWT={axiosJWT}
