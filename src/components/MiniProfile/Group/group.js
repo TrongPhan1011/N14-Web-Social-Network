@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '~/components/Button';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 import HeaderProfile from '~/components/HeaderProfile';
 import ShowMemberChat from '~/components/ShowMemberChat';

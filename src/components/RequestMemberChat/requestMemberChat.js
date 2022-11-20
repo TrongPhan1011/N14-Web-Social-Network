@@ -84,6 +84,7 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                                 className={cx('')}
                                 onChange={getAllChecked}
                                 value={item.id}
+                                defaultChecked={false}
                             />
                             <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
                             <div className={cx()}>{item.fullName}</div>

@@ -58,6 +58,10 @@ export const getLastName = (fullName) => {
     var arrName = fullName.split(' ');
     return arrName[arrName.length - 1];
 };
+export const getFirstText = (text, numberFistText) => {
+    if (text.length >= numberFistText) return text.slice(0, numberFistText) + '...';
+    return text;
+};
 
 export const getTypeOfDocument = () => {
     const excel =

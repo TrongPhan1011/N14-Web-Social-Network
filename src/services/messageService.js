@@ -92,6 +92,8 @@ export const removeMessWithEveryone = async (idChat, idMess, accessToken, axiosJ
 
         return true;
     } catch (error) {
+        console.log('x----');
+        console.log(error);
         console.log('Xoa tin nhan khong thanh cong');
     }
 };

@@ -28,16 +28,17 @@ function SideBarChat() {
             dispatch(currentChat(newCurChat));
         };
 
-        socket.on('getMessage', (data) => {
-            if (!!data) {
-                console.log(data);
-                if (data.type_mess === 'system') {
-                    resetGroupChat();
+        if (!!currChat) {
+            socket.on('getMessage', (data) => {
+                if (!!data) {
+                    if (data.type_mess === 'system') {
+                        resetGroupChat();
+                    }
+                    setReRender(true);
                 }
-                setReRender(true);
-            }
-        });
-    }, [socket]);
+            });
+        }
+    }, [socket, currChat]);
 
     useEffect(() => {
         const fetchChat = async () => {
@@ -52,7 +53,7 @@ function SideBarChat() {
             }
         };
         fetchChat();
-    }, [userLoginData, reRender]);
+    }, [userLoginData, reRender, currChat]);
 
     // khoi tao socket room
     const handdleConnectSocket = (item) => {

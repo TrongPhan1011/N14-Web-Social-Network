@@ -11,11 +11,12 @@ import socket from '~/utils/getSocketIO';
 
 const cx = classNames;
 
-function ContentMessage({ currentInbox, curUser, curChat, accessToken, axiosJWT }) {
-    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
+function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
+    var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
     const [listMessage, setListMessage] = useState([]);
     const [limitMessage, setLimitMessage] = useState(30);
     const [arrivalMessage, setArrivalMessage] = useState(null);
+    const [messRemove, setMessRemove] = useState([]);
 
     const bottomRef = useRef();
 
@@ -30,15 +31,21 @@ function ContentMessage({ currentInbox, curUser, curChat, accessToken, axiosJWT 
                     type_mess: data.type,
                     idChat: data.idChat,
                     file: data.file,
+                    replyMessage: data.replyMessage,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
                 };
                 setArrivalMessage(getNewMess);
             }
         });
+        socket.on('getMessRemoved', (data) => {
+            if (!!data) {
+                setMessRemove((prev) => [...prev, data]);
+            }
+        });
 
         // theo doi xem tin nhan bat ki nao do co thay doi khong vd: xoa tin, tha cam xuc,....
-    }, []);
+    }, [socket]);
     useEffect(() => {
         const scrollToBottom = () => {
             if (listMessage.length > 0) {
@@ -76,6 +83,9 @@ function ContentMessage({ currentInbox, curUser, curChat, accessToken, axiosJWT 
                             {item.title}
                         </div>
                     );
+                }
+                if (!!messRemove && messRemove.includes(item.id)) {
+                    return <span key={index + ' '}></span>;
                 }
 
                 if (item.authorID?.id === curUser.id) {
@@ -119,7 +129,7 @@ function ContentMessage({ currentInbox, curUser, curChat, accessToken, axiosJWT 
                     </span>
                 </div>
             </div>
-            <div className={cx('w-full  ')}>
+            <div className={cx('w-full   ')}>
                 {renderMessage()}
 
                 <span className="" ref={bottomRef}></span>

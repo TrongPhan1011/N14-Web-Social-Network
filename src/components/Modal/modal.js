@@ -14,7 +14,7 @@ function Modal({ children, isShow, isHidden, className }) {
     return (
         <div
             className={cx(
-                'w-screen h-screen top-0 left-0 flex justify-center items-center bg-black  absolute z-20 bg-opacity-20',
+                'w-screen h-screen top-0 left-0 flex justify-center items-center bg-black  fixed  z-20 bg-opacity-20',
                 classShow,
             )}
             onClick={isHidden}

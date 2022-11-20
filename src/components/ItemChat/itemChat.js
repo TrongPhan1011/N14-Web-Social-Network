@@ -70,6 +70,7 @@ function ItemChat({ groupChat, userLoginData }) {
                     authorID: data.authorID,
                     seen: data.seen,
                     type_mess: data.type_mess,
+                    replyMessage: data.replyMessage,
                     idChat: data.idChat,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
@@ -128,7 +129,7 @@ function ItemChat({ groupChat, userLoginData }) {
                 messCreatedAt = formatTimeAuto(messageLast.createdAt) || '';
                 lastNameAuthor = '';
             } else if (!!messageLast && messageLast.idChat === groupChat.id) {
-                if (messageLast.title === '') {
+                if (messageLast.file.length > 0) {
                     titleMess = 'Đã gửi file';
                 } else titleMess = messageLast.title;
                 messCreatedAt = formatTimeAuto(messageLast.createdAt) || '';

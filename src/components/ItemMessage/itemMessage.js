@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { FiMoreVertical } from 'react-icons/fi';
+import { FiMoreVertical, FiPaperclip } from 'react-icons/fi';
 import { BiSmile } from 'react-icons/bi';
 import { MdReply } from 'react-icons/md';
 
@@ -14,8 +14,10 @@ import Dropdown from '~/components/Dropdown';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-import { removeMessWithUser } from '~/services/messageService';
+import { removeMessWithUser, removeMessWithEveryone } from '~/services/messageService';
 import socket from '~/utils/getSocketIO';
+import ForwardMessage from '~/components/ForwardMessage';
+import { replyMes } from '~/redux/Slice/messageSlice';
 
 const cx = classNames.bind(style);
 
@@ -39,22 +41,7 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
     const [statusMess, setStatusMess] = useState(messageData.status);
 
     useEffect(() => {
-        //  socket.on('getMessChange', (data) => {
-        //      if (!!data) {
-        //          var messChange = {
-        //              id: data.id,
-        //              status: data.status,
-        //          };
-        //          if (!!listMessage && listMessage.length > 0) {
-        //              for (let item of listMessage) {
-        //                  if (item.id === messChange.id) {
-        //                      item.status = messChange.status;
-        //                  }
-        //              }
-        //              console.log(listMessage);
-        //          }
-        //      }
-        //  });
+        socket.emit('removeMess', { receiverId: curChat.id, idMess: '' });
     }, []);
 
     useEffect(() => {
@@ -121,27 +108,32 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
             setShowMenu(false);
         }
     };
-    const getMessageChange = (messChange) => {
-        return {
-            id: messChange.id,
-            status: messChange.status,
-        };
-    };
+
     const handleRemoveWithUser = async () => {
         var result = await removeMessWithUser(messageData.id, accessToken, axiosJWT);
         if (result === true) {
-            // let messRemove = getMessageChange({ id: messageData.id, status: 0 });
             setStatusMess(0);
-            // setSocketMessChange(messRemove);
         }
+    };
+    const handleRemoveWithEveryone = async () => {
+        var result = await removeMessWithEveryone(curChat.id, messageData.id, accessToken, axiosJWT);
+        if (!!result) {
+            socket.emit('removeMess', { receiverId: curChat.id, idMess: messageData.id });
+        }
+        // setStatusMess(0);
     };
 
     const renderDataMore = () => {
         return (
             <>
-                <ItemDropdown className={cx('rounded-md text-lcn-blue-5 text-sm font-medium ')}>
-                    Chuyển tiếp
-                </ItemDropdown>
+                <ForwardMessage
+                    dataMess={messageData}
+                    accessToken={accessToken}
+                    axiosJWT={axiosJWT}
+                    curChat={curChat}
+                    curUser={curUser}
+                />
+
                 {!!from && messageData.status !== 0 ? (
                     <ItemDropdown
                         className={cx('rounded-md text-red-500  text-sm font-medium ')}
@@ -153,7 +145,10 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
                     <></>
                 )}
                 {!!from ? (
-                    <ItemDropdown className={cx('rounded-md text-red-500 text-sm font-medium ')}>
+                    <ItemDropdown
+                        className={cx('rounded-md text-red-500 text-sm font-medium ')}
+                        onClick={handleRemoveWithEveryone}
+                    >
                         Xoá với mọi người
                     </ItemDropdown>
                 ) : (
@@ -166,7 +161,11 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
     const handleLoadMenu = (attrs) => {
         return (
             <div
-                className={cx('w-52 bg-white border border-lcn-blue-2 rounded-lg shadow-lg p-2', hiddenMenu)}
+                className={cx(
+                    'w-52 bg-white border border-lcn-blue-2 rounded-lg shadow-lg p-2',
+
+                    hiddenMenu,
+                )}
                 tabIndex="-1"
                 {...attrs}
             >
@@ -175,9 +174,66 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
         );
     };
 
+    const getRepMessType = (replyMess) => {
+        if (!!replyMess.file) {
+            if (replyMess.file.fileType === 'image') {
+                return (
+                    <div className={' w-24 mr-1  pt-1 overflow-x-hidden  '}>
+                        <img
+                            src={replyMess.file.path}
+                            alt={replyMess.file.title}
+                            className={'object-cover rounded-md'}
+                        />
+                    </div>
+                );
+            } else if (replyMess.file.fileType === 'video') {
+                return (
+                    <div className={'w-24 overflow-x-hidden  flex items-end  mr-1  pt-1'}>
+                        <video
+                            src={replyMess.file.path}
+                            alt={replyMess.file.title}
+                            className={'object-cover rounded-md'}
+                        />
+                    </div>
+                );
+            } else
+                return (
+                    <div
+                        className={cx(
+                            ' pr-2 pl-2 h-10 p-1 text-sm  bg-slate-100 bg-opacity-80 t rounded-full m-1 shadow-md flex items-center justify-center font-medium text-slate-400',
+                        )}
+                    >
+                        <FiPaperclip className={cx(' text-lcn-blue-4 p-1 h-8 w-8 bg-lcn-blue-2 rounded-full mr-2 ')} />
+                        Tệp đính kèm
+                    </div>
+                );
+        }
+        return (
+            <div className={cx('max-w-xs flex mr-1 p-2 pt-1 bg-slate-100 text-slate-500 text-sm  rounded-full  ')}>
+                {messageData?.replyMessage?.title}
+            </div>
+        );
+    };
+
+    const renderReplyMess = () => {
+        if (!!messageData.replyMessage)
+            return (
+                <Button
+                    href={'#' + messageData.replyMessage.id}
+                    className={cx('w-full flex relative -bottom-5  ', flexRowReverse)}
+                >
+                    {getRepMessType(messageData.replyMessage)}
+                </Button>
+            );
+    };
+
     return (
         <>
-            <div className={cx('message-hover', 'flex w-full items-end mt-2 ', flexRowReverse)}>
+            {renderReplyMess()}
+            <div
+                id={messageData.id}
+                className={cx('message-hover', 'flex w-full items-end mt-2 relative ', flexRowReverse)}
+            >
                 <Avartar className={cx('h-8 w-8 mb-1', hidden)} src={messageData?.authorID.profile.urlAvartar} />
 
                 <div
@@ -204,6 +260,9 @@ function ItemMessage({ children, from, messageData, isLastMess }) {
                         className={cx(
                             'p-0 m-0 text-2xl mr-2 ml-2 text-slate-400 hover:text-lcn-blue-4 hover:bg-slate-100',
                         )}
+                        onClick={() => {
+                            dispatch(replyMes(messageData));
+                        }}
                     >
                         <MdReply />
                     </Button>
