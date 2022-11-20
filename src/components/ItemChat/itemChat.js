@@ -149,7 +149,7 @@ function ItemChat({ groupChat, userLoginData }) {
                 messCreatedAt,
             };
         };
-        if (!!messageLast) {
+        if (!!messageLast && !!currChat) {
             var itemData = getMessageLast();
             setItemDataChat(itemData);
         }
@@ -180,7 +180,7 @@ function ItemChat({ groupChat, userLoginData }) {
     };
 
     var itemSelected = '';
-    if (currChat.id === groupChat.id) {
+    if (currChat?.id === groupChat.id) {
         itemSelected = 'bg-lcn-blue-1';
     }
 

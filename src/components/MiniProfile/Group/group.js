@@ -16,13 +16,14 @@ import AddMemberChat from '~/components/AddMemberChat';
 import AddAdminChat from '~/components/AddAdminChat';
 import RequestMemberChat from '~/components/RequestMemberChat';
 import RemoveMemberChat from '~/components/RemoveMemberChat';
-import { leaveChat, removeChat, changeNameChat, getChatByIdChat } from '~/services/chatService';
+import { leaveChat, removeChat, changeNameChat } from '~/services/chatService';
 import { userLogin } from '~/redux/Slice/signInSlice';
 
 import FormConfirm from '~/components/FormConfirm';
 import { addMess } from '~/services/messageService';
 import socket from '~/utils/getSocketIO';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+import AllFileChat from '~/components/AllFileChat';
 
 const cx = classNames;
 function Group() {
@@ -166,12 +167,7 @@ function Group() {
                         </Button>
                     </FormConfirm>
 
-                    <Button className={cx('flex   w-full  p-2 mb-2 hover:bg-lcn-blue-3')}>
-                        <div className={cx('flex items-center')}>
-                            <HiOutlinePaperClip className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
-                            <span className={cx('  ml-4  w-4/5 ')}>Tài liệu, hình ảnh, video</span>
-                        </div>
-                    </Button>
+                    <AllFileChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
                     <ShowMemberChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
                     <AddMemberChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
 

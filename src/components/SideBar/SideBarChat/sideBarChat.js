@@ -22,6 +22,22 @@ function SideBarChat() {
 
     const [chatResult, setChatResult] = useState([]);
     const [reRender, setReRender] = useState(true);
+    useEffect(() => {
+        const resetGroupChat = async () => {
+            var newCurChat = await getChatByIdChat(currChat.id, currAccount.accessToken, axiosJWT);
+            dispatch(currentChat(newCurChat));
+        };
+
+        socket.on('getMessage', (data) => {
+            if (!!data) {
+                console.log(data);
+                if (data.type_mess === 'system') {
+                    resetGroupChat();
+                }
+                setReRender(true);
+            }
+        });
+    }, [socket]);
 
     useEffect(() => {
         const fetchChat = async () => {
@@ -36,23 +52,7 @@ function SideBarChat() {
             }
         };
         fetchChat();
-    }, [userLoginData, reRender, currChat]);
-    useEffect(() => {}, []);
-    useEffect(() => {
-        const resetGroupChat = async () => {
-            var newCurChat = await getChatByIdChat(currChat.id, currAccount.accessToken, axiosJWT);
-            dispatch(currentChat(newCurChat));
-        };
-
-        socket.on('getMessage', (data) => {
-            if (!!data) {
-                if (!!currChat) {
-                    resetGroupChat();
-                }
-                setReRender(true);
-            }
-        });
-    }, [socket]);
+    }, [userLoginData, reRender]);
 
     // khoi tao socket room
     const handdleConnectSocket = (item) => {
