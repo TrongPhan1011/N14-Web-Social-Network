@@ -9,6 +9,7 @@ import { RiUserFill } from 'react-icons/ri';
 import { sendOTP, getAuthByMail } from '~/services/authService';
 import config from '~/configRoutes';
 import Button from '~/components/Button';
+import { userSignUp } from '~/redux/Slice/signUpSlice';
 
 const cx = classNames;
 
@@ -38,6 +39,7 @@ function SignUp() {
     const dateRef = useRef();
 
     var currentAccount = useSelector((state) => state.persistedReducer.auth);
+
     useEffect(() => {
         if (currentAccount.currentUser !== null && !!currentAccount.currentUser.accessToken) {
             navigate(config.routeConfig.home);
@@ -47,12 +49,7 @@ function SignUp() {
 
     useEffect(() => {
         if (currentSignUpAccount.userSignUp !== null) {
-            // var dataTemp = currentSignUpAccount.userSignUp;
-            // userRef.current.value = dataTemp.userName;
-            // emailRef.current.value = dataTemp.email;
-            // passwordRef.current.value = dataTemp.password;
-            // confirmPaswordRef.current.value = dataTemp.password;
-            // dateRef.current.value = dataTemp.date;
+            dispatch(userSignUp(null)); // xoa signUp
         }
     }, []);
 
@@ -145,7 +142,7 @@ function SignUp() {
                 birthday: valueDate,
                 gender: gender,
             };
-            // đăng nhập thành công -->
+            // đăng ký thành công -->
             var register = await sendOTP(user, dispatch, navigate);
 
             if (!register) {

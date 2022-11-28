@@ -79,11 +79,33 @@ export const verifyOtp = async (user, navigate) => {
         return null;
     }
 };
+
+export const banAccount = async (email) => {
+    try {
+        const res = await httpRequest.post('otp/ban', {
+            userName: email,
+        });
+        console.log(res);
+        return res;
+    } catch (error) {
+        return null;
+    }
+};
+export const findBanAccount = async (email) => {
+    try {
+        const res = await httpRequest.get(`otp/ban/${email}`);
+
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const register = async (user, navigate, dispatch) => {
     console.log(user);
     try {
         const res = await httpRequest.post('auth/register/', user);
-        dispatch(userSignUp(null)); // xoa signIn
+        dispatch(userSignUp(null)); // xoa signUp
         console.log(res);
         if (!!res) {
             return { userName: user.email, password: user.password };

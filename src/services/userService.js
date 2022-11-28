@@ -71,7 +71,7 @@ export const getWaitingFriend = async (idUser, accessToken, axiosJWT) => {
 };
 export const getBlockFriend = async (idUser, accessToken, axiosJWT) => {
     try {
-        const res = await axiosJWT.get(`user/friend/${idUser}?status=-1`, {
+        const res = await axiosJWT.get(`user/friend/${idUser}?status=-2`, {
             headers: { token: `baerer ${accessToken}` },
         });
 
@@ -84,6 +84,29 @@ export const acceptFriend = async (idUser, idFriend, accessToken, axiosJWT, disp
     try {
         const res = await axiosJWT.put(
             'user/acceptfriend/',
+            {
+                idFriend: idFriend,
+                idUser: idUser,
+            },
+            {
+                headers: { token: `baerer ${accessToken}` },
+            },
+        );
+        const dataUserLogin = await axiosJWT.get(`user/id/${idUser}`, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        dispatch(userLogin(dataUserLogin.data));
+
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const blockFriend = async (idUser, idFriend, accessToken, axiosJWT, dispatch) => {
+    try {
+        const res = await axiosJWT.put(
+            'user/blockfriend/',
             {
                 idFriend: idFriend,
                 idUser: idUser,

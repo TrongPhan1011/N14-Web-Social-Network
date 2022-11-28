@@ -10,9 +10,10 @@ import { BiEdit, BiBlock } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-import { getUserById } from '~/services/userService';
+import { getUserById, blockFriend } from '~/services/userService';
 import { useEffect, useState } from 'react';
 import config from '~/configRoutes';
+
 import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
@@ -38,12 +39,20 @@ function Inbox() {
             var receiverFetch = await getUserById(idReceiver[0], accessToken, axiosJWT);
             const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT);
             dispatch(userLogin(getCurrentUserProfile));
-            console.log(receiverFetch);
+            // console.log(receiverFetch.fullName);
             setReceiver(receiverFetch);
         };
         infoInbox();
     }, [curChat]);
 
+    const handleBlockFriend = async () => {
+        if (window.confirm('Bạn có muốn chặn ' + receiver.fullName + ' không?')) {
+            await blockFriend(curUser.id, receiver.id, accessToken, axiosJWT, dispatch);
+            alert('chặn thành công');
+        } else {
+            alert('huỷ chặn');
+        }
+    };
     return (
         <>
             <HeaderProfile
@@ -74,7 +83,7 @@ function Inbox() {
                         </div>
                     </Button>
 
-                    <Button className={cx('flex   w-full p-2 hover:bg-red-200')}>
+                    <Button className={cx('flex   w-full p-2 hover:bg-red-200')} onClick={handleBlockFriend}>
                         <div className={cx('flex items-center')}>
                             <BiBlock className={cx('text-red-500 w-7 h-7 ')} />{' '}
                             <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Chặn</span>

@@ -8,8 +8,9 @@ import { FaLock } from 'react-icons/fa';
 import { MdMail } from 'react-icons/md';
 
 import Button from '~/components/Button';
-import { loginUser } from '~/services/authService';
+import { loginUser, banAccount, findBanAccount } from '~/services/authService';
 import config from '~/configRoutes';
+import { userSignUp } from '~/redux/Slice/signUpSlice';
 
 const cx = classNames;
 
@@ -20,31 +21,51 @@ function SignIn() {
     const [validEmail, setValidEmail] = useState('opacity-0');
     const [validPassword, setValidPassword] = useState('opacity-0');
     const [failLogin, setFailLogin] = useState('hidden');
+    const [countFail, setCountFail] = useState(0);
 
     const emailRef = useRef();
     const passwordRef = useRef();
 
     var currentAccount = useSelector((state) => state.persistedReducer.auth);
+    var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp);
+
     useEffect(() => {
         if (currentAccount.currentUser !== null && !!currentAccount.currentUser.accessToken) {
             navigate(config.routeConfig.home);
         }
     }, []);
 
+    useEffect(() => {
+        if (currentSignUpAccount.userSignUp !== null) {
+            dispatch(userSignUp(null)); // xoa signUp
+        }
+    }, []);
     const handleLogin = async () => {
         var valueEmail = checkValidEmail();
         var valuePassword = checkValidPassword();
-
+        const check = await findBanAccount(valueEmail);
+        console.log(check);
+        if (!!check) {
+            // setBanned('blur-sm w-screen h-screen');
+            alert('Hiện email đã bị tạm khoá do nhập sai quá nhiều lần xin bạn thử lại sau vài tiếng nữa');
+            return navigate(config.routeConfig.signIn);
+        }
+        if (countFail === 10) {
+            return navigate(config.routeConfig.quenMatKhau);
+            // console.log('Lỗi lần 10');
+        }
         if (!!valueEmail && !!validPassword) {
             var user = { userName: valueEmail, password: valuePassword };
             // đăng nhập thành công -->
             var login = await loginUser(user, dispatch, navigate);
             if (login === false) {
+                // console.log();
                 setFailLogin('');
+                setCountFail((preFail) => preFail + 1);
             }
         } else return false;
     };
-
+    console.log(countFail);
     const checkValidEmail = () => {
         var valueEmail = emailRef.current.value.trim();
         if (valueEmail.length === 0 || !valueEmail.match(/^[a-zA-Z._0-9]+@[a-z]+\.[a-z]+$/)) {

@@ -74,6 +74,10 @@ function ContentProfile({ userId }) {
                 setInRelationship('Đang gửi lời mời');
             } else if (!!obj && obj.id === userId && obj.status === 0) {
                 setInRelationship('Chấp nhận kết bạn');
+            } else if (!!obj && obj.id === userId && obj.status === -1) {
+                navigate(config + '404page');
+            } else if (!!obj && obj.id === userId && obj.status === -2) {
+                navigate(config + '404page');
             } else {
                 setInRelationship('Kết bạn');
             }
@@ -121,6 +125,8 @@ function ContentProfile({ userId }) {
             handleShowMenu();
         } else if (inRelationship === 'Chấp nhận kết bạn') {
             handleChapNhanKetBan();
+        } else if (inRelationship === 'Đang gửi lời mời') {
+            handleHuyKetBan();
         }
     };
 
