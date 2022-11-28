@@ -33,10 +33,10 @@ function ItemChoXacNhan({ friendName, friendId, friendAva }) {
     const handleDongY = async () => {
         await acceptFriend(curUser.id, friendId, accessToken, axiosJWT, dispatch);
         var newGroup = {
-            name: '',
+            name: ' ',
             userCreate: curUser.id,
             avatar: friendAva,
-            adminChat: [curUser.id],
+
             typeChat: 'inbox',
             member: [curUser.id, friendId],
         };

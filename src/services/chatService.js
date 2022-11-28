@@ -66,6 +66,17 @@ export const getMemberRequest = async (idChat, accessToken, axiosJWT) => {
         return null;
     }
 };
+export const getAllFileOfChat = async (idChat, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get('/chat/fileChat/' + idChat, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+};
 export const addMemberToChat = async (idChat, arrMember, accessToken, axiosJWT) => {
     try {
         const res = await axiosJWT.put('/chat/member/' + idChat, arrMember, {

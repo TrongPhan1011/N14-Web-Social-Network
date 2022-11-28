@@ -14,6 +14,9 @@ import { useDispatch } from 'react-redux';
 import { getMemberRequest } from '~/services/chatService';
 
 import { RiUserFollowLine } from 'react-icons/ri';
+import { addMess } from '~/services/messageService';
+import socket from '~/utils/getSocketIO';
+import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
@@ -42,6 +45,7 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
     const handleHideModal = () => {
         setShowModal(false);
     };
+
     const getAllChecked = (e) => {
         // add to list
         if (e.target.checked) {
@@ -80,6 +84,7 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                                 className={cx('')}
                                 onChange={getAllChecked}
                                 value={item.id}
+                                defaultChecked={false}
                             />
                             <Avartar src={item.profile.urlAvartar} className={cx('h-11 w-11 mr-2 ml-2')} />
                             <div className={cx()}>{item.fullName}</div>
@@ -93,6 +98,24 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         let valueSearch = e.target.value;
         setSearchValue(valueSearch);
     };
+    const saveMessSystem = async (id, text) => {
+        var newMessSave = {
+            title: text,
+            authorID: curUser.id,
+            seen: [{ id: curUser.id, seenAt: Date.now() }],
+            type_mess: 'system',
+            idChat: id,
+            status: 1,
+            file: [],
+        };
+        if (!!newMessSave) {
+            var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            socket.emit('sendMessage', {
+                receiverId: id,
+                contentMessage: messData,
+            });
+        }
+    };
 
     const handleRequestMember = async (action) => {
         if (!!listChecked && listChecked.length > 0) {
@@ -103,8 +126,18 @@ function RequestMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                 setListChecked([]);
                 setListMember([]);
                 setShowModal(false);
-                if (action === 'accept') alert('Đã thêm thành viên');
-                else alert('Đã xoá thành viên khỏi danh sách chờ duyệt');
+
+                if (action === 'accept') {
+                    for (let memberId of listChecked) {
+                        var member = await getUserById(memberId, accessToken, axiosJWT);
+                        saveMessSystem(dataNewChat.id, curUser.fullName + ' đã thêm ' + member.fullName);
+                    }
+                } else {
+                    saveMessSystem(
+                        dataNewChat.id,
+                        listChecked.length + ' thành viên đã bị xoá khỏi danh sách chờ duyệt ',
+                    );
+                }
             }
         }
     };

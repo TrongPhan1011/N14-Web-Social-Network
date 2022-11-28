@@ -28,7 +28,7 @@ function Avartar({ className, src, idGroup, typeAvatar }) {
             setSrcImg(src);
         } else if (typeAvatar === 'group' && !!idGroup) {
             getMemberGroup();
-        }
+        } else setSrcImg(lcnImage.avatarDefault);
     }, [idGroup, src, typeAvatar]);
 
     const renderAvatarGroup = () => {
@@ -75,7 +75,7 @@ function Avartar({ className, src, idGroup, typeAvatar }) {
                         className,
                     )}
                 >
-                    <img src={srcImg} alt="avartar" className={cx('w-full h-full')} />
+                    <img src={srcImg} alt="avartar" className={cx('w-full h-full object-cover')} />
                 </div>
             ) : (
                 <div

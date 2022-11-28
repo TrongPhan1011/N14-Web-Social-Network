@@ -102,7 +102,7 @@ function Search() {
                 </>
             );
         }
-        var hidden;
+
         if (searchMore) {
             return searchResult.map((item) => (
                 <ItemSearchMini

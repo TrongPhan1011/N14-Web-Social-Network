@@ -51,6 +51,10 @@ select {
 .tippy-tooltip.tomato-theme[data-placement^='right'] .tippy-arrow {
     border-right-color: tomato;
 }
+div:has(div.active-forward) {
+    transform: none !important;
+    position: none !important;
+}
 
 // animation
 

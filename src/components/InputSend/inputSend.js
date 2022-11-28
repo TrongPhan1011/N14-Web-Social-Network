@@ -18,6 +18,9 @@ import { getTypeOfDocument } from '~/lib/formatString';
 
 import PickerEmoji from './PickerEmoji/PickerEmoji';
 
+import { replyMes } from '~/redux/Slice/messageSlice';
+import { MdReply } from 'react-icons/md';
+
 const cx = classNames.bind(styles);
 
 function InputSend({ type }) {
@@ -30,6 +33,7 @@ function InputSend({ type }) {
     var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
+    var replyMess = useSelector((state) => state.messageSlice.replyMess);
 
     const [currMessage, setCurrMessage] = useState('');
     const [messageSend, setMessageSend] = useState();
@@ -37,6 +41,7 @@ function InputSend({ type }) {
     const [listFileDoc, setListFileDoc] = useState([]);
     const [listFileIMG, setListFileIMG] = useState([]);
     const [hiddenSendIMG, setHiddenSendIMG] = useState('hidden');
+    const [replyMessData, setReplyMessData] = useState();
 
     const [showEmoji, setShowEmoji] = useState(false);
 
@@ -56,12 +61,18 @@ function InputSend({ type }) {
             setHeightText('h-11');
         }
     }, [messageSend]);
+    useEffect(() => {
+        if (!!replyMess) {
+            setReplyMessData(replyMess);
+        }
+        console.log(replyMess);
+    }, [replyMess]);
 
     useEffect(() => {
-        if (listFileIMG.length === 0 && listFileDoc.length === 0) {
-            setHiddenSendIMG('hidden');
-        } else setHiddenSendIMG('flex');
-    }, [listFileIMG, listFileDoc]);
+        if (listFileIMG.length !== 0 || listFileDoc.length !== 0 || !!replyMessData) {
+            setHiddenSendIMG('flex');
+        } else setHiddenSendIMG('hidden');
+    }, [listFileIMG, listFileDoc, replyMessData]);
 
     const changeHeightText = (heightTextArea) => {
         const HEIGHT_11 = 44; // 44px
@@ -110,6 +121,17 @@ function InputSend({ type }) {
     };
 
     var getNewMess = (title, type, file) => {
+        let newReplyDataSocket = null,
+            newReplyDataSave = null;
+
+        if (!!replyMessData) {
+            newReplyDataSocket = {
+                id: replyMessData.id,
+                title: replyMessData.title,
+                file: replyMessData.file[0],
+            };
+            newReplyDataSave = replyMessData.id;
+        }
         var newMess = {
             title: title,
             authorID: {
@@ -128,6 +150,7 @@ function InputSend({ type }) {
                 },
             ],
             file: [],
+            replyMessage: newReplyDataSocket,
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
@@ -143,6 +166,7 @@ function InputSend({ type }) {
             idChat: newMess.idChat,
             status: 1,
             file: newMess.file,
+            replyMessage: newMess.replyMessage,
         };
 
         return { newMess, newMessSave };
@@ -159,6 +183,9 @@ function InputSend({ type }) {
         }
         if (!!listFileDoc && listFileDoc.length > 0) {
             saveFile('file');
+            removeUpFile();
+        }
+        if (!!replyMessData) {
             removeUpFile();
         }
         setCurrMessage('');
@@ -249,6 +276,10 @@ function InputSend({ type }) {
         if (listFileDoc.length > 0) {
             setListFileDoc([]);
         }
+        if (!!replyMessData) {
+            setReplyMessData(null);
+            dispatch(replyMes(null));
+        }
     };
     var renderVideoOrImg = (file) => {
         var type = file.type.split('/')[0];
@@ -316,6 +347,69 @@ function InputSend({ type }) {
                     </div>
                 );
             });
+        } else if (!!replyMessData) {
+            if (replyMessData.file.length > 0) {
+                if (replyMessData.file[0].fileType === 'image')
+                    return (
+                        <div className={cx(' w-full rounded-lg p-1 h-full')}>
+                            <div className={cx('text-sm flex items-center text-gray-600')}>
+                                Đang trả lời ảnh
+                                <MdReply className="ml-2" />
+                            </div>
+                            <img
+                                src={replyMessData.file[0].path}
+                                alt={replyMessData.file[0].title}
+                                className={cx('w-9 h-9 rounded-lg')}
+                            />
+                        </div>
+                    );
+                else if (replyMessData.file[0].fileType === 'video')
+                    return (
+                        <div className={cx(' w-full rounded-lg p-1 h-full')}>
+                            <div className={cx('text-sm flex items-center text-gray-600')}>
+                                Đang trả lời video
+                                <MdReply className="ml-2" />
+                            </div>
+                            <video
+                                src={replyMessData.file[0].path}
+                                alt={replyMessData.file[0].title}
+                                className={cx('w-9 h-9 rounded-lg')}
+                            />
+                        </div>
+                    );
+                else
+                    return (
+                        <div className={cx(' w-full rounded-lg p-1 h-full')}>
+                            <div className={cx('text-sm flex items-center text-gray-600')}>
+                                Đang trả lời file
+                                <MdReply className="ml-2" />
+                            </div>
+                            <div className={cx(' flex text-xs')}>
+                                <div
+                                    className={cx(
+                                        'w-36 h-8 p-1  bg-white bg-opacity-80 t rounded-md m-1 shadow-md flex items-center justify-center font-semibold text-slate-500',
+                                    )}
+                                >
+                                    <FiPaperclip
+                                        className={cx(
+                                            'text-xl text-lcn-blue-4 p-1 h-6 w-6 bg-lcn-blue-2 rounded-full mr-2 ',
+                                        )}
+                                    />
+                                    Tệp đính kèm
+                                </div>
+                            </div>
+                        </div>
+                    );
+            } else
+                return (
+                    <div className={cx(' w-full rounded-lg bg-lcn-blue-1 p-1 h-full')}>
+                        <div className={cx('text-sm flex items-center text-gray-600')}>
+                            Đang trả lời tin nhắn
+                            <MdReply className="ml-2" />
+                        </div>
+                        <div className={cx('text-xs italic text-gray-400')}>{replyMessData.title}</div>
+                    </div>
+                );
         }
         return <></>;
     };

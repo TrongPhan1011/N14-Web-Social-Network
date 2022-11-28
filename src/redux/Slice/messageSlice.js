@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const messageSlice = createSlice({
-    name: 'sidebarChat',
+    name: 'messageSlice',
     initialState: {
-        groupChatId: null,
-        unseenChat: 0,
-        error: false,
+        replyMess: null,
     },
     reducers: {
         addMess: (state, action) => {
             state.groupChatId = action.payload;
             state.error = false;
         },
+        replyMes: (state, action) => {
+            state.replyMess = action.payload;
+        },
     },
 });
 
-export const { addMess } = messageSlice.actions;
+export const { addMess, replyMes } = messageSlice.actions;
 
 export default messageSlice.reducer;

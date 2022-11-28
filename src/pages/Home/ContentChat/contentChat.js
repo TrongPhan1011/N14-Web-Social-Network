@@ -60,7 +60,6 @@ function ContentChat() {
     };
     const renderAvatar = () => {
         if (!!currentInbox || !!currChat) {
-            console.log(currChat);
             if (currChat.typeChat !== 'group') {
                 return <Avartar className={cx('h-12 w-12')} src={currentInbox?.profile?.urlAvartar} />;
             } else
@@ -122,7 +121,6 @@ function ContentChat() {
                             <ContentMessage
                                 currentInbox={currentInbox}
                                 curUser={curUser}
-                                curChat={currChat}
                                 accessToken={accessToken}
                                 axiosJWT={axiosJWT}
                             />

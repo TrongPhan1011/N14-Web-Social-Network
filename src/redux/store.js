@@ -8,6 +8,7 @@ import signInSlice from './Slice/signInSlice';
 import sidebarChatSlice from './Slice/sidebarChatSlice';
 import signUpSlice from './Slice/signUpSlice';
 import callSlice from './Slice/callSlice';
+import messageSlice from './Slice/messageSlice';
 
 const persistConfig = {
     key: 'root',
@@ -29,6 +30,7 @@ export const store = configureStore({
         sidebarChatSlice,
         friendSlice,
         callSlice,
+        messageSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

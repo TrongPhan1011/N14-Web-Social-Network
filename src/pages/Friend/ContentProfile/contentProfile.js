@@ -91,7 +91,7 @@ function ContentProfile({ userId }) {
 
         getProfile();
     }, [userId]);
-    console.log(userProfile.email);
+
     useEffect(() => {
         const getListFriend = async () => {
             const friendByStatus = await getAllFriend(userId, accessToken, axiosJWT);
@@ -170,8 +170,10 @@ function ContentProfile({ userId }) {
     };
     const handleInbox = async () => {
         var inboxChat = await getInboxByIdFriend(curUser.id, userId, accessToken, axiosJWT);
-        dispatch(currentChat(inboxChat));
-        navigate(config.routeConfig.home);
+        if (!!inboxChat) {
+            dispatch(currentChat(inboxChat));
+            navigate(config.routeConfig.home);
+        }
     };
     return (
         <div className={cx(' w-full h-full  flex overflow-hidden justify-center items-center')}>
