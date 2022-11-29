@@ -61,6 +61,7 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday, lis
         return <Comp />;
     };
     const renderAllFriend = () => {
+        console.log(list);
         return list
             .filter((item) => {
                 return item.fullName.toLowerCase().includes(searchValue);

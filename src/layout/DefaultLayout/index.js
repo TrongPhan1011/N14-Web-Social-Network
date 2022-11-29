@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { memo } from 'react';
 
 import Header from './Header';
 
@@ -29,4 +30,4 @@ DefaultLayout.propTypes = {
     children: PropTypes.node,
 };
 
-export default DefaultLayout;
+export default memo(DefaultLayout);

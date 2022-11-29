@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllFileChat from '~/components/AllFileChat';
 
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-import { getUserById } from '~/services/userService';
+import { getUserById, blockFriend } from '~/services/userService';
 import { useEffect, useState } from 'react';
 import config from '~/configRoutes';
+
 import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
@@ -35,12 +36,20 @@ function Inbox({ curChat }) {
             var receiverFetch = await getUserById(idReceiver[0], accessToken, axiosJWT);
             const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT);
             dispatch(userLogin(getCurrentUserProfile));
-            console.log(receiverFetch);
+            // console.log(receiverFetch.fullName);
             setReceiver(receiverFetch);
         };
         infoInbox();
     }, [curChat]);
 
+    const handleBlockFriend = async () => {
+        if (window.confirm('Bạn có muốn chặn ' + receiver.fullName + ' không?')) {
+            await blockFriend(curUser.id, receiver.id, accessToken, axiosJWT, dispatch);
+            alert('chặn thành công');
+        } else {
+            alert('huỷ chặn');
+        }
+    };
     return (
         <>
             <HeaderProfile

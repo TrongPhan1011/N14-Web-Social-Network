@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { MdMail } from 'react-icons/md';
 import Button from '~/components/Button';
-import { register, verifyOtp } from '~/services/authService';
+import { register, verifyOtp, sendOTP, findBanAccount, banAccount } from '~/services/authService';
 import config from '~/configRoutes';
 import { loginUser } from '~/services/authService';
 
@@ -13,11 +13,14 @@ const cx = classNames;
 
 function Otp() {
     const [validOTP, setValidOTP] = useState('opacity-0');
+    const [countDown, setCountDown] = useState(180);
+    const [countFail, setCountFail] = useState(0);
+    const [banned, setBanned] = useState('');
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp.userSignUp);
     console.log(currentSignUpAccount);
-
     const otpRef = useRef();
 
     const checkValidOTP = () => {
@@ -31,6 +34,31 @@ function Otp() {
             return valueOTP;
         }
     };
+    useEffect(() => {
+        // if(currentSignUpAccount.userName)
+        const checkBan = async () => {
+            const check = await findBanAccount(currentSignUpAccount.userName);
+            console.log(check);
+            if (!!check) {
+                // setBanned('blur-sm w-screen h-screen');
+                alert('Hiện email đã bị tạm khoá do nhập sai quá nhiều lần xin bạn thử lại sau vài tiếng nữa');
+                navigate(config.routeConfig.signIn);
+            } else {
+                setBanned('');
+            }
+        };
+        checkBan();
+
+        if (countDown > 0 && countFail < 10 && banned === '') {
+            const time = setInterval(() => {
+                setCountDown((preSec) => preSec - 1);
+                // console.log(countDown);
+            }, 1000);
+            // console.log(countDown);
+
+            return () => clearInterval(time);
+        }
+    }, [countDown, countFail, banned]);
 
     const handleRegister = async () => {
         var otpValue = checkValidOTP();
@@ -42,14 +70,17 @@ function Otp() {
             gender: currentSignUpAccount.gender,
             otp: otpValue,
         };
-
+        if (countFail === 10) {
+            await banAccount(currentSignUpAccount.userName);
+        }
         //dang ky thanh cong
         var registerHandle = await register(dangKy, navigate, dispatch);
         console.log(registerHandle);
         if (!!registerHandle) {
             await loginUser(registerHandle, dispatch, navigate);
         } else {
-            navigate(config.routeConfig.signUp);
+            // alert('Bạn đã nhập sai OTP');
+            setCountFail((preFail) => preFail + 1);
         }
     };
     const handleVerify = async () => {
@@ -69,8 +100,12 @@ function Otp() {
             handleVerify();
         }
     };
+    const handleReSendOTP = async () => {
+        var user = await sendOTP(currentSignUpAccount, dispatch, navigate);
+        setCountDown(180);
+    };
     return (
-        <div className={cx('bg-white h-4/6 w-2/6 rounded-2xl drop-shadow-lcn-login')}>
+        <div className={cx('bg-white h-4/6 w-2/6 rounded-2xl drop-shadow-lcn-login', banned)}>
             <div className={cx('h-1/4 p-5 border-b border-lcn-blue-4 border-opacity-20')}>
                 <div className={cx('flex w-full', 'text-lcn-blue-5 text-3xl font-semibold')}>Xác minh Email</div>
                 <div className={cx('flex w-full', 'text-sm text-opacity-60 text-black')}>
@@ -97,21 +132,36 @@ function Otp() {
                             ref={otpRef}
                             onChange={checkValidOTP}
                         />
+                        <div className={cx('text-red-500 text-sm pl-3 mt-3')}>OTP sẽ hết hạn sau {countDown}</div>
+
                         <span className={cx('text-red-500 text-sm pl-3', validOTP)}>OTP chỉ có thể là số!</span>
                     </div>
                 </div>
                 <div className={cx('w-2/3 h-10 mt-5 flex flex-row justify-between ')}>
                     <div className={cx('w-1/3 flex')}>
-                        <Button
-                            className={cx(
-                                'w-full h-full p-0 m-0',
-                                'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
-                                'bg-lcn-blue-3 justify-center',
-                            )}
-                            href="/dangky"
-                        >
-                            Trở lại
-                        </Button>
+                        {!!currentSignUpAccount.gender ? (
+                            <Button
+                                className={cx(
+                                    'w-full h-full p-0 m-0',
+                                    'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
+                                    'bg-lcn-blue-3 justify-center',
+                                )}
+                                href="/dangky"
+                            >
+                                Trở lại
+                            </Button>
+                        ) : (
+                            <Button
+                                className={cx(
+                                    'w-full h-full p-0 m-0',
+                                    'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
+                                    'bg-lcn-blue-3 justify-center',
+                                )}
+                                href="/dangnhap"
+                            >
+                                Trở lại
+                            </Button>
+                        )}
                     </div>
                     <div className={cx('w-1/3 flex')}>
                         <Button
@@ -123,6 +173,18 @@ function Otp() {
                             onClick={handleConfirmOtp}
                         >
                             Xác nhận
+                        </Button>
+                    </div>
+                    <div className={cx('w-1/3 flex', countDown > 0 ? 'hidden' : '')}>
+                        <Button
+                            className={cx(
+                                'w-full h-full p-0 m-0',
+                                'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
+                                'bg-lcn-blue-3 justify-center',
+                            )}
+                            onClick={handleReSendOTP}
+                        >
+                            Gửi lại OTP
                         </Button>
                     </div>
                 </div>

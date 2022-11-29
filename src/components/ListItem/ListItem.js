@@ -6,7 +6,7 @@ import ItemBanBe from '~/components/ItemBanBe';
 import ItemChoXacNhan from '~/components/ItemChoXacNhan';
 import ItemChan from '~/components/ItemChan';
 
-import { getAllFriend, getWaitingFriend } from '~/services/userService';
+import { getAllFriend, getWaitingFriend, getBlockFriend } from '~/services/userService';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
 const cx = classNames;
@@ -15,6 +15,7 @@ function ListItem({ type }) {
     const dispatch = useDispatch();
     const [listFriend, setListFriend] = useState([]);
     const [listAddFriend, setListAddFriend] = useState([]);
+    const [listBlockedFriend, setListBlockedFriend] = useState([]);
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
     var accessToken = currAccount.accessToken;
@@ -39,7 +40,16 @@ function ListItem({ type }) {
 
         getListWaiting();
     }, [type, curUser.friend]);
+    useEffect(() => {
+        const getListBlockFriend = async () => {
+            const friendBlocked = await getBlockFriend(curUser.id, accessToken, axiosJWT, dispatch);
+            setListBlockedFriend(friendBlocked[0].friend);
+            // setListAddFriend(friendIsWaiting[0].friend);
+        };
 
+        getListBlockFriend();
+    }, [type, curUser.friend]);
+    console.log(listBlockedFriend);
     var Comp = ItemBanBe;
     if (type === 'choXacNhan') {
         Comp = ItemChoXacNhan;
@@ -63,6 +73,18 @@ function ListItem({ type }) {
                         friendName={item.fullName}
                         friendId={item._id}
                         friendAva={item?.profile?.urlAvartar}
+                    />
+                );
+            });
+        }
+        if (listBlockedFriend.length > 0 && type === 'chan') {
+            return listBlockedFriend.map((item) => {
+                return (
+                    <Comp
+                        key={item._id}
+                        blockId={item._id}
+                        blockName={item.fullName}
+                        blockAva={item?.profile?.urlAvartar}
                     />
                 );
             });

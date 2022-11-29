@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-import { useSelector, useDispatch } from 'react-redux';
 
 import styles from './ContentFriend.module.scss';
 import { lcnImage } from '~/image';
