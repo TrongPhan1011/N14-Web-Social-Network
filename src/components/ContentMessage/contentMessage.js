@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import ItemMessage from '~/components/ItemMessage';
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+
 import Avartar from '~/components/Avartar';
 import { useEffect, useRef, memo } from 'react';
 import { useState } from 'react';

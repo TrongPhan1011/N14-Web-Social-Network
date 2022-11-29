@@ -7,7 +7,6 @@ import config from '~/configRoutes';
 const cx = classNames;
 
 function CardFriend({ list }) {
-    console.log(list);
     var img = lcnImage.avatarDefault;
     const renderItemBanBe = () => {
         if (list.length <= 4) {

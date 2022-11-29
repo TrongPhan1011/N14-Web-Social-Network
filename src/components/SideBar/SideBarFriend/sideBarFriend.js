@@ -18,7 +18,6 @@ function SideBarFriend({ count, countWaiting }) {
     const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
-    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
     const [tabChange, setTabChange] = useState(true);

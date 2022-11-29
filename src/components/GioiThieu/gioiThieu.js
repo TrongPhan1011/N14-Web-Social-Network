@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { FaSchool, FaTransgender, FaMobileAlt, FaBirthdayCake, FaMailBulk } from 'react-icons/fa';
+import { FaSchool, FaTransgender, FaBirthdayCake, FaMailBulk } from 'react-icons/fa';
 
 const cx = classNames;
 

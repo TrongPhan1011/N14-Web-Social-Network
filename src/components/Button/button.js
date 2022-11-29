@@ -31,11 +31,9 @@ function Button({ children, className, type, to, href, target, onClick, navLink,
     }
 
     return (
-        // <div className=" w-full   border-b-4 border-lcn-blue-4 border-none">
         <Comp className={_className} {..._props}>
             {children}
         </Comp>
-        // </div>
     );
 }
 

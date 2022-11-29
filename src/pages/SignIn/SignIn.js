@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { FaLock } from 'react-icons/fa';
-
 import { MdMail } from 'react-icons/md';
 
 import Button from '~/components/Button';
-import { loginUser, banAccount, findBanAccount } from '~/services/authService';
+import { loginUser, findBanAccount } from '~/services/authService';
 import config from '~/configRoutes';
 import { userSignUp } from '~/redux/Slice/signUpSlice';
 

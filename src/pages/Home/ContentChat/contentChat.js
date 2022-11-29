@@ -1,22 +1,17 @@
 import classNames from 'classnames';
 import { useState, memo, useEffect } from 'react';
-
 import { FaPhone, FaVideo, FaInfoCircle } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '~/components/Button';
-
 import ContentMessage from '~/components/ContentMessage';
 import InputSend from '~/components/InputSend';
 import MiniProfile from '~/components/MiniProfile';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getUserById } from '~/services/userService';
-
 import Avartar from '~/components/Avartar';
 import config from '~/configRoutes';
 import { callerData } from '~/redux/Slice/callSlice';
-import Peer from 'peerjs';
 import socket from '~/utils/getSocketIO';
 
 const cx = classNames;

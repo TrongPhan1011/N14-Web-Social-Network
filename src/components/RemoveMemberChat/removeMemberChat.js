@@ -2,15 +2,14 @@ import classNames from 'classnames';
 
 import Button from '~/components/Button';
 
-import { useState, memo, useEffect } from 'react';
+import { useState, memo } from 'react';
 
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
 
 import { removeMemberChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
-import { useDispatch } from 'react-redux';
+
 import { getMemberOfChat } from '~/services/chatService';
 
 import { AiOutlineUserDelete } from 'react-icons/ai';
@@ -20,8 +19,6 @@ import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
     const [listMember, setListMember] = useState([]);
     const [searchValue, setSearchValue] = useState('');

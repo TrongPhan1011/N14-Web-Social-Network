@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { FiMoreVertical, FiPaperclip } from 'react-icons/fi';
 import { BiSmile } from 'react-icons/bi';

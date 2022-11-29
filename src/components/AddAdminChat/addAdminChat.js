@@ -10,7 +10,6 @@ import Avartar from '~/components/Avartar';
 import { addAdminToChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
 
-import { useDispatch } from 'react-redux';
 import { getMemberOfChat } from '~/services/chatService';
 import { MdOutlineSecurity } from 'react-icons/md';
 import { addMess } from '~/services/messageService';

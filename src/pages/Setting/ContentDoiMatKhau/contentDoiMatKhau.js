@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '~/components/Button';
 import { checkOldPassword, updatePassword } from '~/services/authService';
+
 const cx = classNames;
 
 function ContentDoiMatKhau() {

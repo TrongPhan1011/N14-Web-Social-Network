@@ -4,7 +4,7 @@ import { useState, memo } from 'react';
 import { AiFillFileImage } from 'react-icons/ai';
 
 import styles from './CreatePost.module.scss';
-import { lcnImage } from '~/image';
+
 import Button from '~/components/Button';
 import HeaderPost from '~/components/HeaderPost';
 import { BiWinkSmile } from 'react-icons/bi';

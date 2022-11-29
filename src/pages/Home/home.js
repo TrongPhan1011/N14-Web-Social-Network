@@ -1,12 +1,9 @@
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { useMemo, useState } from 'react';
 
 import SideBar from '~/components/SideBar';
 import ContentChat from './ContentChat';
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-
-import { useDispatch, useSelector } from 'react-redux';
-import socket from '~/utils/getSocketIO';
-import { useEffect, useMemo, useState } from 'react';
 
 const cx = classNames;
 function Home() {

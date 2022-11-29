@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 import Button from '~/components/Button';
 
-import { useState, memo, useEffect, useRef } from 'react';
+import { useState, memo, useRef } from 'react';
 
 import Modal from '~/components/Modal';
 

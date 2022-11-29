@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState, memo } from 'react';
-
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { useRef, useState, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import classNames from 'classnames';
-import { updateProfile } from '~/services/userService';
-import { FaSchool } from 'react-icons/fa';
+
 import { RiUserFill } from 'react-icons/ri';
 import { IoMailSharp } from 'react-icons/io5';
+
+import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+import { updateProfile } from '~/services/userService';
+import { FaSchool } from 'react-icons/fa';
 import Button from '~/components/Button';
 
 const cx = classNames;

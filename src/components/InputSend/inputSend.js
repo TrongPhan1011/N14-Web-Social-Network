@@ -36,7 +36,7 @@ function InputSend({ type }) {
     var replyMess = useSelector((state) => state.messageSlice.replyMess);
 
     const [currMessage, setCurrMessage] = useState('');
-    const [messageSend, setMessageSend] = useState();
+
     const [heightText, setHeightText] = useState('h-11');
     const [listFileDoc, setListFileDoc] = useState([]);
     const [listFileIMG, setListFileIMG] = useState([]);
@@ -47,7 +47,6 @@ function InputSend({ type }) {
 
     const txtSendRef = useRef();
 
-    useEffect(() => {}, [messageSend]);
     useEffect(() => {
         if (!!replyMess) {
             setReplyMessData(replyMess);

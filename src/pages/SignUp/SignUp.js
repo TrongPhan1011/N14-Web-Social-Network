@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaLock } from 'react-icons/fa';
 import { MdMail } from 'react-icons/md';
 import { RiUserFill } from 'react-icons/ri';
+
 import { sendOTP, getAuthByMail } from '~/services/authService';
 import config from '~/configRoutes';
 import Button from '~/components/Button';

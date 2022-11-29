@@ -57,8 +57,6 @@ function MessageFile({ messageData }) {
         getDataMessFile();
     }, [showZoomIMG]);
 
-    const addArrImg = () => {};
-
     var renderOneFile = (firstFile) => {
         if (firstFile.fileType === 'image') {
             return (

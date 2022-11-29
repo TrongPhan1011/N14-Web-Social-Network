@@ -1,5 +1,4 @@
-import { useState, memo, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, memo, useEffect } from 'react';
 
 import Button from '~/components/Button';
 
@@ -21,8 +20,6 @@ import socket from '~/utils/getSocketIO';
 const cx = classNames;
 
 function ChangeFile({ accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
     const [hiddenSave, setHiddenSave] = useState('hidden');
 

@@ -1,6 +1,8 @@
 import classNames from 'classnames';
-import ListItem from '~/components/ListItem';
 import { BiSearch } from 'react-icons/bi';
+
+import ListItem from '~/components/ListItem';
+
 const cx = classNames;
 function ContentChan() {
     return (

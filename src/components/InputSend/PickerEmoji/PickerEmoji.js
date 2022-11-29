@@ -1,8 +1,6 @@
-import classNames from 'classnames';
 import { memo } from 'react';
 import EmojiPicker, { EmojiStyle, SuggestionMode, Theme } from 'emoji-picker-react';
 
-const cx = classNames;
 function PickerEmoji({ onChosseEmoji }) {
     return (
         <EmojiPicker

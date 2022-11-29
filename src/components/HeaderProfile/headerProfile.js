@@ -4,12 +4,10 @@ import Dropdown from '~/components/Dropdown';
 import Button from '~/components/Button';
 import ItemDropdown from '~/components/Dropdown/ItemDropdown';
 import classNames from 'classnames';
-import { lcnImage } from '~/image';
 import Avartar from '~/components/Avartar';
 import { uploadFileImg } from '~/services/fileService';
 import { updateAvatar, updateBanner } from '~/services/userService';
 
-import { MdSaveAlt } from 'react-icons/md';
 import { BsFillCloudUploadFill } from 'react-icons/bs';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 

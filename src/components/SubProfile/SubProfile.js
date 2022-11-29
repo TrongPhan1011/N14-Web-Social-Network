@@ -7,7 +7,7 @@ import CardImg from '~/components/CardImg';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import ItemBanBe from '~/components/ItemBanBe';
-import ModalGetItem from '~/components/Modal/ModalGetItem';
+
 import { FaTimes } from 'react-icons/fa';
 const cx = classNames;
 

@@ -1,21 +1,10 @@
 import classNames from 'classnames';
 
 import Button from '~/components/Button';
-
 import { useState, memo, useEffect } from 'react';
-
 import Modal from '~/components/Modal';
-import Avartar from '~/components/Avartar';
+import { getAllFileOfChat } from '~/services/chatService';
 
-import { addAdminToChat, getAllFileOfChat } from '~/services/chatService';
-import { inCludesString } from '~/lib/regexString';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
-import { useDispatch } from 'react-redux';
-import { getMemberOfChat } from '~/services/chatService';
-
-import { addMess } from '~/services/messageService';
-import socket from '~/utils/getSocketIO';
-import { getUserById } from '~/services/userService';
 import { HiOutlinePaperClip } from 'react-icons/hi';
 import PreviewImg from '~/components/PreviewImg';
 import { FiPaperclip } from 'react-icons/fi';
@@ -23,10 +12,8 @@ import FileSaver from 'file-saver';
 
 const cx = classNames;
 function AllFileChat({ accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
-    const [showPreviewImg, setShowPreviewImg] = useState(false);
+
     const [optionValue, setOptionValue] = useState('img');
     const [arrMessFile, setArrMessFile] = useState([]);
     const [listFile, setListFile] = useState({});

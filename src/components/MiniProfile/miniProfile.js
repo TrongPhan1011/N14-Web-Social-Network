@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import Inbox from './Inbox';
 import Group from './Group';
 import { useEffect, useState, memo } from 'react';
-import { useSelector } from 'react-redux';
 
 const cx = classNames;
 
