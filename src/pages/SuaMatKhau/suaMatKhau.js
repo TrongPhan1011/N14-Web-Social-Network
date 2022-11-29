@@ -22,7 +22,7 @@ function SuaMatKhau() {
 
     const checkValidPassword = () => {
         var valuePassword = passRef.current.value.trim();
-        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9.@ ]{6,}$/)) {
+        if (valuePassword.length === 0 || !valuePassword.match(/^[A-Z]{1}[a-zA-Z0-9\.@ ]{5,}$/)) {
             setPassword('opacity-1');
             return '';
         } else {
@@ -77,7 +77,9 @@ function SuaMatKhau() {
                             ref={passRef}
                             onChange={checkValidPassword}
                         />
-                        <span className={cx('text-red-500 text-sm pl-3', password)}>Mật khẩu phải 6 kí tự trở lên</span>
+                        <span className={cx('text-red-500 text-center text-sm ', password)}>
+                            Mật khẩu phải chữ cái đầu viết hoa và tối thiểu 6 kí tự và không kí tự đặc biệt
+                        </span>
                     </div>
                 </div>
                 <div className={cx('flex justify-center w-full')}>

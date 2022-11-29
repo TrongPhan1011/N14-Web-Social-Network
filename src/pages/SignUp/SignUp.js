@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaLock } from 'react-icons/fa';
 import { MdMail } from 'react-icons/md';
 import { RiUserFill } from 'react-icons/ri';
+
 import { sendOTP, getAuthByMail } from '~/services/authService';
 import config from '~/configRoutes';
 import Button from '~/components/Button';
@@ -43,13 +44,6 @@ function SignUp() {
     useEffect(() => {
         if (currentAccount.currentUser !== null && !!currentAccount.currentUser.accessToken) {
             navigate(config.routeConfig.home);
-        }
-    }, []);
-    var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp);
-
-    useEffect(() => {
-        if (currentSignUpAccount.userSignUp !== null) {
-            dispatch(userSignUp(null)); // xoa signUp
         }
     }, []);
 
@@ -91,7 +85,7 @@ function SignUp() {
     };
     const checkValidPassword = () => {
         var valuePassword = passwordRef.current.value.trim();
-        if (valuePassword.length === 0 || !valuePassword.match(/^[a-zA-Z0-9.@ ]{6,}$/)) {
+        if (valuePassword.length === 0 || !valuePassword.match(/^[A-Z]{1}[a-zA-Z0-9\.@ ]{5,}$/)) {
             setValidPassword('opacity-1');
             return '';
         } else {
@@ -112,7 +106,6 @@ function SignUp() {
 
     const checkDate = () => {
         var userdate = dateRef.current.value;
-        console.log(typeof userdate);
         var birthday = userdate.split('-');
         var mydate = new Date(birthday[0], birthday[1] - 1, birthday[2]);
 
@@ -132,9 +125,8 @@ function SignUp() {
         var valueUserName = checkValidUserName();
         var valueDate = checkDate();
         var gender = selectedRadioBtn;
-        console.log(gender);
 
-        if (!!validEmail && !!validPassword) {
+        if (!!valueEmail && !!valuePassword && !!valueUserName & !!valueDate && !!gender) {
             var user = {
                 name: valueUserName,
                 userName: valueEmail,
@@ -148,7 +140,7 @@ function SignUp() {
             if (!register) {
                 setFailLogin('');
             }
-        } else return false;
+        } else return alert('Vui lòng điền đầy đủ thông tin');
     };
 
     return (
@@ -158,7 +150,7 @@ function SignUp() {
                 <div className={cx('flex w-full', 'text-sm text-opacity-60 text-black')}>Nhanh chóng và thuận tiện</div>
             </div>
             <div className={cx('h-5/6 flex flex-row justify-center')}>
-                <form className={cx(' w-2/3 p-3 h-full flex flex-col justify-around')}>
+                <div className={cx(' w-2/3 p-3 h-full flex flex-col justify-around')}>
                     <div className={cx(' text-red-500 text-sm text-center w-full pt-2', failLogin)}>
                         Email đã được sử dụng
                     </div>
@@ -225,8 +217,8 @@ function SignUp() {
                                 onChange={checkValidPassword}
                                 ref={passwordRef}
                             />
-                            <span className={cx('text-red-500 text-sm pl-3', validPassword)}>
-                                Mật khẩu phải có ít nhất 6 kí tự
+                            <span className={cx('text-red-500 text-center text-sm ', validPassword)}>
+                                Mật khẩu phải chữ cái đầu viết hoa và tối thiểu 6 kí tự và không kí tự đặc biệt
                             </span>
                         </div>
                     </div>
@@ -322,7 +314,7 @@ function SignUp() {
                             Đăng ký
                         </Button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

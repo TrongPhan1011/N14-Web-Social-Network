@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { HiOutlinePaperClip, HiOutlineTrash } from 'react-icons/hi';
+import { HiOutlineTrash } from 'react-icons/hi';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiEdit, BiLogOutCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '~/components/Button';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 
 import HeaderProfile from '~/components/HeaderProfile';
 import ShowMemberChat from '~/components/ShowMemberChat';
@@ -22,18 +22,17 @@ import { userLogin } from '~/redux/Slice/signInSlice';
 import FormConfirm from '~/components/FormConfirm';
 import { addMess } from '~/services/messageService';
 import socket from '~/utils/getSocketIO';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+
 import AllFileChat from '~/components/AllFileChat';
+import ChangeImg from '~/components/ChangeImg';
 
 const cx = classNames;
-function Group() {
+function Group({ curChat }) {
     const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
     var accessToken = currAccount.accessToken;
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
-
-    var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
@@ -50,10 +49,22 @@ function Group() {
         };
         if (!!newMessSave) {
             var messData = await addMess(newMessSave, accessToken, axiosJWT);
-            socket.emit('sendMessage', {
-                receiverId: id,
-                contentMessage: messData,
-            });
+            messData = {
+                ...messData,
+                authorID: {
+                    id: curUser.id,
+                    fullName: curUser.fullName,
+                    profile: {
+                        urlAvartar: curUser.profile.urlAvartar,
+                    },
+                },
+            };
+            if (!!messData) {
+                socket.emit('sendMessage', {
+                    receiverId: id,
+                    contentMessage: messData,
+                });
+            }
         }
     };
 
@@ -65,7 +76,6 @@ function Group() {
             if (!!newUser) {
                 dispatch(userLogin(newUser));
                 saveMessSystem(curChat.id, curUser.fullName + ' đã rời nhóm');
-                dispatch(currentChat(null));
             }
         }
     };
@@ -76,6 +86,7 @@ function Group() {
 
             if (!!newCurrUser) {
                 dispatch(userLogin(newCurrUser));
+                socket.emit('removeAllChat', { receiverId: curChat.id, idChat: curChat.id });
             }
         } else alert('Thông tin xác nhận không đúng');
     };
@@ -166,6 +177,7 @@ function Group() {
                             </div>
                         </Button>
                     </FormConfirm>
+                    <ChangeImg accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
 
                     <AllFileChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
                     <ShowMemberChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />

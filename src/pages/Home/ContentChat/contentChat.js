@@ -1,31 +1,27 @@
 import classNames from 'classnames';
 import { useState, memo, useEffect } from 'react';
-
 import { FaPhone, FaVideo, FaInfoCircle } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '~/components/Button';
-
 import ContentMessage from '~/components/ContentMessage';
 import InputSend from '~/components/InputSend';
 import MiniProfile from '~/components/MiniProfile';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getUserById } from '~/services/userService';
-
 import Avartar from '~/components/Avartar';
 import config from '~/configRoutes';
 import { callerData } from '~/redux/Slice/callSlice';
+import socket from '~/utils/getSocketIO';
 
 const cx = classNames;
 
-function ContentChat() {
+function ContentChat({ currChat }) {
     const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
     var accessToken = currAccount.accessToken;
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
-    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
@@ -47,11 +43,24 @@ function ContentChat() {
         if (!!currChat) getCurrInbox();
     }, [currChat]);
 
+    useEffect(() => {
+        socket.on('getPeerId', (peerId) => {
+            if (!!peerId) {
+                console.log('receiver : ' + peerId);
+                dispatch(callerData({ calling: true, idTo: peerId }));
+            }
+        });
+    }, [socket]);
+
+    // useEffect(() => {
+    //     if (!!currentInbox) socket.emit('sendSignalCall', { receiverId: currentInbox.id, data: {} });
+    // }, [currentInbox]);
+
     const showMiniProfile = () => {
         if (widthValue === '') return <></>;
         else if (widthValue === 'ease-right-to-left')
-            return <MiniProfile profileIn={true} typeChat={currChat?.typeChat} />;
-        else return <MiniProfile profileIn={false} typeChat={currChat?.typeChat} />;
+            return <MiniProfile profileIn={true} typeChat={currChat?.typeChat} curChat={currChat} />;
+        else return <MiniProfile profileIn={false} typeChat={currChat?.typeChat} curChat={currChat} />;
     };
 
     const onClickInfo = () => {
@@ -73,6 +82,14 @@ function ContentChat() {
                 );
         }
     };
+    const sendSignalCall = () => {
+        //  const peer = new Peer();
+        //  peer.on('open', (id) => {
+        //      dispatch(callerData({ calling: true, idTo: id }));
+        //  });
+        console.log(currentInbox);
+        socket.emit('sendSignalCall', { receiverId: currentInbox.id, data: { idUser: curUser.id } });
+    };
 
     return (
         <>
@@ -87,22 +104,13 @@ function ContentChat() {
                                         <Button type="button" className="text-lcn-blue-5 font-semibold text-md m-0 ">
                                             {currChat.typeChat === 'group' ? currChat?.name : currentInbox?.fullName}
                                         </Button>
-                                        <span
-                                            className={cx('h-3 w-3 bg-lcn-green-1 rounded-full inline-block ml-2')}
-                                        ></span>
                                     </div>
 
                                     <div className={cx('text-xs text-slate-500 ml-1')}>Đang hoạt động</div>
                                 </div>
                             </div>
                             <div className={cx('  h-full flex pl-4 justify-end')}>
-                                <Button
-                                    type="button"
-                                    className="mr-4"
-                                    onClick={() => {
-                                        dispatch(callerData({ calling: true, idTo: currentInbox?.id }));
-                                    }}
-                                >
+                                <Button type="button" className="mr-4" onClick={sendSignalCall}>
                                     <FaPhone className="text-lcn-blue-4 text-2xl" />
                                 </Button>
                                 <Button

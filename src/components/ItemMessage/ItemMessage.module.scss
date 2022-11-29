@@ -1,3 +1,8 @@
 .message-hover:hover .more-hover {
     display: flex;
 }
+
+.hover-react:hover .hover-react-item {
+    display: block;
+    z-index: 9999;
+}

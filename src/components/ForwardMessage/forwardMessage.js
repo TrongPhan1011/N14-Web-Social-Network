@@ -6,11 +6,8 @@ import { useState, memo } from 'react';
 
 import Modal from '~/components/Modal';
 import Avartar from '~/components/Avartar';
-
-import { addAdminToChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
-import { useDispatch } from 'react-redux';
+
 import { getChatByIdMember } from '~/services/chatService';
 
 import { addMess } from '~/services/messageService';
@@ -21,8 +18,6 @@ import { getFirstText } from '~/lib/formatString';
 
 const cx = classNames;
 function AddAdminChat({ dataMess, accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
     const [listChat, setListChat] = useState([]);
     const [searchValue, setSearchValue] = useState('');

@@ -36,7 +36,7 @@ function Header({ userLoginData }) {
     const [linkQR, setLinkQR] = useState('');
     const [copied, setCopied] = useState('opacity-0');
 
-    var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData.id;
+    var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData?.id;
 
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
@@ -130,7 +130,6 @@ function Header({ userLoginData }) {
             <div className={cx('h-2/6 w-full ')}>
                 <ItemMenu to={config.routeConfig.home} icon1={AiOutlineMessage} icon2={AiFillMessage} tip="Tin nhắn" />
                 <ItemMenu to={config.routeConfig.friends} icon1={RiUserLine} icon2={RiUserFill} tip="Bạn bè" />
-                <ItemMenu to={config.routeConfig.news} icon1={HiOutlineNewspaper} icon2={HiNewspaper} tip="Bản tin" />
             </div>
             <div className={cx('h-3/6 w-full flex  flex-col justify-end items-center')}>
                 <div className={cx('pr-1 pl-1 w-full')}>

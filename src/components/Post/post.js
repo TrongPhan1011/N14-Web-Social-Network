@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { memo } from 'react';
 
-import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
 
 import HeaderPost from '~/components/HeaderPost';
 import { lcnImage } from '~/image';

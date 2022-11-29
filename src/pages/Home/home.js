@@ -1,28 +1,28 @@
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { useMemo, useState } from 'react';
 
 import SideBar from '~/components/SideBar';
 import ContentChat from './ContentChat';
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-
-import { useDispatch, useSelector } from 'react-redux';
-import socket from '~/utils/getSocketIO';
-import { useEffect } from 'react';
 
 const cx = classNames;
 function Home() {
-    var currAuth = useSelector((state) => state.persistedReducer.auth);
-    var currAccount = currAuth.currentUser;
+    const [showContent, setShowContent] = useState(false);
 
-    useEffect(() => {
-        socket.emit('addUserSocket', currAccount._id);
-    }, [currAccount]);
+    var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
+
+    useMemo(() => {
+        if (!!curChat) {
+            setShowContent(true);
+        }
+    }, [curChat]);
 
     return (
         <div className={cx('flex h-screen overflow-hidden')}>
             <div className="w-[270px] h-screen  ">
                 <SideBar />
             </div>
-            <ContentChat />
+            {showContent && <ContentChat currChat={curChat} />}
         </div>
     );
 }

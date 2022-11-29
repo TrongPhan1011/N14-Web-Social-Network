@@ -7,7 +7,7 @@ import CardImg from '~/components/CardImg';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import ItemBanBe from '~/components/ItemBanBe';
-import ModalGetItem from '~/components/Modal/ModalGetItem';
+
 import { FaTimes } from 'react-icons/fa';
 const cx = classNames;
 
@@ -61,7 +61,6 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday, lis
         return <Comp />;
     };
     const renderAllFriend = () => {
-        console.log(list);
         return list
             .filter((item) => {
                 return item.fullName.toLowerCase().includes(searchValue);
@@ -69,7 +68,7 @@ function SubProfile({ type, soLuongBan, soLuongAnh, data, profile, birthday, lis
             .map((item) => {
                 return (
                     <ItemBanBe
-                        key={item.id}
+                        key={item._id}
                         userId={item._id}
                         name={item.fullName}
                         avt={item?.profile?.urlAvartar}

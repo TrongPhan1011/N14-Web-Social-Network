@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { BiEdit, BiSearch } from 'react-icons/bi';
+import { BiSearch } from 'react-icons/bi';
 import { FaBell } from 'react-icons/fa';
 import Button from '~/components/Button';
 

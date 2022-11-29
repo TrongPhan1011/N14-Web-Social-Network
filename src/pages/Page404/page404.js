@@ -6,7 +6,7 @@ const cx = classNames;
 function Page404() {
     return (
         <div className={cx('w-screen h-screen')}>
-            <img src={lcnImage.page404} className={cx('w-full h-full')} />
+            <img src={lcnImage.page404} alt="404 khong tim thay" className={cx('w-full h-full')} />
         </div>
     );
 }

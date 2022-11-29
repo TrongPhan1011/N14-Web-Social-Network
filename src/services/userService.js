@@ -1,6 +1,5 @@
 import * as httpRequest from '~/utils/httpRequest';
 import { userLogin } from '~/redux/Slice/signInSlice';
-import { Navigate } from 'react-router-dom';
 
 export const getUserByUserName = async (userName) => {
     try {

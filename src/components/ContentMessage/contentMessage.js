@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import ItemMessage from '~/components/ItemMessage';
-import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
+
 import Avartar from '~/components/Avartar';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { useState } from 'react';
 import { getMessageByIdChat } from '~/services/messageService';
 import socket from '~/utils/getSocketIO';
@@ -17,6 +17,7 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
     const [limitMessage, setLimitMessage] = useState(30);
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [messRemove, setMessRemove] = useState([]);
+    const [reactMess, setReactMess] = useState();
 
     const bottomRef = useRef();
 
@@ -28,9 +29,10 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
                     title: data.title,
                     authorID: data.authorID,
                     seen: data.seen,
-                    type_mess: data.type,
+                    type_mess: data.type_mess,
                     idChat: data.idChat,
                     file: data.file,
+
                     replyMessage: data.replyMessage,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt,
@@ -43,9 +45,14 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
                 setMessRemove((prev) => [...prev, data]);
             }
         });
+        socket.on('getReactMess', (data) => {
+            if (!!data) {
+                setReactMess(data);
+            }
+        });
 
         // theo doi xem tin nhan bat ki nao do co thay doi khong vd: xoa tin, tha cam xuc,....
-    }, [socket]);
+    }, []);
     useEffect(() => {
         const scrollToBottom = () => {
             if (listMessage.length > 0) {
@@ -87,21 +94,23 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
                 if (!!messRemove && messRemove.includes(item.id)) {
                     return <span key={index + ' '}></span>;
                 }
+                if (!!reactMess && reactMess.id === item.id) {
+                    var reactObj = reactMess.reactionMess;
+                    console.log(item.reactionMess);
+                    if (!!item.reactionMess) {
+                        if (!item.reactionMess.includes(reactObj)) item.reactionMess = [...item.reactionMess, reactObj];
+                    } else item.reactionMess = [reactObj];
+                }
 
                 if (item.authorID?.id === curUser.id) {
                     return (
-                        <ItemMessage
-                            from="me"
-                            key={index + item.authorID.id}
-                            messageData={item}
-                            isLastMess={isLastMess}
-                        >
+                        <ItemMessage from="me" key={index + ''} messageData={item} isLastMess={isLastMess}>
                             {item.title}
                         </ItemMessage>
                     );
                 } else {
                     return (
-                        <ItemMessage key={index + item.authorID.id} messageData={item}>
+                        <ItemMessage key={index + ''} messageData={item}>
                             {item.title}
                         </ItemMessage>
                     );
@@ -138,4 +147,4 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
     );
 }
 
-export default ContentMessage;
+export default memo(ContentMessage);

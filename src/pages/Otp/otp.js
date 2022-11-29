@@ -13,7 +13,7 @@ const cx = classNames;
 
 function Otp() {
     const [validOTP, setValidOTP] = useState('opacity-0');
-    const [countDown, setCountDown] = useState(180);
+    const [countDown, setCountDown] = useState(90);
     const [countFail, setCountFail] = useState(0);
     const [banned, setBanned] = useState('');
 
@@ -75,7 +75,7 @@ function Otp() {
         }
         //dang ky thanh cong
         var registerHandle = await register(dangKy, navigate, dispatch);
-        console.log(registerHandle);
+
         if (!!registerHandle) {
             await loginUser(registerHandle, dispatch, navigate);
         } else {
@@ -89,9 +89,13 @@ function Otp() {
             userName: currentSignUpAccount.userName,
             otp: otpValue,
         };
-        // console.log(user);
+        if (countFail === 10) {
+            await banAccount(currentSignUpAccount.userName);
+        }
         var thongBao = await verifyOtp(user, navigate);
-        console.log(thongBao);
+        if (!thongBao) {
+            setCountFail((preFail) => preFail + 1);
+        }
     };
     const handleConfirmOtp = () => {
         if (!!currentSignUpAccount.gender) {
@@ -102,7 +106,7 @@ function Otp() {
     };
     const handleReSendOTP = async () => {
         var user = await sendOTP(currentSignUpAccount, dispatch, navigate);
-        setCountDown(180);
+        setCountDown(90);
     };
     return (
         <div className={cx('bg-white h-4/6 w-2/6 rounded-2xl drop-shadow-lcn-login', banned)}>

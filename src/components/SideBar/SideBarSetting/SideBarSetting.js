@@ -24,18 +24,6 @@ function SideBarSetting() {
                         <span className={cx('ml-4  w-4/5 text-lcn-blue-4 ')}>Mật khẩu</span>
                     </div>
                 </Button>
-                <Button className={cx('flex   w-full  p-2 hover:bg-lcn-blue-3')}>
-                    <div className={cx('flex items-center')}>
-                        <BiBell className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
-                        <span className={cx('  ml-4  w-4/5 text-lcn-blue-4 ')}>Thông báo</span>
-                    </div>
-                </Button>
-                <Button to={_route.chan} className={cx('flex   w-full p-2 m-0 hover:bg-red-200')}>
-                    <div className={cx('flex items-center')}>
-                        <BiBlock className={cx('text-red-500 w-7 h-7 ')} />{' '}
-                        <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Chặn</span>
-                    </div>
-                </Button>
             </div>
         </div>
     );

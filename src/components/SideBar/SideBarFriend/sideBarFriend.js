@@ -1,8 +1,12 @@
 import classNames from 'classnames';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
-import ItemChat from '~/components/ItemChat';
+import ItemBanBe from '~/components/ItemBanBe';
+import Avartar from '~/components/Avartar';
+import { getInboxByIdFriend } from '~/services/chatService';
+import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 
 import ListItem from '~/components/ListItem';
 import Button from '~/components/Button';
@@ -11,14 +15,16 @@ import { FaTimes } from 'react-icons/fa';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getChatByIdMember } from '~/services/chatService';
 import { useDispatch, useSelector } from 'react-redux';
+import config from '~/configRoutes';
 
 const cx = classNames;
 
 function SideBarFriend({ count, countWaiting }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
-    var currChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     const userLoginData = useSelector((state) => state.persistedReducer.signIn.userLogin);
     const [tabChange, setTabChange] = useState(true);
@@ -47,19 +53,43 @@ function SideBarFriend({ count, countWaiting }) {
         };
         fetchChat();
     }, [userLoginData]);
-    console.log(chatResult);
+
     const renderGroupChat = () => {
         return chatResult
             .filter((item) => {
                 return item.name.toLowerCase().includes(searchValue);
             })
             .map((item) => {
-                return <ItemChat key={item.id} groupChat={item} userLoginData={userLoginData} />;
+                return (
+                    <Button
+                        key={item.id}
+                        className={cx('rounded-xl h-16 w-full hover:bg-lcn-blue-3 m-0 p-2 mb-1 mt-1')}
+                        onClick={() => {
+                            dispatch(currentChat(item));
+                            navigate(config.routeConfig.home);
+                        }}
+                    >
+                        <div className={cx('relative w-full h-full flex items-center')}>
+                            <Avartar
+                                className={cx('h-10 w-10 border rounded-full border-lcn-blue-3')}
+                                src={item.avatar}
+                                typeAvatar={'group'}
+                                idGroup={item.id}
+                            />
+
+                            <div className={cx('  h-full ml-2 overflow-hidden flex items-center')}>
+                                <div className={cx('text-left text-lcn-blue-5 font-semibold h-8 w-96 ')}>
+                                    {item.name}
+                                </div>
+                            </div>
+                        </div>
+                    </Button>
+                );
             });
     };
     return (
         <div className={cx('p-2 h-screen flex flex-col')}>
-            <Modal isShow={showModal} isHidden={handleHideModal} className={'w-[280px]'}>
+            <Modal isShow={showModal} isHidden={handleHideModal} className={'w-[500px]'}>
                 <div className={cx('relative flex items-center p-4 border-b border-lcn-blue-2')}>
                     <p className={cx('w-full text-lg text-lcn-blue-4 font-semibold text-center')}>Danh sách nhóm</p>
                     <div className={cx('absolute ')}>
@@ -106,34 +136,44 @@ function SideBarFriend({ count, countWaiting }) {
             <div className={cx('h-10 w-full flex justify-around')}>
                 <Button
                     className={cx(
-                        'rounded-lcn-login-input ml-2 border w-20 h-8 flex items-center  justify-center',
+                        'rounded-lcn-login-input ml-2 border w-20 h-8 flex items-center p-0 justify-center',
                         'text-lcn-blue-4 border border-lcn-blue-4',
                         'hover:bg-lcn-blue-4 hover:text-white',
                     )}
                     onClick={() => setTabChange(true)}
                 >
                     {!tabChange ? (
-                        <div className={cx('h-full w-full p-0')}>Tất cả</div>
+                        <div className={cx('h-full w-full flex justify-center items-center p-0')}>Tất cả</div>
                     ) : (
-                        <div className={cx('rounded-lcn-login-input p-0 h-full w-full bg-lcn-blue-4 text-white')}>
+                        <div
+                            className={cx(
+                                'rounded-lcn-login-input p-0 flex justify-center items-center h-full w-full bg-lcn-blue-4 text-white',
+                            )}
+                        >
                             Tất cả
                         </div>
                     )}
                 </Button>
                 <Button
                     className={cx(
-                        'p-0 rounded-lcn-login-input border w-36 h-8 flex items-center  justify-center',
+                        ' rounded-lcn-login-input border w-36 h-8 flex items-center p-0 justify-center',
                         'text-lcn-blue-4 border-lcn-blue-4',
                         'hover:bg-lcn-blue-4 hover:text-white ',
                     )}
                     onClick={() => setTabChange(false)}
                 >
                     {!tabChange ? (
-                        <div className={cx('rounded-lcn-login-input p-0 h-full w-full bg-lcn-blue-4 text-white')}>
+                        <div
+                            className={cx(
+                                'rounded-lcn-login-input flex justify-center items-center p-0 h-full w-full bg-lcn-blue-4 text-white',
+                            )}
+                        >
                             Chờ xác nhận
                         </div>
                     ) : (
-                        <div className={cx('h-full w-full p-0')}>Chờ xác nhận({countWaiting})</div>
+                        <div className={cx('h-full w-full flex justify-center items-center p-0')}>
+                            Chờ xác nhận({countWaiting})
+                        </div>
                     )}
                 </Button>
             </div>

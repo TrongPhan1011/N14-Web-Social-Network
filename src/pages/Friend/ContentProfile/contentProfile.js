@@ -1,11 +1,12 @@
 import { useEffect, useState, memo, useCallback } from 'react';
-
 import classNames from 'classnames/bind';
+import { useSelector, useDispatch } from 'react-redux';
+import { AiOutlineUsergroupAdd, AiOutlineUserDelete } from 'react-icons/ai';
+import { RiChat3Line } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 import { getUserById, addFriend, declineFriend } from '~/services/userService';
 import { getAllFriend } from '~/services/userService';
-
-import { useSelector, useDispatch } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { userLogin } from '~/redux/Slice/signInSlice';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
@@ -16,12 +17,8 @@ import styles from './ContentProfile.module.scss';
 import HeaderProfile from '~/components/HeaderProfile';
 import Button from '~/components/Button';
 import SubProfile from '~/components/SubProfile';
-import { AiOutlineUsergroupAdd, AiOutlineUserDelete } from 'react-icons/ai';
-import { RiChat3Line } from 'react-icons/ri';
-import { lcnImage } from '~/image';
-import Post from '~/components/Post';
+
 import { acceptFriend } from '~/services/userService';
-import { useNavigate } from 'react-router-dom';
 import config from '~/configRoutes';
 
 const cx = classNames.bind(styles);
@@ -184,7 +181,7 @@ function ContentProfile({ userId }) {
                     userName={userProfile?.fullName}
                     active={active}
                 />
-                <div className={cx('mb-3 w-full h-14 flex justify-center')}>
+                <div className={cx(' mb-3 w-full h-14 flex justify-center')}>
                     <div className={cx('w-1/4 h-full flex flex-row justify-between ')}>
                         <Dropdown render={handleLoadMenu} visible={showMenu} hidden={handleHiddenMenu}>
                             <div>
@@ -221,17 +218,7 @@ function ContentProfile({ userId }) {
                             email={userProfile.email}
                         />
                         <SubProfile type="banbe" soLuongBan={count} listFriend={userFriend} userId={userId} />
-                        <SubProfile type="img" soLuongAnh="11" />
                     </div>
-                </div>
-                <div className={cx('w-full bg-lcn-blue-1 m-2 flex flex-col items-center')}>
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
                 </div>
             </div>
         </div>

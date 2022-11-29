@@ -1,14 +1,12 @@
 import classNames from 'classnames';
-import { useState, memo } from 'react';
+
 import Button from '~/components/Button';
 import { lcnImage } from '~/image';
 import { declineFriend } from '~/services/userService';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
-import { userLogin } from '~/redux/Slice/signInSlice';
-import routeConfig from '~/configRoutes';
+
 const cx = classNames;
 
 function ItemChan({ blockId, blockName, blockAva }) {

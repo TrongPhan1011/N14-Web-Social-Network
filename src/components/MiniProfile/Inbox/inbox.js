@@ -5,9 +5,8 @@ import HeaderProfile from '~/components/HeaderProfile';
 import GioiThieu from '~/components/GioiThieu';
 import Button from '~/components/Button';
 
-import { BiEdit, BiBlock } from 'react-icons/bi';
-
 import { useDispatch, useSelector } from 'react-redux';
+import AllFileChat from '~/components/AllFileChat';
 
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getUserById, blockFriend } from '~/services/userService';
@@ -17,14 +16,12 @@ import config from '~/configRoutes';
 import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
-function Inbox() {
+function Inbox({ curChat }) {
     const dispatch = useDispatch();
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;
     var accessToken = currAccount.accessToken;
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
-
-    var curChat = useSelector((state) => state.sidebarChatSlice.currentChat);
 
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
@@ -76,19 +73,8 @@ function Inbox() {
                     >
                         Xem trang cá nhân
                     </Button>
-                    <Button className={cx('flex   w-full  p-2 hover:bg-lcn-blue-3')}>
-                        <div className={cx('flex items-center')}>
-                            <BiEdit className={cx('text-lcn-blue-4 w-7 h-7 ')} />{' '}
-                            <span className={cx('  ml-4  w-4/5 ')}>Đổi biệt danh</span>
-                        </div>
-                    </Button>
 
-                    <Button className={cx('flex   w-full p-2 hover:bg-red-200')} onClick={handleBlockFriend}>
-                        <div className={cx('flex items-center')}>
-                            <BiBlock className={cx('text-red-500 w-7 h-7 ')} />{' '}
-                            <span className={cx('  ml-4  w-4/5 text-red-500 ')}>Chặn</span>
-                        </div>
-                    </Button>
+                    <AllFileChat accessToken={accessToken} axiosJWT={axiosJWT} curChat={curChat} curUser={curUser} />
                 </div>
             </div>
         </>

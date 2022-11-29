@@ -2,8 +2,6 @@ import classNames from 'classnames';
 
 import Button from '~/components/Button';
 import Avartar from '~/components/Avartar';
-import ItemDropdown from '~/components/Dropdown/ItemDropdown';
-import { AiOutlineMessage } from 'react-icons/ai';
 
 import config from '~/configRoutes';
 import { useDispatch } from 'react-redux';

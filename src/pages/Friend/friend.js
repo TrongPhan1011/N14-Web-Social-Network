@@ -1,16 +1,16 @@
 import { useState, useEffect, memo } from 'react';
-
+import { useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getUserById } from '~/services/userService';
 import { useDispatch } from 'react-redux';
+
+import { getUserById } from '~/services/userService';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import SideBar from '~/components/SideBar';
 import ContentFriend from './ContentFriend';
 import routeConfig from '~/configRoutes';
 import ContentProfile from './ContentProfile';
-import { useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
 import { userLogin } from '~/redux/Slice/signInSlice';
 
 const cx = classNames;
