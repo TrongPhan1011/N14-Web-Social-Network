@@ -12,7 +12,7 @@ import { getMessageById } from '~/services/messageService';
 import { currentChat } from '~/redux/Slice/sidebarChatSlice';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import socket from '~/utils/getSocketIO';
-import { getLastName } from '~/lib/formatString';
+import { getLastName, getFirstText } from '~/lib/formatString';
 
 const cx = classNames;
 
@@ -123,7 +123,7 @@ function ItemChat({ groupChat, userLoginData }) {
             var titleMess = '',
                 messCreatedAt = '',
                 lastNameAuthor = 'Bạn';
-            console.log(messageLast);
+
             if (messageLast.type_mess === 'system') {
                 titleMess = messageLast.title;
                 messCreatedAt = formatTimeAuto(messageLast.createdAt) || '';
@@ -216,7 +216,7 @@ function ItemChat({ groupChat, userLoginData }) {
                                 {groupChat.typeChat === 'group' ? groupChat.name : currentInbox?.fullName}
                             </div>
                             <div className={cx(' text-xs text-left h-8')}>
-                                <span>{itemDataChat.authorName}: </span> {itemDataChat.title}
+                                <span>{getFirstText(itemDataChat.authorName + ': ' + itemDataChat.title, 20)} </span>
                             </div>
                         </div>
                         <div className={cx('h-full w-10 relative')}>

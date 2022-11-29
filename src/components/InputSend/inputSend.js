@@ -47,25 +47,11 @@ function InputSend({ type }) {
 
     const txtSendRef = useRef();
 
-    useEffect(() => {
-        if (!!curChat && !!messageSend) {
-            socket.emit('sendMessage', {
-                receiverId: curChat.id,
-                contentMessage: messageSend,
-            });
-            txtSendRef.current.textContent = '';
-            txtSendRef.current.focus();
-            showEmoji && setShowEmoji(false);
-            setCurrMessage('');
-            removeUpFile();
-            setHeightText('h-11');
-        }
-    }, [messageSend]);
+    useEffect(() => {}, [messageSend]);
     useEffect(() => {
         if (!!replyMess) {
             setReplyMessData(replyMess);
         }
-        console.log(replyMess);
     }, [replyMess]);
 
     useEffect(() => {
@@ -87,7 +73,20 @@ function InputSend({ type }) {
 
             newMess.id = messData.id;
 
-            setMessageSend(newMess);
+            if (!!curChat && !!newMess) {
+                socket.emit('sendMessage', {
+                    receiverId: curChat.id,
+                    contentMessage: newMess,
+                });
+                txtSendRef.current.textContent = '';
+                txtSendRef.current.focus();
+                showEmoji && setShowEmoji(false);
+                setCurrMessage('');
+                removeUpFile();
+                setHeightText('h-11');
+            }
+
+            // setMessageSend(newMess);
         }
     };
 
@@ -121,8 +120,7 @@ function InputSend({ type }) {
     };
 
     var getNewMess = (title, type, file) => {
-        let newReplyDataSocket = null,
-            newReplyDataSave = null;
+        let newReplyDataSocket = null;
 
         if (!!replyMessData) {
             newReplyDataSocket = {
@@ -130,7 +128,6 @@ function InputSend({ type }) {
                 title: replyMessData.title,
                 file: replyMessData.file[0],
             };
-            newReplyDataSave = replyMessData.id;
         }
         var newMess = {
             title: title,

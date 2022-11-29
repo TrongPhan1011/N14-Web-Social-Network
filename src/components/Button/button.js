@@ -40,7 +40,6 @@ function Button({ children, className, type, to, href, target, onClick, navLink,
 }
 
 Button.propTypes = {
-    children: PropTypes.node,
     className: PropTypes.string,
     type: PropTypes.string,
     to: PropTypes.string,

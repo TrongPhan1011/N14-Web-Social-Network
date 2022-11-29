@@ -2,20 +2,38 @@ import classNames from 'classnames';
 
 import Inbox from './Inbox';
 import Group from './Group';
+import { useEffect, useState, memo } from 'react';
+import { useSelector } from 'react-redux';
 
 const cx = classNames;
 
-function MiniProfile({ profileIn, typeChat }) {
+function MiniProfile({ profileIn, typeChat, curChat }) {
     var animationIn = 'ease-left-to-right ';
     if (profileIn) {
         animationIn = 'ease-right-to-left ';
     }
+    const [showContent, setShowContent] = useState(false);
+    const [curChatState, setCurChatState] = useState();
+
+    useEffect(() => {
+        if (!!curChat) {
+            setCurChatState(curChat);
+        }
+    }, [curChat]);
+    useEffect(() => {
+        if (!!curChatState) {
+            setShowContent(true);
+        }
+    }, [curChatState]);
 
     const renderProfile = () => {
-        console.log(typeChat);
-        if (typeChat === 'group') {
-            return <Group />;
-        } else return <Inbox />;
+        if (showContent) {
+            console.log(typeChat);
+
+            if (typeChat === 'group') {
+                return <Group curChat={curChat} />;
+            } else return <Inbox curChat={curChat} />;
+        }
     };
 
     return (
@@ -25,4 +43,4 @@ function MiniProfile({ profileIn, typeChat }) {
     );
 }
 
-export default MiniProfile;
+export default memo(MiniProfile);

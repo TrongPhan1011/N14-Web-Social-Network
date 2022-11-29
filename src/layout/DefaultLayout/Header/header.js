@@ -36,7 +36,7 @@ function Header({ userLoginData }) {
     const [linkQR, setLinkQR] = useState('');
     const [copied, setCopied] = useState('opacity-0');
 
-    var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData.id;
+    var qrURL = 'http://localhost:3000' + config.routeConfig.profile + '?id=' + userLoginData?.id;
 
     var currAuth = useSelector((state) => state.persistedReducer.auth);
     var currAccount = currAuth.currentUser;

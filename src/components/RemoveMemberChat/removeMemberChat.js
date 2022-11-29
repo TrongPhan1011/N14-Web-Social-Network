@@ -109,6 +109,16 @@ function RemoveMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         };
         if (!!newMessSave) {
             var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            messData = {
+                ...messData,
+                authorID: {
+                    id: curUser.id,
+                    fullName: curUser.fullName,
+                    profile: {
+                        urlAvartar: curUser.profile.urlAvartar,
+                    },
+                },
+            };
             socket.emit('sendMessage', {
                 receiverId: id,
                 contentMessage: messData,

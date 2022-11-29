@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 
@@ -22,29 +22,46 @@ function SideBarChat() {
 
     const [chatResult, setChatResult] = useState([]);
     const [reRender, setReRender] = useState(true);
-    useEffect(() => {
-        const resetGroupChat = async () => {
-            var newCurChat = await getChatByIdChat(currChat.id, currAccount.accessToken, axiosJWT);
-            dispatch(currentChat(newCurChat));
-        };
+    const [newMessReceive, setNewMessReceive] = useState(null);
 
-        if (!!currChat) {
-            socket.on('getMessage', (data) => {
-                if (!!data) {
-                    if (data.type_mess === 'system') {
-                        resetGroupChat();
-                    }
-                    setReRender(true);
-                }
-            });
-        }
+    useMemo(() => {
+        socket.on('getMessage', (data) => {
+            if (!!data) {
+                setNewMessReceive(data);
+            }
+        });
+        socket.on('getChatRemoved', (data) => {
+            if (!!data) {
+                setReRender(true);
+                dispatch(currentChat(null));
+            }
+        });
     }, [socket, currChat]);
+
+    useMemo(() => {
+        const resetGroupChat = async () => {
+            if (!!currChat) {
+                if (newMessReceive.title.includes('đã rời nhóm')) {
+                } else {
+                    var newCurChat = await getChatByIdChat(currChat.id, currAccount.accessToken, axiosJWT);
+                    if (!!newCurChat) {
+                        dispatch(currentChat(newCurChat));
+                    } else dispatch(currentChat(null));
+                }
+            }
+        };
+        if (!!newMessReceive) {
+            if (newMessReceive.type_mess === 'system') {
+                resetGroupChat();
+            }
+            setReRender(true);
+        }
+    }, [newMessReceive]);
 
     useEffect(() => {
         const fetchChat = async () => {
             if (reRender) {
                 const arrChat = await getChatByIdMember(userLoginData.id, currAccount.accessToken, axiosJWT);
-
                 if (!!arrChat) {
                     setChatResult(arrChat);
 
@@ -53,7 +70,7 @@ function SideBarChat() {
             }
         };
         fetchChat();
-    }, [userLoginData, reRender, currChat]);
+    }, [userLoginData, reRender]);
 
     // khoi tao socket room
     const handdleConnectSocket = (item) => {

@@ -9,7 +9,7 @@ import Avartar from '~/components/Avartar';
 
 import { addAdminToChat } from '~/services/chatService';
 import { inCludesString } from '~/lib/regexString';
-import { currentChat } from '~/redux/Slice/sidebarChatSlice';
+
 import { useDispatch } from 'react-redux';
 import { getMemberOfChat } from '~/services/chatService';
 import { MdOutlineSecurity } from 'react-icons/md';
@@ -19,8 +19,6 @@ import { getUserById } from '~/services/userService';
 
 const cx = classNames;
 function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
-    const dispatch = useDispatch();
-
     const [showModal, setShowModal] = useState(false);
     const [listMember, setListMember] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -112,6 +110,16 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
         };
         if (!!newMessSave) {
             var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            messData = {
+                ...messData,
+                authorID: {
+                    id: curUser.id,
+                    fullName: curUser.fullName,
+                    profile: {
+                        urlAvartar: curUser.profile.urlAvartar,
+                    },
+                },
+            };
             socket.emit('sendMessage', {
                 receiverId: id,
                 contentMessage: messData,
@@ -124,14 +132,10 @@ function AddAdminChat({ accessToken, axiosJWT, curChat, curUser }) {
             var dataNewChat = await addAdminToChat(curChat.id, listChecked, accessToken, axiosJWT);
 
             if (dataNewChat) {
-                dispatch(currentChat(dataNewChat));
-                setListChecked([]);
-                setListMember([]);
-                setShowModal(false);
-
                 for (let memberId of listChecked) {
                     var member = await getUserById(memberId, accessToken, axiosJWT);
                     saveMessSystem(dataNewChat.id, member.fullName + ' đã trở thành quản trị viên');
+                    handleHideModal();
                 }
             }
         }

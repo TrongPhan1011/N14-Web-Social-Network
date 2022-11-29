@@ -41,8 +41,8 @@ function Avartar({ className, src, idGroup, typeAvatar }) {
                         <div
                             key={index + ' '}
                             className={cx(
-                                ' rounded-[50%]   flex justify-center items-center p-0 ',
-                                'overflow-hidden h-1/2 w-1/2 text-lcn-blue-4 font-semibold text-xs border border-lcn-blue-3 ',
+                                ' rounded-full ring-1 ring-white   flex justify-center items-center p-0 ',
+                                'overflow-hidden h-1/2 w-1/2 text-lcn-blue-4 font-semibold text-xs  ',
                             )}
                         >
                             +{numberMemberOther}
@@ -53,7 +53,7 @@ function Avartar({ className, src, idGroup, typeAvatar }) {
                     <div
                         key={index + ''}
                         className={cx(
-                            ' rounded-[50%]   flex justify-center items-center p-0 ',
+                            ' rounded-full ring-1 ring-white  flex justify-center items-center p-0 ',
                             'overflow-hidden h-1/2 w-1/2',
                         )}
                     >
@@ -92,4 +92,4 @@ function Avartar({ className, src, idGroup, typeAvatar }) {
     );
 }
 
-export default Avartar;
+export default memo(Avartar);

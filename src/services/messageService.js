@@ -52,6 +52,18 @@ export const addUserSeenToMess = async (idMess, data, accessToken, axiosJWT) => 
         console.log('Người dùng không tồn tại!');
     }
 };
+export const addReaction = async (data, accessToken, axiosJWT) => {
+    try {
+        const res = await axiosJWT.put(`/message/add_reaction`, data, {
+            headers: { token: `baerer ${accessToken}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        console.log('Người dùng không tồn tại!');
+        return false;
+    }
+};
 
 export const addMess = async (data, accessToken, axiosJWT) => {
     try {

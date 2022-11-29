@@ -120,6 +120,16 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
         };
         if (!!newMessSave) {
             var messData = await addMess(newMessSave, accessToken, axiosJWT);
+            messData = {
+                ...messData,
+                authorID: {
+                    id: curUser.id,
+                    fullName: curUser.fullName,
+                    profile: {
+                        urlAvartar: curUser.profile.urlAvartar,
+                    },
+                },
+            };
             socket.emit('sendMessage', {
                 receiverId: id,
                 contentMessage: messData,
@@ -135,9 +145,6 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
             } else dataNewChat = await addMemberToChat(curChat.id, listChecked, accessToken, axiosJWT);
 
             if (!!dataNewChat) {
-                setListChecked([]);
-                setListMember([]);
-                setShowModal(false);
                 if (dataNewChat.status === 1 || curChat.adminChat.includes(curUser.id)) {
                     for (let memberId of listChecked) {
                         var member = await getUserById(memberId, accessToken, axiosJWT);
@@ -146,6 +153,9 @@ function AddMemberChat({ accessToken, axiosJWT, curChat, curUser }) {
                 } else {
                     saveMessSystem(dataNewChat.id, listChecked.length + ' thành viên đang chờ duyệt ');
                 }
+                setListChecked([]);
+                setListMember([]);
+                setShowModal(false);
             }
         }
     };
