@@ -7,6 +7,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { BiZoomIn, BiZoomOut } from 'react-icons/bi';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import Button from '~/components/Button';
+import { FiDownload } from 'react-icons/fi';
 
 const cx = classNames;
 
@@ -81,9 +82,10 @@ function HeaderProfile({ children, srcImg, type }) {
                                                 className={cx(
                                                     ' text-white text-3xl bg-black absolute opacity-40 top-2 right-56 hover:opacity-40 active:opacity-60  ',
                                                 )}
-                                                download
+                                                download="img"
+                                                target="_blank"
                                             >
-                                                <BsFillCloudUploadFill />
+                                                <FiDownload />
                                             </Button>
                                         </div>
                                     </>
