@@ -28,10 +28,8 @@ function ContentDoiMatKhau() {
         var check = await checkOldPassword(user);
 
         if (check === true) {
-            console.log('Không trùng mật khẩu');
             setFailLogin('');
         } else {
-            console.log('Trùng mật khẩu');
             setFailLogin('hidden');
         }
     };

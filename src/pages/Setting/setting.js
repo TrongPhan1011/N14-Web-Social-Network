@@ -4,7 +4,7 @@ import SideBar from '~/components/SideBar';
 import routeConfig from '~/configRoutes';
 import ContentThongTinChung from './ContentThongTinChung';
 import ContentDoiMatKhau from './ContentDoiMatKhau';
-import ContentChan from './ContentChan';
+
 const cx = classNames;
 
 function Setting() {
@@ -13,7 +13,6 @@ function Setting() {
     const showContent = () => {
         if (urlRoute === routeConfig.routeConfig.setting) return <ContentThongTinChung />;
         else if (urlRoute === routeConfig.routeConfig.doiMatKhau) return <ContentDoiMatKhau />;
-        else if (urlRoute === routeConfig.routeConfig.chan) return <ContentChan />;
         else return <ContentThongTinChung />;
     };
     return (

@@ -26,45 +26,35 @@ function SignIn() {
     const passwordRef = useRef();
 
     var currentAccount = useSelector((state) => state.persistedReducer.auth);
-    var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp);
+    // var currentSignUpAccount = useSelector((state) => state.persistedReducer.signUp);
 
     useEffect(() => {
         if (currentAccount.currentUser !== null && !!currentAccount.currentUser.accessToken) {
             navigate(config.routeConfig.home);
+            // dispatch(userSignUp(null)); // xoa signUp
         }
     }, []);
 
-    useEffect(() => {
-        if (currentSignUpAccount.userSignUp !== null) {
-            dispatch(userSignUp(null)); // xoa signUp
-        }
-    }, []);
     const handleLogin = async () => {
         var valueEmail = checkValidEmail();
         var valuePassword = checkValidPassword();
         const check = await findBanAccount(valueEmail);
         console.log(check);
-        if (!!check) {
-            // setBanned('blur-sm w-screen h-screen');
-            alert('Hiện email đã bị tạm khoá do nhập sai quá nhiều lần xin bạn thử lại sau vài tiếng nữa');
-            return navigate(config.routeConfig.signIn);
-        }
+
         if (countFail === 10) {
             return navigate(config.routeConfig.quenMatKhau);
-            // console.log('Lỗi lần 10');
         }
         if (!!valueEmail && !!validPassword) {
             var user = { userName: valueEmail, password: valuePassword };
             // đăng nhập thành công -->
             var login = await loginUser(user, dispatch, navigate);
             if (login === false) {
-                // console.log();
                 setFailLogin('');
                 setCountFail((preFail) => preFail + 1);
             }
         } else return false;
     };
-    console.log(countFail);
+
     const checkValidEmail = () => {
         var valueEmail = emailRef.current.value.trim();
         if (valueEmail.length === 0 || !valueEmail.match(/^[a-zA-Z._0-9]+@[a-z]+\.[a-z]+$/)) {

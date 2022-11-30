@@ -104,9 +104,6 @@ function ContentChat({ currChat }) {
                                         <Button type="button" className="text-lcn-blue-5 font-semibold text-md m-0 ">
                                             {currChat.typeChat === 'group' ? currChat?.name : currentInbox?.fullName}
                                         </Button>
-                                        <span
-                                            className={cx('h-3 w-3 bg-lcn-green-1 rounded-full inline-block ml-2')}
-                                        ></span>
                                     </div>
 
                                     <div className={cx('text-xs text-slate-500 ml-1')}>Đang hoạt động</div>

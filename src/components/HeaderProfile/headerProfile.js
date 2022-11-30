@@ -258,12 +258,12 @@ function HeaderProfile({ avatar, coverPhoto, userName, active, typeAvatar, idGro
                                         </Button>
                                         <Button
                                             className={cx(
-                                                ' text-white text-3xl bg-black absolute opacity-40 top-2 right-56 hover:opacity-40 active:opacity-60  ',
+                                                ' text-lcn-blue-4  bg-white border pr-2 pl-2 border-lcn-blue-4 font-semibold absolute bg-opacity-80 top-2 right-56  ',
                                                 hiddenSave,
                                             )}
                                             onClick={saveImg}
                                         >
-                                            <BsFillCloudUploadFill />
+                                            <BsFillCloudUploadFill className="text-3xl mr-2 " /> Lưu
                                         </Button>
                                     </div>
                                 </>
@@ -350,7 +350,7 @@ function HeaderProfile({ avatar, coverPhoto, userName, active, typeAvatar, idGro
             </div>
             <div
                 className={cx(
-                    'bg-white w-full h-16 text-2xl flex justify-center items-center font-semibold text-lcn-blue-5',
+                    'bg-white text-center h-16 text-xl flex justify-center items-center font-semibold text-lcn-blue-5',
                 )}
             >
                 {userName}

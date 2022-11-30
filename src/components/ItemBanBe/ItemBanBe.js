@@ -28,9 +28,6 @@ function ItemBanBe({ userId, name, avt, onClick }) {
                     <div className={cx('w-40  h-full ml-2 overflow-hidden flex items-center')}>
                         <div className={cx('text-left text-lcn-blue-5 font-semibold h-8 w-96 ')}>{name}</div>
                     </div>
-                    <div className={cx('h-full w-8 flex items-center')}>
-                        <div className={cx('h-3 w-3 bg-lcn-green-1 rounded-full   top-4 left-0')}></div>
-                    </div>
                 </div>
             </Button>
         );

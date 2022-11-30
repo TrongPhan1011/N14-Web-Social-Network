@@ -27,8 +27,6 @@ function MiniProfile({ profileIn, typeChat, curChat }) {
 
     const renderProfile = () => {
         if (showContent) {
-            console.log(typeChat);
-
             if (typeChat === 'group') {
                 return <Group curChat={curChat} />;
             } else return <Inbox curChat={curChat} />;

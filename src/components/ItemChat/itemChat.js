@@ -200,12 +200,7 @@ function ItemChat({ groupChat, userLoginData }) {
                             typeAvatar={groupChat.typeChat === 'group' ? 'group' : 'inbox'}
                             idGroup={groupChat.id}
                         />
-                        <div
-                            className={cx(
-                                'bg-lcn-green-1 w-3 h-3 absolute  rounded-full bottom-[2px] left-7',
-                                onlineValue,
-                            )}
-                        ></div>
+
                         <div className={cx('w-40  h-full ml-2 overflow-hidden')}>
                             <div
                                 className={cx(

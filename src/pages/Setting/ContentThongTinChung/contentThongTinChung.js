@@ -17,7 +17,6 @@ function ContentThongTinChung() {
     const isRadioSelected = (value) => selectedRadioBtn === value;
     const handleRadioClick = (e) => {
         setSelectedRadioBtn(e.currentTarget.value);
-        console.log(e.currentTarget.value);
     };
 
     var currAuth = useSelector((state) => state.persistedReducer.auth);
@@ -84,14 +83,11 @@ function ContentThongTinChung() {
                 birthday: valueDate,
                 gender: gender,
             };
-            console.log(user);
-            console.log(curUser.id);
             var update = await updateProfile(curUser.id, user, accessToken, axiosJWT, dispatch);
             if (!!update) {
                 alert('Sửa thông tin thành công');
             }
         } else {
-            console.log('huỷ lưu');
         }
     };
     return (
@@ -150,8 +146,8 @@ function ContentThongTinChung() {
                                     </div>
                                 </div>
 
-                                <div className={cx('flex justify-center w-full')}>
-                                    <div className={cx('w-full relative ')}>
+                                <div className={cx('flex justify-center bg-slate-300 w-full rounded-lcn-login-input')}>
+                                    <div className={cx('w-full relative  ')}>
                                         <div
                                             className={cx(
                                                 'flex absolute text-lcn-blue-4 inset-y-0 left-0 items-center pl-3 pointer-events-none ',

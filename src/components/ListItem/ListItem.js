@@ -22,7 +22,7 @@ function ListItem({ type }) {
     var axiosJWT = getAxiosJWT(dispatch, currAccount);
     var curSignIn = useSelector((state) => state.persistedReducer.signIn);
     var curUser = curSignIn.userLogin;
-    console.log(listFriend);
+
     useEffect(() => {
         const getListFriend = async () => {
             const friendByStatus = await getAllFriend(curUser.id, accessToken, axiosJWT, dispatch);
@@ -49,7 +49,7 @@ function ListItem({ type }) {
 
         getListBlockFriend();
     }, [type, curUser.friend]);
-    console.log(listBlockedFriend);
+
     var Comp = ItemBanBe;
     if (type === 'choXacNhan') {
         Comp = ItemChoXacNhan;

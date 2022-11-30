@@ -14,7 +14,7 @@ export const loginUser = async (user, dispatch, navigate) => {
             const dataUserLogin = await httpRequest.get('user/account/' + dataUser._id);
             dispatch(userLogin(dataUserLogin));
 
-            navigate(config.routeConfig.home);
+            navigate(config.routeConfig.friends);
             return true;
         } else return false;
     } catch (error) {
@@ -102,15 +102,14 @@ export const findBanAccount = async (email) => {
 };
 
 export const register = async (user, navigate, dispatch) => {
-    console.log(user);
     try {
         const res = await httpRequest.post('auth/register/', user);
-        dispatch(userSignUp(null)); // xoa signUp
-        console.log(res);
+        // dispatch(userSignUp(null)); // xoa signUp
+        console.log(user);
         if (!!res) {
             return { userName: user.email, password: user.password };
         }
-        // navigate(config.routeConfig.signIn);
+        // navigate(config.routeConfig.friends)
         // return res;
     } catch (error) {
         return null;
