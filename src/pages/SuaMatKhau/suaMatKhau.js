@@ -22,7 +22,7 @@ function SuaMatKhau() {
 
     const checkValidPassword = () => {
         var valuePassword = passRef.current.value.trim();
-        if (valuePassword.length === 0 || !valuePassword.match(/^[A-Z]{1}[a-zA-Z0-9\.@ ]{5,}$/)) {
+        if (valuePassword.length === 0 || !valuePassword.match(/^[A-Z]{1}[a-zA-Z0-9.@ ]{5,}$/)) {
             setPassword('opacity-1');
             return '';
         } else {
