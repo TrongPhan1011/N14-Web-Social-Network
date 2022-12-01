@@ -226,6 +226,7 @@ function ContentThongTinChung() {
 
                                 <div className={cx('w-full h-10 flex justify-center')}>
                                     <Button
+                                               type={'button'}
                                         className={cx(
                                             'w-2/4 h-full p-0',
                                             'border border-opacity-50 border-lcn-blue-4 outline-none text-lcn-blue-4',
