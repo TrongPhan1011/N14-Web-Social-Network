@@ -36,7 +36,7 @@ function Inbox({ curChat }) {
             var receiverFetch = await getUserById(idReceiver[0], accessToken, axiosJWT);
             const getCurrentUserProfile = await getUserById(curUser.id, accessToken, axiosJWT);
             dispatch(userLogin(getCurrentUserProfile));
-            // console.log(receiverFetch.fullName);
+
             setReceiver(receiverFetch);
         };
         infoInbox();

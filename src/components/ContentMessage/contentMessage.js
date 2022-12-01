@@ -96,7 +96,7 @@ function ContentMessage({ currentInbox, curUser, accessToken, axiosJWT }) {
                 }
                 if (!!reactMess && reactMess.id === item.id) {
                     var reactObj = reactMess.reactionMess;
-                    console.log(item.reactionMess);
+
                     if (!!item.reactionMess) {
                         if (!item.reactionMess.includes(reactObj)) item.reactionMess = [...item.reactionMess, reactObj];
                     } else item.reactionMess = [reactObj];

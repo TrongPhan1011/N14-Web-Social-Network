@@ -18,7 +18,7 @@ function QuenMatKhau() {
         const email = emailRef.current.value.trim();
 
         var userGeted = await getAuthByMail(email);
-        console.log(userGeted);
+
         if (!userGeted) {
             setCheckMail('opacity-1');
         } else {

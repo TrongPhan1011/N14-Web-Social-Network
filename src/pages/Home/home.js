@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 
 import SideBar from '~/components/SideBar';
 import ContentChat from './ContentChat';
+import { lcnImage } from '~/image';
 
 const cx = classNames;
 function Home() {
@@ -22,7 +23,13 @@ function Home() {
             <div className="w-[270px] h-screen  ">
                 <SideBar />
             </div>
-            {showContent && <ContentChat currChat={curChat} />}
+            {!!showContent ? (
+                <ContentChat currChat={curChat} />
+            ) : (
+                <div className={cx(' w-full h-full flex overflow-hidden ')}>
+                    <img src={lcnImage.welcome} alt="chao mung ban" className="object-fit w-full h-full" />
+                </div>
+            )}
         </div>
     );
 }

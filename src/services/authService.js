@@ -14,7 +14,6 @@ export const loginUser = async (user, dispatch, navigate) => {
             const dataUserLogin = await httpRequest.get('user/account/' + dataUser._id);
             dispatch(userLogin(dataUserLogin));
 
-            navigate(config.routeConfig.friends);
             return true;
         } else return false;
     } catch (error) {
@@ -57,7 +56,7 @@ export const logout = async (dispatch, navigate, accessToken, axiosJWT) => {
 export const sendOTP = async (user, dispatch, navigate) => {
     try {
         const res = await httpRequest.post('otp/', user);
-        console.log(res);
+
         dispatch(userSignUp(user));
         navigate(config.routeConfig.otp);
         return res;
@@ -85,7 +84,7 @@ export const banAccount = async (email) => {
         const res = await httpRequest.post('otp/ban', {
             userName: email,
         });
-        console.log(res);
+
         return res;
     } catch (error) {
         return null;
@@ -105,7 +104,7 @@ export const register = async (user, navigate, dispatch) => {
     try {
         const res = await httpRequest.post('auth/register/', user);
         // dispatch(userSignUp(null)); // xoa signUp
-        console.log(user);
+
         if (!!res) {
             return { userName: user.email, password: user.password };
         }
@@ -144,7 +143,6 @@ export const updatePassword = async (addBody, dispatch, navigate) => {
     }
 };
 export const checkOldPassword = async (addBody) => {
-    console.log(addBody);
     try {
         const dataUser = await httpRequest.get('auth/checkpass', {
             params: {

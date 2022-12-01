@@ -57,8 +57,6 @@ function Search() {
                 axiosJWT,
             );
 
-            // console.log(result);
-
             let listResult = [];
             if (searchButton === 'friend') {
                 // loc ban be bang filter

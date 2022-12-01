@@ -20,7 +20,7 @@ const sidebarChatSlice = createSlice({
 
         addCountUnseenChat: (state, action) => {
             // state.unseenChat = action.payload;
-            console.log(state);
+
         },
     },
 });

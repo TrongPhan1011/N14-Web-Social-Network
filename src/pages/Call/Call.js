@@ -49,16 +49,14 @@ function Call() {
     useEffect(() => {
         // const setStreamObject = async () => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-            console.log(stream);
             setStreamObject(stream);
         });
         // };
         // setStreamObject();
     }, []);
-    console.log(dataCaller);
+
     useEffect(() => {
         if (!!dataCaller) {
-            console.log(dataCaller);
             setReceivingCall(true);
             setCaller(dataCaller.from);
             setName(dataCaller.name);
@@ -74,14 +72,12 @@ function Call() {
 
     useEffect(() => {
         if (!!idTo && !!streamObject) {
-            console.log('call');
             callUser(idTo);
         }
     }, [idTo, streamObject]);
 
     useEffect(() => {
         if (!!acceptStatus && !!streamObject) {
-            console.log('accept');
             setCallAccepted(true);
         }
     }, [acceptStatus, streamObject, callAccepted]);
@@ -123,7 +119,6 @@ function Call() {
             trickle: false,
             stream: streamObject,
         });
-        console.log(peer);
 
         peer.on('signal', (data) => {
             socket.emit('answerCall', { signal: data, idUserCall: caller });

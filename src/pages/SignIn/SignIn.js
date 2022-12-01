@@ -39,7 +39,6 @@ function SignIn() {
         var valueEmail = checkValidEmail();
         var valuePassword = checkValidPassword();
         const check = await findBanAccount(valueEmail);
-        console.log(check);
 
         if (countFail === 10) {
             return navigate(config.routeConfig.quenMatKhau);
@@ -51,7 +50,7 @@ function SignIn() {
             if (login === false) {
                 setFailLogin('');
                 setCountFail((preFail) => preFail + 1);
-            }
+            } else navigate(config.routeConfig.home);
         } else return false;
     };
 

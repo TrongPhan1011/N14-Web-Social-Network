@@ -77,7 +77,10 @@ function Otp() {
         var registerHandle = await register(dangKy, navigate, dispatch);
 
         if (!!registerHandle) {
-            await loginUser(registerHandle, dispatch, navigate);
+            const result = await loginUser(registerHandle, dispatch, navigate);
+            if (result) {
+                navigate(config.routeConfig.friends);
+            }
         } else {
             // alert('Bạn đã nhập sai OTP');
             setCountFail((preFail) => preFail + 1);

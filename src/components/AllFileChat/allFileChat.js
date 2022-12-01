@@ -24,7 +24,6 @@ function AllFileChat({ accessToken, axiosJWT, curChat, curUser }) {
                 listDoc = [],
                 listVideo = [];
             for (let mess of arrMessFile) {
-                console.log(mess);
                 for (let file of mess.file) {
                     if (file.fileType === 'image') {
                         listImg = [...listImg, file.path]; // them file img vao list

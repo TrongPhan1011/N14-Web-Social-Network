@@ -121,7 +121,6 @@ export const removeMemberChat = async (idChat, arrMember, accessToken, axiosJWT)
 };
 export const removeChat = async (idChat, curUserId, accessToken, axiosJWT) => {
     try {
-        console.log(curUserId);
         const res = await axiosJWT.put(
             '/chat/removeChat/' + idChat,
             {},
@@ -142,7 +141,6 @@ export const removeChat = async (idChat, curUserId, accessToken, axiosJWT) => {
 };
 export const leaveChat = async (idChat, idUser, accessToken, axiosJWT) => {
     try {
-        console.log(idUser);
         const res = await axiosJWT.put(
             '/chat/memberLeaveChat/' + idChat,
             {},

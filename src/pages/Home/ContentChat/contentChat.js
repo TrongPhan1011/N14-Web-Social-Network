@@ -10,7 +10,7 @@ import MiniProfile from '~/components/MiniProfile';
 import { getAxiosJWT } from '~/utils/httpConfigRefreshToken';
 import { getUserById } from '~/services/userService';
 import Avartar from '~/components/Avartar';
-import config from '~/configRoutes';
+
 import { callerData } from '~/redux/Slice/callSlice';
 import socket from '~/utils/getSocketIO';
 
@@ -46,7 +46,6 @@ function ContentChat({ currChat }) {
     useEffect(() => {
         socket.on('getPeerId', (peerId) => {
             if (!!peerId) {
-                console.log('receiver : ' + peerId);
                 dispatch(callerData({ calling: true, idTo: peerId }));
             }
         });
@@ -82,14 +81,6 @@ function ContentChat({ currChat }) {
                 );
         }
     };
-    const sendSignalCall = () => {
-        //  const peer = new Peer();
-        //  peer.on('open', (id) => {
-        //      dispatch(callerData({ calling: true, idTo: id }));
-        //  });
-        console.log(currentInbox);
-        socket.emit('sendSignalCall', { receiverId: currentInbox.id, data: { idUser: curUser.id } });
-    };
 
     return (
         <>
@@ -110,12 +101,16 @@ function ContentChat({ currChat }) {
                                 </div>
                             </div>
                             <div className={cx('  h-full flex pl-4 justify-end')}>
-                                <Button type="button" className="mr-4" onClick={sendSignalCall}>
+                                <Button
+                                    type="button"
+                                    className="mr-4"
+                                    onClick={() => alert('Chức năng đang phát triển')}
+                                >
                                     <FaPhone className="text-lcn-blue-4 text-2xl" />
                                 </Button>
                                 <Button
-                                    href={'.' + config.routeConfig.call + '?video=true&idTo=' + currentInbox?.id}
-                                    target="_blank"
+                                    type="button"
+                                    onClick={() => alert('Chức năng đang phát triển')}
                                     className="mr-4"
                                 >
                                     <FaVideo className="text-lcn-blue-4 text-2xl" />

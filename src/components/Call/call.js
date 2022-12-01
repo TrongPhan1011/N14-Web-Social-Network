@@ -31,7 +31,6 @@ function Call({ accessToken, axiosJWT, curChat, curUser }) {
             peerID = id;
         });
         socket.on('getCallSignal', (data) => {
-            console.log(data);
             if (!!data && !!peerID) {
                 socket.emit('sendIdCall', { receiverId: data.idUser, peerId: peerID });
             }
@@ -41,7 +40,6 @@ function Call({ accessToken, axiosJWT, curChat, curUser }) {
             handleShowModal();
             var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-            console.log(call);
             getUserMedia({ video: true, audio: true }, (mediaStream) => {
                 currentUserVideoRef.current.srcObject = mediaStream;
                 currentUserVideoRef.current.play();

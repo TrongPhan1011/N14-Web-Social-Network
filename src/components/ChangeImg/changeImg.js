@@ -48,7 +48,7 @@ function ChangeFile({ accessToken, axiosJWT, curChat, curUser }) {
     };
     var handlePreviewIMG = async (e) => {
         const SIZE_FILE = 62914560; // = 60MB
-        console.log(e.target.files[0]);
+
         setSelectedFile(e.target.files[0]);
 
         if (e.target.files[0].size > SIZE_FILE) {
@@ -99,7 +99,6 @@ function ChangeFile({ accessToken, axiosJWT, curChat, curUser }) {
         formDataFile.append('images', listFileImgPreview[0]);
 
         var urlIMG = await uploadFileImg(formDataFile);
-        console.log(urlIMG[0].path);
 
         if (!!urlIMG) {
             const newChat = await changeAvatarGroup(curChat.id, urlIMG[0].path, accessToken, axiosJWT);
